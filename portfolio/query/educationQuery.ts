@@ -28,7 +28,8 @@ class EducationQuery {
 		//* Handle for Add Education
 		if (router === "ADD") {
 			//? Handle mandatory fields
-			for (const field in PORTFOLIO_EDUCATION_FIELDS) {
+			for (let i = 0; i < PORTFOLIO_EDUCATION_FIELDS.length; i++) {
+				const field = PORTFOLIO_EDUCATION_FIELDS[i]
 				if (!requestBody.hasOwnProperty(field)) return false
 				if (
 					typeof requestBody[field] !== "string" ||
@@ -42,7 +43,8 @@ class EducationQuery {
 		//* Handle for Update Education
 		if (router === "UPDATE") {
 			//? Handle optional fields
-			for (const key in reqBodyKeys) {
+			for (let i = 0; i < reqBodyKeys.length; i++) {
+				const key = reqBodyKeys[i]
 				if (
 					typeof requestBody[key] !== "string" ||
 					requestBody[key]?.length === 0
@@ -63,7 +65,8 @@ class EducationQuery {
 		const reqBodyKeys = Object.keys(requestBody)
 
 		//? Set the field if key exists
-		for (const key in reqBodyKeys) {
+		for (let i=0; i<reqBodyKeys.length; i++) {
+			const key = reqBodyKeys[i]
 			if (PORTFOLIO_EDUCATION_FIELDS.includes(key))
 				educationEntity[key] = requestBody[key]
 		}

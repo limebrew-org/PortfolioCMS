@@ -48,7 +48,7 @@ export const PORTFOLIO_PROFILE_REGISTER_FIELDS: Array<string> = [
 	"username",
 	"password"
 ]
-export const PORTFOLIO_SOCIALS: Array<string> = [
+export const PORTFOLIO_SOCIALS_FIELDS: Array<string> = [
 	"twitter",
 	"linkedin",
 	"github"

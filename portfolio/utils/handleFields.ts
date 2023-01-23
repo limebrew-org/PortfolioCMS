@@ -20,12 +20,13 @@ class RequestBodyHandler {
 
 	//? Handle Object Keys with string types
 	static isValidKeys(field: Object, keys: Array<string>) {
-		for (let key in keys) {
+		for (let i = 0; i < keys.length; i++) {
+			const fieldName = keys[i]
 			if (
-				!field.hasOwnProperty(key) ||
-				typeof field[key] !== "string" ||
-				field[key] === undefined ||
-				field[key]?.length === 0
+				!field.hasOwnProperty(fieldName) ||
+				typeof field[fieldName] !== "string" ||
+				field[fieldName] === undefined ||
+				field[fieldName]?.length === 0
 			)
 				return false
 		}

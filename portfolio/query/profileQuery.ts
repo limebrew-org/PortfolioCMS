@@ -2,15 +2,15 @@ import { ProfileModel } from "../schema/profile"
 import { ResponseBody } from "../utils/handleResponse"
 import { Request, Response } from "express"
 import { ObjectId } from "mongodb"
-import { ProfileType, ProfileUpdateType, SocialType } from "../utils/types"
+import { ProfileSchemaType, ProfileUpdateType, SocialType } from "../utils/types"
 import { RequestBodyHandler } from "../utils/handleFields"
-import { PROFILE_FIELDS, SOCIALS } from "../utils/constants"
+import { PORTFOLIO_PROFILE_FIELDS, PORTFOLIO_SOCIALS_FIELDS } from "../utils/constants"
 
 class ProfileQuery {
 	//? Set and Update
 	static setAndUpdate(
 		requestBody: ProfileUpdateType,
-		profileEntity: ProfileType
+		profileEntity: ProfileSchemaType
 	) {
 		if ("name" in requestBody) {
 			profileEntity.name = requestBody.name
@@ -77,7 +77,7 @@ class ProfileQuery {
 			if (
 				!RequestBodyHandler.isValidFieldCustom(
 					requestBody.socials,
-					SOCIALS
+					PORTFOLIO_SOCIALS_FIELDS
 				) ||
 				!ProfileQuery.isValidSocials(requestBody.socials)
 			)
@@ -125,7 +125,7 @@ class ProfileQuery {
 		if (
 			!RequestBodyHandler.isValidFieldCustom(
 				inputUserDetails,
-				PROFILE_FIELDS
+				PORTFOLIO_PROFILE_FIELDS
 			) ||
 			!ProfileQuery.isValidSchema(inputUserDetails)
 		)
@@ -150,7 +150,7 @@ class ProfileQuery {
 		//? Save the profile entity
 		profileEntity
 			.save()
-			.then((profile: ProfileType) => {
+			.then((profile: ProfileSchemaType) => {
 				return ResponseBody.success_update(response, {
 					status: 201,
 					message: "Profile updated successfully!",
@@ -160,7 +160,7 @@ class ProfileQuery {
 			.catch((error) => {
 				return ResponseBody.error_internal(response, {
 					status: 500,
-					message: "Error while updating profile",
+					message: `Error while updating profile, error: ${error}`,
 					data: {}
 				})
 			})

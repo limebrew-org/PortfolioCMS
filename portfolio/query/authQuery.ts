@@ -293,7 +293,7 @@ class AuthQuery {
 	//? Regenerate accesstoken
 	static async regenerateToken(request: Request, response: Response) {
 		//* Handle Bad Request
-		if (RequestBodyHandler.isValidKeys(request.body, ["token"]))
+		if (!RequestBodyHandler.isValidKeys(request.body, ["token"]))
 			return ResponseBody.handleBadRequest(response)
 
 		//? Grab the token
