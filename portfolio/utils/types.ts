@@ -53,7 +53,7 @@ export type ExperienceSchemaType = {
 interface ExperienceFieldType {
 	company: String
 	role: String
-	technologies: Array<TechnologyType>
+	technologies: Array<TechnologySchemaType>
 	summary: String
 	tenure: String
 }
@@ -67,7 +67,7 @@ export type ProjectSchemaType = {
 	profile_id: String
 	name: String
 	description: String
-	technologies: Array<TechnologyType>
+	technologies: Array<TechnologySchemaType>
 	link: String
 }
 
@@ -101,7 +101,7 @@ export type TokenSchemaType = {
 }
 
 //? Global Technology Field Type
-export type TechnologyType = {
+export type TechnologySchemaType = {
 	name: String
 }
 

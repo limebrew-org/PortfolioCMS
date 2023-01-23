@@ -2,22 +2,34 @@ import { ProjectQuery } from "../query/projectQuery"
 import { Request, Response } from "express"
 
 //? Get All projects by user_id (public endpoint)
-const getAllProjects = async (request: Request, response: Response) => {}
+const getAllProjects = async (request: Request, response: Response) => {
+	await ProjectQuery.get(request, response)
+}
 
 //? Get project by id and user_id  (public endpoint)
-const getProjectById = async (request: Request, response: Response) => {}
+const getProjectById = async (request: Request, response: Response) => {
+	await ProjectQuery.getById(request, response)
+}
 
 //? Add project (authentication required)
-const addProject = async (request: Request, response: Response) => {}
+const addProject = async (request: Request, response: Response) => {
+	await ProjectQuery.add(request, response)
+}
 
 //? Update project by project_id (authentication required)
-const updateProjectById = async (request: Request, response: Response) => {}
+const updateProjectById = async (request: Request, response: Response) => {
+	/* await ProjectQuery.updateById(request, response) */
+}
 
 //? Delete project by id (authentication required)
-const deleteProjectById = async (request: Request, response: Response) => {}
+const deleteProjectById = async (request: Request, response: Response) => {
+	/* await ProjectQuery.deleteById(request, response) */
+}
 
-//? Delete project by id (authentication required)
-const deleteAllProjects = async (request: Request, response: Response) => {}
+//? Delete all projects (authentication required)
+const deleteAllProjects = async (request: Request, response: Response) => {
+	/* await ProjectQuery.deleteAll(request, response) */
+}
 
 export {
 	getAllProjects,

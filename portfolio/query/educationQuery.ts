@@ -65,7 +65,7 @@ class EducationQuery {
 		const reqBodyKeys = Object.keys(requestBody)
 
 		//? Set the field if key exists
-		for (let i=0; i<reqBodyKeys.length; i++) {
+		for (let i = 0; i < reqBodyKeys.length; i++) {
 			const key = reqBodyKeys[i]
 			if (PORTFOLIO_EDUCATION_FIELDS.includes(key))
 				educationEntity[key] = requestBody[key]
@@ -75,9 +75,8 @@ class EducationQuery {
 	//TODO: Get all education details for a profile
 	static async getAll(request: Request, response: Response) {
 		//? Handle bad request
-		if (!RequestBodyHandler.isValidKeys(request.query, ["profile_id"])) {
+		if (!RequestBodyHandler.isValidKeys(request.query, ["profile_id"]))
 			return ResponseBody.handleBadRequest(response)
-		}
 
 		//* Get the profile_id from query
 		const profileId: string = request.query["profile_id"].toString()
