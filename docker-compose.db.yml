@@ -1,0 +1,17 @@
+version: "3.1"
+services:
+    db:
+        #? Set container name
+        container_name: portfolio_db
+        image: mongo:latest
+
+        #? Restart if down
+        restart: always
+
+        #? Environment file
+        environment:
+            - MONGO_INITDB_DATABASE=portfoliodb
+
+        #? Ports
+        ports:
+            - "27017:27017"

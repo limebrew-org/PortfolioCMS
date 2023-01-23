@@ -1,0 +1,49 @@
+version: "3.1"
+services:
+    auth:
+        #? Interactive shell
+        stdin_open: true
+        tty: true
+
+        #? Set container name
+        container_name: portfolio_auth
+
+        #? Build the auth service
+        build:
+            context: .
+            dockerfile: Dockerfile.auth.prod
+
+        #? Restart if down
+        restart: always
+
+        #? Ports
+        ports:
+            - "8000:8000"
+
+        #? Environment file
+        env_file:
+            - ".env.prod"
+
+    api:
+        #? Interactive shell
+        stdin_open: true
+        tty: true
+
+        #? Set container name
+        container_name: portfolio_api
+
+        #? Build the api service
+        build:
+            context: .
+            dockerfile: Dockerfile.api.prod
+
+        #? Restart if down
+        restart: always
+
+        #? Ports
+        ports:
+            - "9000:9000"
+
+        #? Environment file
+        env_file:
+            - ".env.prod"
