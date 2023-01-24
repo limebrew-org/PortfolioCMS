@@ -104,3 +104,6 @@ dist
 
 # credentials
 */creds.json
+
+
+**/__pycache__/

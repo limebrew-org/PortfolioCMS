@@ -99,7 +99,7 @@ class ProjectQuery {
 
 
 	//TODO: Get all project details for a profile
-	static async get(request: Request, response: Response) {
+	static async getAll(request: Request, response: Response) {
 		//? Handle bad request
 		if(!RequestBodyHandler.isValidKeys(request.query, ["profile_id"])) 
 			return ResponseBody.handleBadRequest(response)

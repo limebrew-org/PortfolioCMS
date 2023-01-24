@@ -10,6 +10,7 @@
 		"start:api[dev]": "cross-env NODE_ENV=dev nodemon api.ts",
 		"start:auth[prod]": "cross-env NODE_ENV=prod node dist/auth.js",
 		"start:api[prod]": "cross-env NODE_ENV=prod node dist/api.js",
+		"test:inspect": "python tests/main.py",
 		"build": "tsc -p .",
 		"prettier": "prettier --write .",
 		"clean": "rm -rf node_modules/"
