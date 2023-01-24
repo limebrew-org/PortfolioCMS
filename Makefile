@@ -20,6 +20,8 @@ run_auth_dev:
 run_api_dev:
 	npm run start:api[dev]
 
+run_test:
+	npm run test:inspect
 
 #TODO: Testing Bash scripts
 run_get_scripts:

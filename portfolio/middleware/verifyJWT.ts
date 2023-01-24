@@ -8,6 +8,7 @@ import {
 } from "../utils/types"
 import { getAuthorizationType } from "../utils/getAuthorization"
 import { AUTHENTICATION_METHOD } from "../utils/constants"
+import { maskedProfileEntity } from "../utils/maskProfile"
 
 //? Authorize token from request header
 const middleware = async (
@@ -54,17 +55,18 @@ const middleware = async (
 				})
 
 			//? If profile found, set the profiledetails in the request and next (To hide the password)
-			const modifiedProfile: ProfileMiddlewareType = {
+			/* const modifiedProfile: ProfileMiddlewareType = {
 				_id: profileEntity._id.toString(),
 				username: profileEntity.username,
 				name: profileEntity.name,
 				email: profileEntity.email,
 				bio: profileEntity.bio,
 				socials: profileEntity.socials
-			}
+			} */
+			const modifiedProfileEntity = maskedProfileEntity(profileEntity)
 
 			//? Set the profile info in request
-			request["profile"] = modifiedProfile
+			request["profile"] = modifiedProfileEntity
 			console.log("Middleware verification successful!")
 			next()
 		} catch (error) {

@@ -1,7 +1,7 @@
 import { ProfileModel } from "../schema/profile"
 import { ResponseBody } from "../utils/handleResponse"
 import { Request, Response } from "express"
-import { PayloadSchemaType, ProfileSchemaType } from "../utils/types"
+import { PayloadSchemaType, ProfileSchemaType, ProfileMiddlewareType } from "../utils/types"
 import { hashPassword, comparePassword } from "../utils/handlePassword"
 import {
 	generateAccessToken,
@@ -12,6 +12,8 @@ import { TokenModel } from "../schema/token"
 import { RequestBodyHandler } from "../utils/handleFields"
 import { PORTFOLIO_PROFILE_REGISTER_FIELDS } from "../utils/constants"
 import { TOKEN_TYPE } from "../utils/constants"
+import { maskedProfileEntity } from "../utils/maskProfile"
+
 
 class AuthQuery {
 	//TODO: Register profile
@@ -87,10 +89,11 @@ class AuthQuery {
 			.save()
 			.then((profile) => {
 				if (profile) {
+					const modifiedProfileEntity = maskedProfileEntity(profile)
 					return ResponseBody.success_add(response, {
 						status: 200,
 						message: `Profile added successfully`,
-						data: profile
+						data: modifiedProfileEntity
 					})
 				}
 			})
