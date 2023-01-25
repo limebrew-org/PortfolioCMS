@@ -16,7 +16,6 @@ class ProjectQuery {
 	//? Validate technology schema
 	static isValidTechnologySchema(technologies: Array<TechnologySchemaType>) {
 		//? If technology type is not an object
-		console.log("Inside technology schema function")
 		if(typeof technologies !== "object") return false
 
 		//? If technology type is an object, then list the keys
@@ -28,14 +27,11 @@ class ProjectQuery {
 		for(let i=0;i< technologyKeys.length;i++) {
 			const fieldName = technologyKeys[i]
 			const fieldValue = technologies[fieldName]
-			console.log("fieldName: " ,fieldName)
-			console.log("fieldValue: " ,fieldValue)
-			console.log("fieldValue type: ",typeof fieldValue)
+			
 			if(typeof fieldValue !== "object") return false
 
 			if(!fieldValue.hasOwnProperty('name')) return false
 		}
-		console.log("Technology schema looks good")
 		return true
 	}
 
@@ -46,12 +42,9 @@ class ProjectQuery {
 	) {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(requestBody)
-		console.log("Request Body keys: " ,reqBodyKeys)
-		console.log("Key length: " ,reqBodyKeys.length)
 
 		//? if no properties exist
 		if(reqBodyKeys.length === 0) return false
-		console.log("Length is not wquals to zero")
 
 		//* Handle for Add Project
 		if(router == "ADD") {
@@ -60,7 +53,6 @@ class ProjectQuery {
 				const field = PORTFOLIO_PROJECT_FIELDS[i]
 				if(!requestBody.hasOwnProperty(field)) return false
 				
-				console.log(`[${i}] field: ${field}`)
 				if(field === 'technologies') 
 				{
 					if(!ProjectQuery.isValidTechnologySchema(requestBody[field]))
@@ -73,7 +65,6 @@ class ProjectQuery {
 					requestBody[field].length === 0
 				)
 				{
-					console.log("Inside elseif block, fieldname: ", field)
 					return false
 				}
 					
@@ -99,7 +90,7 @@ class ProjectQuery {
 
 
 	//TODO: Get all project details for a profile
-	static async get(request: Request, response: Response) {
+	static async getAll(request: Request, response: Response) {
 		//? Handle bad request
 		if(!RequestBodyHandler.isValidKeys(request.query, ["profile_id"])) 
 			return ResponseBody.handleBadRequest(response)
@@ -156,8 +147,11 @@ class ProjectQuery {
 		if(!ProjectQuery.isValidSchema(inputUserDetails, "ADD"))
 			return ResponseBody.handleBadRequest(response)
 			
-		/* //? Set the  profile id from middleware
+		//? Set the  profile id from middleware
 		inputUserDetails.profile_id = profile._id.toString()
+
+		//? Generate id for each technology schema
+		RequestBodyHandler.generateId(inputUserDetails.technologies)
 
 		//? Create a project entity into the database
 		const newProjectEntity = new ProjectModel(inputUserDetails)
@@ -179,8 +173,8 @@ class ProjectQuery {
 					data: {}
 				})
 			})
-		return {} */
-		return ResponseBody.demoResponse(response)
+		return {}
+		
 
 
 	}
@@ -205,9 +199,8 @@ class ProjectQuery {
 			_id: projectId,
 			profile_id: profile._id.toString()
 		})
-
-
 	}
+
 }
 
 export { ProjectQuery }

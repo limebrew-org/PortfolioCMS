@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 
 //? Get All projects by user_id (public endpoint)
 const getAllProjects = async (request: Request, response: Response) => {
-	await ProjectQuery.get(request, response)
+	await ProjectQuery.getAll(request, response)
 }
 
 //? Get project by id and user_id  (public endpoint)

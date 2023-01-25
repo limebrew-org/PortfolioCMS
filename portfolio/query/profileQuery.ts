@@ -5,6 +5,7 @@ import { ObjectId } from "mongodb"
 import { ProfileSchemaType, ProfileUpdateType, SocialType } from "../utils/types"
 import { RequestBodyHandler } from "../utils/handleFields"
 import { PORTFOLIO_PROFILE_FIELDS, PORTFOLIO_SOCIALS_FIELDS } from "../utils/constants"
+import { maskedProfileEntity, maskedProfileEntityList } from "../utils/maskProfile"
 
 class ProfileQuery {
 	//? Set and Update
@@ -94,8 +95,9 @@ class ProfileQuery {
 			const profileEntity = await ProfileModel.findOne({
 				_id: profile_id
 			})
+			const modifiedProfileEntity = maskedProfileEntity(profileEntity)
 			return ResponseBody.handleNullEntityResponse(
-				profileEntity,
+				modifiedProfileEntity,
 				response,
 				"profile"
 			)
@@ -106,8 +108,10 @@ class ProfileQuery {
 			const profileEntityList = await ProfileModel.find({
 				username: { $regex: request.query.profile_name, $options: "i" }
 			})
+			const modifiedProfileEntityList = maskedProfileEntityList(profileEntityList)
+
 			return ResponseBody.handleEntityListResponse(
-				profileEntityList,
+				modifiedProfileEntityList,
 				response,
 				"profile"
 			)
