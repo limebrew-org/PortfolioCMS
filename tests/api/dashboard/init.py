@@ -5,3 +5,6 @@ class DashboardEntity():
 
     def getOverallDashboard(self):
         pass
+
+    def runAll(self):
+        pass

@@ -2,16 +2,16 @@ from utils.entity import RegisterRequestBody,LoginRequestBody
 from utils.constants import PortfolioAPI
 from utils.handleResponse import PortfolioResponse
 
-#? Parent Class: (To be inherited by child classes -> API Entities)
+#? Authentication tests
 class AuthEntity:
     def __init__(self):
+        #? Dependencies (to be used by child classes)
         self.profile_id = None
-        self.access_token = ""
-        self.refresh_token = ""
-        self.base_url = PortfolioAPI.PORTFOLIO_AUTH_URL
-        self.endpoint = ""
-        self.headers = {'Content-type': 'application/json'}
-        self.data = {}
+        self.profile_name = None
+        self.access_token = None
+        self.refresh_token = None
+
+        #? Response
         self.registerResponse = {}
         self.loginResponse = {}
         self.regenerateTokenresponse = {}
@@ -19,33 +19,32 @@ class AuthEntity:
 
     def register(self):
         return PortfolioAPI.post(
-            url=PortfolioAPI.buildURL(url=self.base_url,endpoint=PortfolioAPI.Auth.REGISTER),
+            url=PortfolioAPI.buildURL(url=PortfolioAPI.PORTFOLIO_AUTH_URL,endpoint=PortfolioAPI.Auth.REGISTER),
             data=RegisterRequestBody,
-            headers=self.headers
+            headers={'Content-type': 'application/json'}
         )
 
 
     def login(self):
         return PortfolioAPI.post(
-            url=PortfolioAPI.buildURL(url=self.base_url,endpoint=PortfolioAPI.Auth.LOGIN),
+            url=PortfolioAPI.buildURL(url=PortfolioAPI.PORTFOLIO_AUTH_URL,endpoint=PortfolioAPI.Auth.LOGIN),
             data=LoginRequestBody,
-            headers=self.headers
+            headers={'Content-type': 'application/json'}
         )
   
     
     def regenerateToken(self):
         return PortfolioAPI.post(
-            url=PortfolioAPI.buildURL(url=self.base_url,endpoint=PortfolioAPI.Auth.REGENERATE_TOKEN),
+            url=PortfolioAPI.buildURL(url=PortfolioAPI.PORTFOLIO_AUTH_URL,endpoint=PortfolioAPI.Auth.REGENERATE_TOKEN),
             data={'token': self.refresh_token},
-            headers=self.headers
+            headers={'Content-type': 'application/json'}
         )
 
     def logout(self):
-        self.endpoint = PortfolioAPI.Auth.LOGOUT
         return PortfolioAPI.post(
-            url=PortfolioAPI.buildURL(url=self.base_url,endpoint=PortfolioAPI.Auth.LOGOUT),
+            url=PortfolioAPI.buildURL(url=PortfolioAPI.PORTFOLIO_AUTH_URL,endpoint=PortfolioAPI.Auth.LOGOUT),
             data={'token': self.refresh_token},
-            headers=self.headers
+            headers={'Content-type': 'application/json'}
         )
 
     def registerAndLogin(self):
@@ -63,17 +62,15 @@ class AuthEntity:
             self.access_token = self.loginResponse['data']['access_token']
             self.refresh_token = self.loginResponse['data']['refresh_token']
 
-
-
     def runAll(self):
         #? Register and Login
         self.registerAndLogin()
 
         #? Generate Token
-        # self.regenerateToken()
+        self.regenerateToken()
 
         #? Logout
-        # self.logout()
+        self.logout()
 
     def runBasic(self):
         #? Register and Login

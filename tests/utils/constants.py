@@ -7,16 +7,16 @@ class PortfolioAPI:
         return url+endpoint
 
     @staticmethod
-    def get(url):
+    def get(url:str):
         return req.get(url).json()
 
     @staticmethod
-    def post(url:str,data:dict,headers=None):
+    def post(url:str,data:dict,headers:dict):
         return req.post(url=url,data=json.dumps(data),headers=headers).json()
     
     @staticmethod
-    def put(url, body=None, headers=None):
-        return req.put(url, body, headers).json()
+    def put(url:str,data:dict,headers:dict):
+        return req.put(url,data,headers).json()
     
     @staticmethod
     def delete(url,headers=None):

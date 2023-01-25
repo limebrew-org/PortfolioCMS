@@ -1,10 +1,9 @@
-from auth.init import AuthEntity
 
-class EducationEntity(AuthEntity):
-    def __init__(self):
-        super().__init__()
-        super().runBasic()
-        print("Education Entity initialized")
+class EducationEntity():
+    def __init__(self,access_token:str,refresh_token:str):
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+        self.education_id = None
     
     def getAll(self):
         pass
