@@ -4,7 +4,7 @@ This is a portfolio management service
 
 ## Routes:
 
-> 1. Auth:
+### 1. Auth:
 
 - `POST /auth/register`: Register a new profile
 
@@ -15,7 +15,7 @@ This is a portfolio management service
 - `POST /auth/logout`: Logout from the account
 
 
-> 2. Profile:
+### 2. Profile:
 
 -  `GET /api/profile?profile_id=`: Get Profile by `profile_id` (from `request query`)
 
@@ -26,7 +26,7 @@ This is a portfolio management service
 -  `DELETE /api/profile/delete`: Delete Profile by `profile_id` (`JWT` only)
 
 
-> 3. Education:
+### 3. Education:
 
 -  `GET /api/education/all?profile_id=`: Get All Education details by `profile_id` (from `request query`)
 
@@ -41,7 +41,7 @@ This is a portfolio management service
 -  `DELETE /api/education/all`: Delete all education details for a profile, requires middleware (from `JWT/API Key`)
 
 
-> 4. Projects:
+### 4. Projects:
 
 -  `GET /api/project/all?profile_id=`: Get All Projects by `profile_id` (from `request query`)
 
@@ -56,7 +56,7 @@ This is a portfolio management service
 -  `DELETE /api/project/all`: Delete All Projects for a profile, requires middleware (from `JWT/API key`)
 
 
-> 5. Skills:
+### 5. Skills:
 
 -  `GET /api/skill?profile_id=`: Get all Skills by `profile_id` (from client)
 
@@ -73,7 +73,7 @@ This is a portfolio management service
 -  `DELETE /api/skill/all`: Delete all skills by `profile_id` (from JWT/API key)
 
 
-> 6. Experience:
+### 6. Experience:
 
 -  `GET /api/experience?profile_id=`: Get experience by `profile_id` (from client)
 
@@ -100,6 +100,6 @@ This is a portfolio management service
 -  `DELETE /api/experience/job?job_id`: Delete Job by `job_id` (from query) and `profile_id` (from JWT/API Key)
 
 
-> 7. Dashboard:
+### 7. Dashboard:
 
 - `GET /dashboard?profile_id=`: Get dashboard by `profile_id` (from `request query`)
