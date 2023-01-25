@@ -1,4 +1,4 @@
-from utils.client import PortfolioClient
+from client.portfolio import PortfolioClient
 
 
 def main():
