@@ -2,10 +2,11 @@ import { ProjectModel } from "../schema/projects"
 import { ResponseBody } from "../utils/handleResponse"
 import { RequestBodyHandler } from "../utils/handleFields"
 import { ProjectField } from "../models/projects"
-import { 
+import {
 	ProfileMiddlewareType,
-	ProjectSchemaType, 
-	TechnologySchemaType} from "../utils/types"
+	ProjectSchemaType,
+	ProjectUpdateType
+} from "../utils/types"
 import { PORTFOLIO_PROJECT_FIELDS } from "../utils/constants"
 import { Request, Response } from "express"
 
@@ -14,60 +15,42 @@ class ProjectQuery {
 	static schemaName = "project"
 
 	//? Validate technology schema
-	static isValidTechnologySchema(technologies: Array<TechnologySchemaType>) {
-		//? If technology type is not an object
-		if(typeof technologies !== "object") return false
+	static isValidTechnologyList(technologies: Array<String>) {
+		//? Check if technologies list is empty
+		if (technologies.length === 0) return false
 
-		//? If technology type is an object, then list the keys
-		const technologyKeys = Object.keys(technologies)
-
-		//? If the technolgies schema is empty, return false
-		if(technologyKeys.length === 0) return false
-
-		for(let i=0;i< technologyKeys.length;i++) {
-			const fieldName = technologyKeys[i]
-			const fieldValue = technologies[fieldName]
-			
-			if(typeof fieldValue !== "object") return false
-
-			if(!fieldValue.hasOwnProperty('name')) return false
+		//? If not empty, loop over all the elements and check if value is a string
+		for (let i = 0; i < technologies.length; i++) {
+			const technology = technologies[i]
+			if (typeof technology !== "string") return false
 		}
+
 		return true
 	}
 
 	//? Validate Schema
-	static isValidSchema(
-		requestBody: ProjectSchemaType,
-		router: String
-	) {
+	static isValidSchema(requestBody: ProjectSchemaType, router: String) {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(requestBody)
 
 		//? if no properties exist
-		if(reqBodyKeys.length === 0) return false
+		if (reqBodyKeys.length === 0) return false
 
 		//* Handle for Add Project
-		if(router == "ADD") {
+		if (router == "ADD") {
 			//? Handle mandatory fields
-			for(let i = 0;i < PORTFOLIO_PROJECT_FIELDS.length;i++) {
+			for (let i = 0; i < PORTFOLIO_PROJECT_FIELDS.length; i++) {
 				const field = PORTFOLIO_PROJECT_FIELDS[i]
-				if(!requestBody.hasOwnProperty(field)) return false
-				
-				if(field === 'technologies') 
-				{
-					if(!ProjectQuery.isValidTechnologySchema(requestBody[field]))
+				if (!requestBody.hasOwnProperty(field)) return false
+
+				if (field === "technologies") {
+					if (!ProjectQuery.isValidTechnologyList(requestBody[field]))
 						return false
-				}
-					
-					
-				else if(
-					typeof requestBody[field]!== "string" ||
+				} else if (
+					typeof requestBody[field] !== "string" ||
 					requestBody[field].length === 0
 				)
-				{
 					return false
-				}
-					
 			}
 			return true
 		}
@@ -76,10 +59,19 @@ class ProjectQuery {
 		if (router === "UPDATE") {
 			//? Handle optional fields
 			for (let i = 0; i < reqBodyKeys.length; i++) {
-				const key = reqBodyKeys[i]
-				if (
-					typeof requestBody[key] !== "string" ||
-					requestBody[key]?.length === 0
+				const projectKey = reqBodyKeys[i]
+				if (!PORTFOLIO_PROJECT_FIELDS.includes(projectKey)) return false
+
+				if (projectKey === "technologies") {
+					if (
+						!ProjectQuery.isValidTechnologyList(
+							requestBody[projectKey]
+						)
+					)
+						return false
+				} else if (
+					typeof requestBody[projectKey] !== "string" ||
+					requestBody[projectKey]?.length === 0
 				)
 					return false
 			}
@@ -88,13 +80,25 @@ class ProjectQuery {
 		return false
 	}
 
+	//? Set and Update fields
+	static setAndUpdate(requestBody: ProjectUpdateType, projectEntity: Object) {
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(requestBody)
+
+		//? Set the field if exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const projectKey = reqBodyKeys[i]
+			if (PORTFOLIO_PROJECT_FIELDS.includes(projectKey))
+				projectEntity[projectKey] = requestBody[projectKey]
+		}
+	}
 
 	//TODO: Get all project details for a profile
 	static async getAll(request: Request, response: Response) {
 		//? Handle bad request
-		if(!RequestBodyHandler.isValidKeys(request.query, ["profile_id"])) 
+		if (!RequestBodyHandler.isValidKeys(request.query, ["profile_id"]))
 			return ResponseBody.handleBadRequest(response)
-		
+
 		//* Get the profile_id from query
 		const profileId: string = request.query["profile_id"].toString()
 
@@ -136,22 +140,18 @@ class ProjectQuery {
 
 	//TODO: Add project
 	static async add(request: Request, response: Response) {
-
 		//? Grab the profile from the middleware
 		const profile: ProfileMiddlewareType = request["profile"]
 
 		//? Grab the request body
 		const inputUserDetails: ProjectSchemaType = request.body
 
-		//? Handle bad request 
-		if(!ProjectQuery.isValidSchema(inputUserDetails, "ADD"))
+		//? Handle bad request
+		if (!ProjectQuery.isValidSchema(inputUserDetails, "ADD"))
 			return ResponseBody.handleBadRequest(response)
-			
+
 		//? Set the  profile id from middleware
 		inputUserDetails.profile_id = profile._id.toString()
-
-		//? Generate id for each technology schema
-		RequestBodyHandler.generateId(inputUserDetails.technologies)
 
 		//? Create a project entity into the database
 		const newProjectEntity = new ProjectModel(inputUserDetails)
@@ -174,12 +174,9 @@ class ProjectQuery {
 				})
 			})
 		return {}
-		
-
-
 	}
 
-	//? Update Project by project id
+	//TODO Update Project by project id
 	static async update(request: Request, response: Response) {
 		//? Query by project id
 		const projectId = request.params["id"].toString()
@@ -199,8 +196,38 @@ class ProjectQuery {
 			_id: projectId,
 			profile_id: profile._id.toString()
 		})
-	}
 
+		//? Check if project details exists for this id
+		if (projectEntity === null) {
+			return ResponseBody.error_not_found(response, {
+				status: 404,
+				message: `Error! Project details not found for id: ${projectId}`,
+				data: {}
+			})
+		}
+
+		//? If projectEntity found, update the project by request body
+		ProjectQuery.setAndUpdate(inputUserDetails, projectEntity)
+
+		//? Save the updated project
+		projectEntity
+			.save()
+			.then(() => {
+				return ResponseBody.success_update(response, {
+					status: 201,
+					message: `Project details updated successfully for education id: ${projectId}`,
+					data: {}
+				})
+			})
+			.catch((error) => {
+				return ResponseBody.error_internal(response, {
+					status: 500,
+					message: `Error while updating project details, error: ${error}`,
+					data: {}
+				})
+			})
+		return {}
+	}
 }
 
 export { ProjectQuery }

@@ -1,6 +1,6 @@
 # Portfolio
 
-This is a portfolio management service
+A headless CMS for Portfolio built with Express and MongoDB
 
 ## Routes:
 

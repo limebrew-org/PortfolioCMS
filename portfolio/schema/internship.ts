@@ -7,7 +7,7 @@ const { Schema } = mongoose
 const internshipSchema = new Schema<InternshipType>({
 	company: { type: String },
 	role: { type: String },
-	technologies: [{ type: Object }],
+	technologies: [{ type: String}],
 	summary: { type: String },
 	tenure: { type: String }
 })
