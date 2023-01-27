@@ -1,6 +1,6 @@
 # Portfolio
 
-A headless CMS for Portfolio built with Express and MongoDB
+A headless CMS for Portfolio built with Express and MongoDB. 
 
 ## Routes:
 
