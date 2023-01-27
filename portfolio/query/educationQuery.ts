@@ -15,7 +15,7 @@ class EducationQuery {
 	static schemaName = "education"
 
 	//? Validate Schema
-	static async isValidSchema(
+	static isValidSchema(
 		requestBody: EducationSchemaType,
 		router: String
 	) {
@@ -44,10 +44,14 @@ class EducationQuery {
 		if (router === "UPDATE") {
 			//? Handle optional fields
 			for (let i = 0; i < reqBodyKeys.length; i++) {
-				const key = reqBodyKeys[i]
-				if (
-					typeof requestBody[key] !== "string" ||
-					requestBody[key]?.length === 0
+				const educationKey = reqBodyKeys[i]
+				console.log("Education key: ", educationKey)
+				console.log("Key validation status: ", PORTFOLIO_EDUCATION_FIELDS.includes(educationKey))
+
+				if(!PORTFOLIO_EDUCATION_FIELDS.includes(educationKey)) return false
+				else if (
+					typeof requestBody[educationKey] !== "string" ||
+					requestBody[educationKey]?.length === 0
 				)
 					return false
 			}

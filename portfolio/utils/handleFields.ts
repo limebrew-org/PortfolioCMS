@@ -5,7 +5,6 @@ import {
 	PORTFOLIO_EXPERIENCE_FIELDS,
 	PORTFOLIO_PROJECT_FIELDS
 } from "./constants"
-import { TechnologySchemaType } from "./types"
 import mongoose from "mongoose"
 
 class RequestBodyHandler {
@@ -45,14 +44,6 @@ class RequestBodyHandler {
 	static isValidDataType(schema: any) {
 		if (typeof schema === "object") return true
 		return false
-	}
-
-	//? Generate Id 
-	static generateId(technologyList: Array<TechnologySchemaType>) {
-		for(let i=0;i<technologyList.length;i++) {
-			const technologyEntity = technologyList[i]
-			technologyEntity['_id'] = new mongoose.Types.ObjectId().toString()
-		}
 	}
 
 	static modifyRequestBody(

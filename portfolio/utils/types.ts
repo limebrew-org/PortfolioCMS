@@ -53,7 +53,7 @@ export type ExperienceSchemaType = {
 interface ExperienceFieldType {
 	company: String
 	role: String
-	technologies: Array<TechnologySchemaType>
+	technologies: Array<String>
 	summary: String
 	tenure: String
 }
@@ -67,18 +67,26 @@ export type ProjectSchemaType = {
 	profile_id: String
 	name: String
 	description: String
-	technologies: Array<TechnologySchemaType>
+	technologies: Array<String>
+	link: String
+}
+
+//? Projects Update type
+export type ProjectUpdateType = {
+	name: String
+	description: String
+	technologies: Array<String>
 	link: String
 }
 
 //? Skills Request Body Type
 export type SkillType = {
 	profile_id: String
-	frontend: Array<SkillSchemaType>
-	backend: Array<SkillSchemaType>
-	database: Array<SkillSchemaType>
-	cloud: Array<SkillSchemaType>
-	fundamentals: Array<SkillSchemaType>
+	frontend: Array<String>
+	backend: Array<String>
+	database: Array<String>
+	cloud: Array<String>
+	fundamentals: Array<String>
 }
 
 //? ResponseBody Type
@@ -100,21 +108,12 @@ export type TokenSchemaType = {
 	token: String
 }
 
-//? Global Technology Field Type
-export type TechnologySchemaType = {
-	name: String
-}
 
 //? Global Social Field Type
 export type SocialType = {
 	twitter: String
 	linkedin: String
 	github: String
-}
-
-//? Global Skill Schema Type
-export type SkillSchemaType = {
-	name: String
 }
 
 //? Payload type

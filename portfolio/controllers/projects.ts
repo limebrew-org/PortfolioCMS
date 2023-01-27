@@ -18,7 +18,7 @@ const addProject = async (request: Request, response: Response) => {
 
 //? Update project by project_id (authentication required)
 const updateProjectById = async (request: Request, response: Response) => {
-	/* await ProjectQuery.updateById(request, response) */
+	await ProjectQuery.update(request, response)
 }
 
 //? Delete project by id (authentication required)
