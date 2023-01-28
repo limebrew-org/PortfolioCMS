@@ -23,12 +23,12 @@ const updateProjectById = async (request: Request, response: Response) => {
 
 //? Delete project by id (authentication required)
 const deleteProjectById = async (request: Request, response: Response) => {
-	/* await ProjectQuery.deleteById(request, response) */
+	await ProjectQuery.deleteById(request, response)
 }
 
 //? Delete all projects (authentication required)
 const deleteAllProjects = async (request: Request, response: Response) => {
-	/* await ProjectQuery.deleteAll(request, response) */
+	await ProjectQuery.deleteAll(request, response)
 }
 
 export {
