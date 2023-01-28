@@ -1,17 +1,28 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { ExperienceSchemaType } from "../utils/types"
-import { internshipSchema } from "./internship"
-import { jobsSchema } from "./job"
+import { InternshipType } from "../utils/types"
+import { JobType } from "../utils/types"
 
 const { Schema } = mongoose
 
-const experienceSchema = new Schema<ExperienceSchemaType>({
-	profile_id: { type: String },
-	internships: [internshipSchema],
-	jobs: [jobsSchema]
+const internshipSchema = new Schema<InternshipType>({
+	company: { type: String },
+	role: { type: String },
+	technologies: [{ type: String}],
+	summary: { type: String },
+	tenure: { type: String }
 })
 
-const ExperienceModel = portfolioDb.model("experience", experienceSchema)
+const jobSchema = new Schema<JobType>({
+	company: { type: String },
+	role: { type: String },
+	technologies: [{ type: String }],
+	summary: { type: String },
+	tenure: { type: String }
+})
 
-export { ExperienceModel }
+const InternshipModel = portfolioDb.model("internships", internshipSchema)
+const JobModel = portfolioDb.model("jobs", jobSchema)
+
+export { internshipSchema, InternshipModel, JobModel, jobSchema }
+

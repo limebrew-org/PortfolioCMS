@@ -101,9 +101,9 @@ class EducationQuery {
 	//TODO: Get education details by education id
 	static async getById(request: Request, response: Response) {
 		//? Handle bad request
-		if (!RequestBodyHandler.isValidKeys(request.params, ["id"])) {
+		if (!RequestBodyHandler.isValidKeys(request.params, ["id"])) 
 			return ResponseBody.handleBadRequest(response)
-		}
+		
 
 		//* Get the education_id from params
 		const educationId = request.params["id"].toString()
