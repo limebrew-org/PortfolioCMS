@@ -1,7 +1,6 @@
 import { ProjectModel } from "../schema/projects"
 import { ResponseBody } from "../utils/handleResponse"
 import { RequestBodyHandler } from "../utils/handleFields"
-import { ProjectField } from "../models/projects"
 import {
 	ProfileMiddlewareType,
 	ProjectSchemaType,
@@ -223,6 +222,75 @@ class ProjectQuery {
 				return ResponseBody.error_internal(response, {
 					status: 500,
 					message: `Error while updating project details, error: ${error}`,
+					data: {}
+				})
+			})
+		return {}
+	}
+
+	//TODO Delete Project by project id
+	static async deleteById(request: Request, response: Response) {
+		//? Grab the project id
+		const projectId = request.params["id"].toString()
+
+		//? Grab the profile from the middleware
+		const profile: ProfileMiddlewareType = request["profile"]
+
+		//? Delete the education entity
+		ProjectModel.deleteOne({
+			_id: projectId,
+			profile_id: profile._id
+		})
+			.then((info) => {
+				if (info.deletedCount === 0)
+					return ResponseBody.error_not_found(response, {
+						status: 404,
+						message: `Project details not found for id ${projectId}`,
+						data: {}
+					})
+				return ResponseBody.success_delete(response, {
+					status: 201,
+					message: `Project details deleted successfully for education id: ${projectId}`,
+					data: {}
+				})
+			})
+			.catch((error) => {
+				return ResponseBody.error_internal(response, {
+					status: 500,
+					message: "Error while deleting project details",
+					data: {}
+				})
+			})
+		return {}
+	}
+
+	//TODO Delete all projects
+	static async deleteAll(request: Request, response: Response) {
+		//? Grab the profile from the middleware
+		const profile: ProfileMiddlewareType = request["profile"]
+
+		//? Delete the education entity
+		ProjectModel.deleteMany({
+			profile_id: profile._id
+		})
+			.then((info) => {
+				if (info.deletedCount === 0)
+					return ResponseBody.error_not_found(response, {
+						status: 404,
+						message: `Project details not found for user: ${profile.username}`,
+						data: {}
+					})
+				return ResponseBody.success_delete(response, {
+					status: 201,
+					message: `All Project details deleted successfully for user: ${profile.username}`,
+					data: {}
+				})
+			})
+			.catch((error) => {
+				console.log("Error: ", error)
+				return ResponseBody.error_internal(response, {
+					status: 500,
+					message: `Error while deleting project details for user: ${profile.username}, error: ${error}`,
 					data: {}
 				})
 			})
