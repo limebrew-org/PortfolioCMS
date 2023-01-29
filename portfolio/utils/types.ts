@@ -42,15 +42,19 @@ export type EducationUpdateType = {
 	tenure: String
 }
 
-//? Experience Request Body Type
-export type ExperienceSchemaType = {
-	profile_id: String
-	internships: Array<InternshipType>
-	jobs: Array<JobType>
-}
 
 //? Global Experience Field Type
-interface ExperienceFieldType {
+export interface ExperienceFieldType {
+	profile_id: String
+	company: String
+	role: String
+	technologies: Array<String>
+	summary: String
+	tenure: String
+}
+
+//? Experience Update type
+export type ExperienceUpdateType = {
 	company: String
 	role: String
 	technologies: Array<String>
@@ -59,8 +63,8 @@ interface ExperienceFieldType {
 }
 
 //? Experience Field Schema Type
-export interface InternshipType extends ExperienceFieldType {}
-export interface JobType extends ExperienceFieldType {}
+export interface InternshipSchemaType extends ExperienceFieldType {}
+export interface JobSchemaType extends ExperienceFieldType {}
 
 //? Projects Request Body Type
 export type ProjectSchemaType = {
