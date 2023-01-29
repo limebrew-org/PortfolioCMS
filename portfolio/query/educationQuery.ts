@@ -83,7 +83,7 @@ class EducationQuery {
 			return ResponseBody.handleBadRequest(response)
 
 		//* Get the profile_id from query
-		const profileId: string = request.query["profile_id"].toString()
+		const profileId: String = request.query["profile_id"].toString()
 
 		//? Query education details by profile_id
 		const educationEntityList = await EducationModel.find({
@@ -101,12 +101,12 @@ class EducationQuery {
 	//TODO: Get education details by education id
 	static async getById(request: Request, response: Response) {
 		//? Handle bad request
-		if (!RequestBodyHandler.isValidKeys(request.params, ["id"])) {
+		if (!RequestBodyHandler.isValidKeys(request.params, ["id"])) 
 			return ResponseBody.handleBadRequest(response)
-		}
+		
 
 		//* Get the education_id from params
-		const educationId = request.params["id"].toString()
+		const educationId: String = request.params["id"].toString()
 
 		//? Query the education details by education_id
 		const educationEntity = await EducationModel.findOne({
@@ -143,8 +143,8 @@ class EducationQuery {
 		newEducationEntity
 			.save()
 			.then((educationInfo) => {
-				return ResponseBody.success_update(response, {
-					status: 201,
+				return ResponseBody.success_add(response, {
+					status: 200,
 					message: `Success! Education details added successfully for profile: ${profile.username}`,
 					data: educationInfo
 				})
@@ -162,7 +162,7 @@ class EducationQuery {
 	//TODO: Update education  by  education id
 	static async update(request: Request, response: Response) {
 		//? Query by education id
-		const educationId = request.params["id"].toString()
+		const educationId: String = request.params["id"].toString()
 
 		//? Grab the profile from the middleware
 		const profile: ProfileMiddlewareType = request["profile"]
@@ -183,7 +183,7 @@ class EducationQuery {
 		if (educationEntity === null)
 			return ResponseBody.error_not_found(response, {
 				status: 404,
-				message: `Error! Education details not found for id: ${educationId}`,
+				message: `Error! Education details not found for id: ${educationId}, for profile: ${profile.username}`,
 				data: {}
 			})
 
@@ -196,7 +196,7 @@ class EducationQuery {
 			.then(() => {
 				return ResponseBody.success_update(response, {
 					status: 201,
-					message: `Education details updated successfully for education id: ${educationId}`,
+					message: `Education details updated successfully for education id: ${educationId}, for profile: ${profile.username}`,
 					data: {}
 				})
 			})
@@ -213,7 +213,7 @@ class EducationQuery {
 	//TODO: Delete Education by education id
 	static async deleteById(request: Request, response: Response) {
 		//? Grab the education id
-		const educationId = request.params["id"].toString()
+		const educationId: String = request.params["id"].toString()
 
 		//? Grab the profile from the middleware
 		const profile: ProfileMiddlewareType = request["profile"]
@@ -227,19 +227,19 @@ class EducationQuery {
 				if (info.deletedCount === 0)
 					return ResponseBody.error_not_found(response, {
 						status: 404,
-						message: `Education details not found for id ${educationId}`,
+						message: `Education details not found for id ${educationId}, for profile: ${profile.username}`,
 						data: {}
 					})
 				return ResponseBody.success_delete(response, {
 					status: 201,
-					message: `Education details deleted successfully for education id: ${educationId}`,
+					message: `Education details deleted successfully for education id: ${educationId}, for profile: ${profile.username}`,
 					data: {}
 				})
 			})
 			.catch((error) => {
 				return ResponseBody.error_internal(response, {
 					status: 500,
-					message: "Error while deleting education details",
+					message: `Error while deleting education details, error: ${error}`,
 					data: {}
 				})
 			})
@@ -259,20 +259,19 @@ class EducationQuery {
 				if (info.deletedCount === 0)
 					return ResponseBody.error_not_found(response, {
 						status: 404,
-						message: `Education details not found for user: ${profile.username}`,
+						message: `Education details not found for profile: ${profile.username}`,
 						data: {}
 					})
 				return ResponseBody.success_delete(response, {
 					status: 201,
-					message: `All Education details deleted successfully for user: ${profile.username}`,
+					message: `All Education details deleted successfully for profile: ${profile.username}`,
 					data: {}
 				})
 			})
 			.catch((error) => {
-				console.log("Error: ", error)
 				return ResponseBody.error_internal(response, {
 					status: 500,
-					message: `Error while deleting education details for user: ${profile.username}, error: ${error}`,
+					message: `Error while deleting education details for profile: ${profile.username}, error: ${error}`,
 					data: {}
 				})
 			})

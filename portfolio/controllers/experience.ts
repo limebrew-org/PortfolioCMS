@@ -2,58 +2,79 @@ import { ExperienceQuery } from "../query/experienceQuery"
 import { Request, Response } from "express"
 
 //? Get All Experience info by user_id (public endpoint)
-const getAllExperienceInfo = async (request: Request, response: Response) => {}
+const getAllInternships = async (request: Request, response: Response) => {
+	await ExperienceQuery.getAllInternships(request, response)
+}
 
 //? Get Internship details (one or more) by user_id (public endpoint)
-const getInternshipInfo = async (request: Request, response: Response) => {}
-
-//? Get Job details (one or more) by user_id (public endpoint)
-const getJobInfo = async (request: Request, response: Response) => {}
+const getInternshipById = async (request: Request, response: Response) => {
+	await ExperienceQuery.getInternshipById(request, response)
+}
 
 //? Add Internship details (one or more) (authentication required)
-const addInternshipInfo = async (request: Request, response: Response) => {}
-
-//? Add Job details (one or more) (authentication required)
-const addJobInfo = async (request: Request, response: Response) => {}
+const addInternship = async (request: Request, response: Response) => {
+	await ExperienceQuery.addInternship(request, response)
+}
 
 //? Update Internship details (one or more) (authentication required)
-const updateInternshipInfo = async (request: Request, response: Response) => {}
-
-//? Update Job details (one or more) (authentication required)
-const updateJobInfo = async (request: Request, response: Response) => {}
+const updateInternshipById = async (request: Request, response: Response) => {
+	await ExperienceQuery.updateInternshipById(request, response)
+}
 
 //? Delete Internship by Id (authentication required)
-const deleteInternshipById = (request: Request, response: Response) => {}
-
-//? Delete Job by Id (authentication required)
-const deleteJobById = async (request: Request, response: Response) => {}
+const deleteInternshipById = async (request: Request, response: Response) => {
+	await ExperienceQuery.deleteInternshipById(request, response)
+}
 
 //? Delete All Internship details (authentication required)
-const deleteAllInternshipInfo = async (
+const deleteAllInternships = async (
 	request: Request,
 	response: Response
-) => {}
+) => {
+	await ExperienceQuery.deleteAllInternships(request, response)
+}
+
+//? Get Job details (one or more) by user_id (public endpoint)
+const getAllJobs = async (request: Request, response: Response) => {
+	await ExperienceQuery.getAllJobs(request, response)
+}
+
+//? Get Job details (one or more) by user_id (public endpoint)
+const getJobById = async (request: Request, response: Response) => {
+	await ExperienceQuery.getJobById(request, response)
+}
+
+//? Add Job details (one or more) (authentication required)
+const addJob = async (request: Request, response: Response) => {
+	await ExperienceQuery.addJob(request, response)
+}
+
+//? Update Job details (one or more) (authentication required)
+const updateJobById = async (request: Request, response: Response) => {
+	await ExperienceQuery.updateJobById(request, response)
+}
+
+//? Delete Job by Id (authentication required)
+const deleteJobById = async (request: Request, response: Response) => {
+	await ExperienceQuery.deleteJobById(request, response)
+}
 
 //? Delete All Job details (authentication required)
-const deleteAllJobInfo = async (request: Request, response: Response) => {}
-
-//? Delete All Experience details (authentication required)
-const deleteAllExperienceInfo = async (
-	request: Request,
-	response: Response
-) => {}
+const deleteAllJobs = async (request: Request, response: Response) => {
+	await ExperienceQuery.deleteAllJobs(request, response)
+}
 
 export {
-	getAllExperienceInfo,
-	getInternshipInfo,
-	getJobInfo,
-	addInternshipInfo,
-	addJobInfo,
-	updateInternshipInfo,
-	updateJobInfo,
+	getAllInternships,
+	getInternshipById,
+	addInternship,
+	updateInternshipById,
 	deleteInternshipById,
+	deleteAllInternships,
+	getAllJobs,
+	getJobById,
+	addJob,
+	updateJobById,
 	deleteJobById,
-	deleteAllExperienceInfo,
-	deleteAllInternshipInfo,
-	deleteAllJobInfo
+	deleteAllJobs
 }

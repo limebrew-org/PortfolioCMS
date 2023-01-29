@@ -23,7 +23,6 @@ class ProjectQuery {
 			const technology = technologies[i]
 			if (typeof technology !== "string") return false
 		}
-
 		return true
 	}
 
@@ -39,13 +38,13 @@ class ProjectQuery {
 		if (router == "ADD") {
 			//? Handle mandatory fields
 			for (let i = 0; i < PORTFOLIO_PROJECT_FIELDS.length; i++) {
-				const field = PORTFOLIO_PROJECT_FIELDS[i]
+				const field = PORTFOLIO_PROJECT_FIELDS[i].toString()
 				if (!requestBody.hasOwnProperty(field)) return false
 
 				if (field === "technologies") {
 					if (!ProjectQuery.isValidTechnologyList(requestBody[field]))
 						return false
-				} else if (
+				}else if (
 					typeof requestBody[field] !== "string" ||
 					requestBody[field].length === 0
 				)
@@ -159,8 +158,8 @@ class ProjectQuery {
 		newProjectEntity
 			.save()
 			.then((projectInfo) => {
-				return ResponseBody.success_update(response, {
-					status: 201,
+				return ResponseBody.success_add(response, {
+					status: 200,
 					message: `Success! Project details added successfully for profile: ${profile.username}`,
 					data: projectInfo
 				})
@@ -197,13 +196,13 @@ class ProjectQuery {
 		})
 
 		//? Check if project details exists for this id
-		if (projectEntity === null) {
+		if (projectEntity === null) 
 			return ResponseBody.error_not_found(response, {
 				status: 404,
 				message: `Error! Project details not found for id: ${projectId}`,
 				data: {}
 			})
-		}
+		
 
 		//? If projectEntity found, update the project by request body
 		ProjectQuery.setAndUpdate(inputUserDetails, projectEntity)
@@ -287,7 +286,6 @@ class ProjectQuery {
 				})
 			})
 			.catch((error) => {
-				console.log("Error: ", error)
 				return ResponseBody.error_internal(response, {
 					status: 500,
 					message: `Error while deleting project details for user: ${profile.username}, error: ${error}`,

@@ -66,11 +66,17 @@ export const PORTFOLIO_SKILL_FIELDS: Array<String> = [
 	"cloud",
 	"fundamentals"
 ]
-export const PORTFOLIO_EXPERIENCE_FIELDS: Array<string> = [
-	"internships",
-	"jobs"
+
+
+export const PORTFOLIO_EXPERIENCE_FIELDS: Array<String> = [
+	"company",
+	"role",
+	"technologies",
+	"summary",
+	"tenure"
 ]
-export const PORTFOLIO_PROJECT_FIELDS: Array<string> = [
+
+export const PORTFOLIO_PROJECT_FIELDS: Array<String> = [
 	"name",
 	"description",
 	"technologies",
