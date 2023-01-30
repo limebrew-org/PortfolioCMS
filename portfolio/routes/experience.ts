@@ -11,8 +11,7 @@ import {
 	addJob,
 	updateJobById,
 	deleteJobById,
-	deleteAllJobs,
-	
+	deleteAllJobs
 } from "../controllers/experience"
 import { middleware } from "../middleware/verifyJWT"
 
@@ -28,11 +27,7 @@ experienceRouter.delete(
 	middleware,
 	deleteInternshipById
 )
-experienceRouter.delete(
-	"/internship/delete",
-	middleware,
-	deleteAllInternships
-)
+experienceRouter.delete("/internship/delete", middleware, deleteAllInternships)
 
 //? Job routes
 experienceRouter.get("/job/all", getAllJobs)

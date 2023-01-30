@@ -1,7 +1,11 @@
 import { ProfileModel } from "../schema/profile"
 import { ResponseBody } from "../utils/handleResponse"
 import { Request, Response } from "express"
-import { PayloadSchemaType, ProfileSchemaType, ProfileMiddlewareType } from "../utils/types"
+import {
+	PayloadSchemaType,
+	ProfileSchemaType,
+	ProfileMiddlewareType
+} from "../utils/types"
 import { hashPassword, comparePassword } from "../utils/handlePassword"
 import {
 	generateAccessToken,
@@ -13,7 +17,6 @@ import { RequestBodyHandler } from "../utils/handleFields"
 import { PORTFOLIO_PROFILE_REGISTER_FIELDS } from "../utils/constants"
 import { TOKEN_TYPE } from "../utils/constants"
 import { maskedProfileEntity } from "../utils/maskProfile"
-
 
 class AuthQuery {
 	//TODO: Register profile

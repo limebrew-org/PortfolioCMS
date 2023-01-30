@@ -15,10 +15,7 @@ class EducationQuery {
 	static schemaName = "education"
 
 	//? Validate Schema
-	static isValidSchema(
-		requestBody: EducationSchemaType,
-		router: String
-	) {
+	static isValidSchema(requestBody: EducationSchemaType, router: String) {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(requestBody)
 
@@ -46,9 +43,13 @@ class EducationQuery {
 			for (let i = 0; i < reqBodyKeys.length; i++) {
 				const educationKey = reqBodyKeys[i]
 				console.log("Education key: ", educationKey)
-				console.log("Key validation status: ", PORTFOLIO_EDUCATION_FIELDS.includes(educationKey))
+				console.log(
+					"Key validation status: ",
+					PORTFOLIO_EDUCATION_FIELDS.includes(educationKey)
+				)
 
-				if(!PORTFOLIO_EDUCATION_FIELDS.includes(educationKey)) return false
+				if (!PORTFOLIO_EDUCATION_FIELDS.includes(educationKey))
+					return false
 				else if (
 					typeof requestBody[educationKey] !== "string" ||
 					requestBody[educationKey]?.length === 0
@@ -101,9 +102,8 @@ class EducationQuery {
 	//TODO: Get education details by education id
 	static async getById(request: Request, response: Response) {
 		//? Handle bad request
-		if (!RequestBodyHandler.isValidKeys(request.params, ["id"])) 
+		if (!RequestBodyHandler.isValidKeys(request.params, ["id"]))
 			return ResponseBody.handleBadRequest(response)
-		
 
 		//* Get the education_id from params
 		const educationId: String = request.params["id"].toString()

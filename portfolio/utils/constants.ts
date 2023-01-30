@@ -67,7 +67,6 @@ export const PORTFOLIO_SKILL_FIELDS: Array<String> = [
 	"fundamentals"
 ]
 
-
 export const PORTFOLIO_EXPERIENCE_FIELDS: Array<String> = [
 	"company",
 	"role",

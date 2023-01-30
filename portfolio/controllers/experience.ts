@@ -27,10 +27,7 @@ const deleteInternshipById = async (request: Request, response: Response) => {
 }
 
 //? Delete All Internship details (authentication required)
-const deleteAllInternships = async (
-	request: Request,
-	response: Response
-) => {
+const deleteAllInternships = async (request: Request, response: Response) => {
 	await ExperienceQuery.deleteAllInternships(request, response)
 }
 

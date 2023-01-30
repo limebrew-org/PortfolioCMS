@@ -122,4 +122,4 @@ abstract class ValidateSchema {
 	abstract isValidSchema(): Boolean
 }
 
-export { RequestBodyHandler, ValidateSchema}
+export { RequestBodyHandler, ValidateSchema }

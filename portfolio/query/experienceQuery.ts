@@ -33,8 +33,8 @@ class ExperienceQuery {
 		//? If no properties exist
 		if (reqBodyKeys.length === 0) return false
 
-		//* Handle for add internship/job
-		if (router == "ADD") {
+		//* Handle for adding internship/job
+		if (router === "ADD") {
 			//? Handle mandatory fields
 			for (let i = 0; i < PORTFOLIO_EXPERIENCE_FIELDS.length; i++) {
 				const field = PORTFOLIO_EXPERIENCE_FIELDS[i].toString()
@@ -45,15 +45,8 @@ class ExperienceQuery {
 						!ExperienceQuery.isValidTechnologyList(
 							requestBody[field]
 						)
-					) {
-						console.log(
-							"Valid technology: ",
-							ExperienceQuery.isValidTechnologyList(
-								requestBody[field]
-							)
-						)
+					)
 						return false
-					}
 				} else if (
 					typeof requestBody[field] !== "string" ||
 					requestBody[field].length === 0
@@ -63,7 +56,7 @@ class ExperienceQuery {
 			return true
 		}
 
-		//* Handle for Update Internship/Job
+		//* Handle for Updating Internship/Job
 		if (router === "UPDATE") {
 			//? Handle optional fields
 			for (let i = 0; i < reqBodyKeys.length; i++) {
@@ -158,10 +151,8 @@ class ExperienceQuery {
 		const inputUserDetails: InternshipSchemaType = request.body
 
 		//? Handle bad request
-		if (!ExperienceQuery.isValidSchema(inputUserDetails, "ADD")) {
+		if (!ExperienceQuery.isValidSchema(inputUserDetails, "ADD"))
 			return ResponseBody.handleBadRequest(response)
-		}
-			
 
 		//? Set the profile id from middleware
 		inputUserDetails.profile_id = profile._id.toString()

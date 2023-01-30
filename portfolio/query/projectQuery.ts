@@ -44,7 +44,7 @@ class ProjectQuery {
 				if (field === "technologies") {
 					if (!ProjectQuery.isValidTechnologyList(requestBody[field]))
 						return false
-				}else if (
+				} else if (
 					typeof requestBody[field] !== "string" ||
 					requestBody[field].length === 0
 				)
@@ -196,13 +196,12 @@ class ProjectQuery {
 		})
 
 		//? Check if project details exists for this id
-		if (projectEntity === null) 
+		if (projectEntity === null)
 			return ResponseBody.error_not_found(response, {
 				status: 404,
 				message: `Error! Project details not found for id: ${projectId}`,
 				data: {}
 			})
-		
 
 		//? If projectEntity found, update the project by request body
 		ProjectQuery.setAndUpdate(inputUserDetails, projectEntity)

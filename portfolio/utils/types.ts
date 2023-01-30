@@ -42,7 +42,6 @@ export type EducationUpdateType = {
 	tenure: String
 }
 
-
 //? Global Experience Field Type
 export interface ExperienceFieldType {
 	profile_id: String
@@ -84,8 +83,17 @@ export type ProjectUpdateType = {
 }
 
 //? Skills Request Body Type
-export type SkillType = {
+export type SkillSchemaType = {
 	profile_id: String
+	frontend: Array<String>
+	backend: Array<String>
+	database: Array<String>
+	cloud: Array<String>
+	fundamentals: Array<String>
+}
+
+//? Skills Update type
+export type SkillUpdateType = {
 	frontend: Array<String>
 	backend: Array<String>
 	database: Array<String>
@@ -111,7 +119,6 @@ export type TokenSchemaType = {
 	profile_id: String
 	token: String
 }
-
 
 //? Global Social Field Type
 export type SocialType = {
