@@ -82,7 +82,7 @@ class SkillQuery {
 		}
 	}
 
-	//? Get all skills
+	//TODO Get all skills
 	static async getAllSkills(request: Request, response: Response) {
 		//? Handle Bad Request
 		if (!RequestBodyHandler.isValidKeys(request.query, ["profile_id"]))
@@ -104,7 +104,7 @@ class SkillQuery {
 		)
 	}
 
-	//? Get skill by skill Id
+	//TODO Get skill by skill Id
 	static async getSkillById(request: Request, response: Response) {
 		//? Handle Bad Request
 		if (
@@ -129,7 +129,7 @@ class SkillQuery {
 		)
 	}
 
-	//? Get skill by field name
+	//TODO Get skill by field name
 	static async getSkillByField(request: Request, response: Response) {
 		
 		console.log("Query", request.query)
@@ -166,7 +166,7 @@ class SkillQuery {
 
 	}
 
-	//?  Add skills details
+	//TODO Add skills details
 	static async addSkills(request: Request, response: Response) {
 		//? Grab the profile from the middleware
 		const profile: ProfileMiddlewareType = request["profile"]
@@ -217,7 +217,7 @@ class SkillQuery {
 		return {}
 	}
 
-	//? Update skills
+	//TODO Update skills
 	static async updateSkillsById(request: Request, response: Response) {
 		//? Query by skill id
 		const skillId: string = request.params["id"].toString()
@@ -269,7 +269,7 @@ class SkillQuery {
 		return {}
 	}
 
-	//? Delete skills by skill Id
+	//TODO Delete skills by skill Id
 	static async deleteSkillsById(request: Request, response: Response) {
 		//? Handle Bad Request
 		if (

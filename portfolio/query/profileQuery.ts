@@ -97,7 +97,7 @@ class ProfileQuery {
 		return true
 	}
 
-	//? get profile
+	//TODO get profile
 	static async get(request: Request, response: Response) {
 		//? Get profile by ID
 		if (request.query?.profile_id) {
@@ -131,7 +131,7 @@ class ProfileQuery {
 		return ResponseBody.handleBadRequest(response)
 	}
 
-	//? Update profile (name, bio, socials, password)
+	//TODO Update profile (name, bio, socials, password)
 	static async update(request: Request, response: Response) {
 		//? Grab the request body
 		const inputUserDetails: ProfileUpdateType = request.body
@@ -182,7 +182,7 @@ class ProfileQuery {
 		return {}
 	}
 
-	//? Delete profile
+	//TODO Delete profile
 	static async delete(request: Request, response: Response) {}
 }
 

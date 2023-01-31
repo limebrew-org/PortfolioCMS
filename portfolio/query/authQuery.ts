@@ -239,7 +239,7 @@ class AuthQuery {
 		})
 	}
 
-	//? Logout profile
+	//TODO Logout profile
 	static async logout(request: Request, response: Response) {
 		//* Handle Bad Request
 		if (!RequestBodyHandler.isValidKeys(request.body, ["token"])) {
@@ -296,7 +296,7 @@ class AuthQuery {
 		})
 	}
 
-	//? Regenerate accesstoken
+	//TODO Regenerate accesstoken
 	static async regenerateToken(request: Request, response: Response) {
 		//* Handle Bad Request
 		if (!RequestBodyHandler.isValidKeys(request.body, ["token"]))
