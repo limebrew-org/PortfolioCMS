@@ -10,6 +10,10 @@ const getSkillsById = async (request: Request, response: Response) => {
 	await SkillQuery.getSkillById(request, response)
 }
 
+const getSkillByField = async (request: Request, response: Response) => {
+	await SkillQuery.getSkillByField(request, response)
+}
+
 //? Add Skills (one or more) (authentication required)
 const addSkills = async (request: Request, response: Response) => {
 	await SkillQuery.addSkills(request, response)
@@ -28,6 +32,7 @@ const deleteSkillsById = async (request: Request, response: Response) => {
 export {
 	getAllSkills,
 	getSkillsById,
+	getSkillByField,
 	addSkills,
 	updateSkillsById,
 	deleteSkillsById
