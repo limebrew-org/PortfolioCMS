@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import { connection } from "./portfolio/db/portfoliodb"
-import { authRouter } from "./portfolio/routes/auth"
+import { AuthRouter } from "./portfolio/auth/routes"
 import { PORTFOLIO_AUTH_PORT } from "./portfolio/utils/constants"
 
 //! Error in connection
@@ -28,7 +28,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 //? Auth routes
-app.use("/auth", authRouter)
+app.use("/auth",AuthRouter)
 
 //TODO: Listen to Auth Server connections on PORT
 app.listen(PORT, () => {

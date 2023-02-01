@@ -8,7 +8,6 @@ import {
 	SkillUpdateType
 } from "../utils/types"
 import { PORTFOLIO_SKILL_FIELDS } from "../utils/constants"
-import { SkillField } from "../models/skills"
 import mongoose from "mongoose"
 
 class SkillQuery {

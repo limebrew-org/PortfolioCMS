@@ -6,6 +6,7 @@ import {
 	PORTFOLIO_PROJECT_FIELDS
 } from "./constants"
 import mongoose from "mongoose"
+import { ProfileSchemaType } from "./types"
 
 class RequestBodyHandler {
 	cache: Array<String>
@@ -122,4 +123,48 @@ abstract class ValidateSchema {
 	abstract isValidSchema(): Boolean
 }
 
-export { RequestBodyHandler, ValidateSchema }
+
+class ProfileField {
+	static setAndUpdate(profileEntity: ProfileSchemaType,updatedFields: ProfileSchemaType){
+		if ("name" in updatedFields) {
+			profileEntity.name = updatedFields.name
+		}
+		if ("bio" in updatedFields) {
+			profileEntity.bio = updatedFields.bio
+		}
+		if ("socials" in updatedFields) {
+			if ("twitter" in updatedFields.socials) {
+				profileEntity.socials.twitter = updatedFields.socials.twitter
+			}
+			if ("linkedin" in updatedFields.socials) {
+				profileEntity.socials.linkedin = updatedFields.socials.linkedin
+			}
+			if ("github" in updatedFields.socials) {
+				profileEntity.socials.github = updatedFields.socials.github
+			}
+		}
+	}
+}
+
+
+class EducationField {
+	static setAndUpdate(){}
+}
+
+class ProjectField {
+	static setAndUpdate(){}
+}
+
+class InternshipField {
+	static setAndUpdate(){}
+}
+
+class JobField {
+	static setAndUpdate(){}
+}
+
+class SkillField {
+	static setAndUpdate(){}
+}
+
+export { RequestBodyHandler, ValidateSchema, ProfileField, EducationField, ProjectField, InternshipField , SkillField, JobField }

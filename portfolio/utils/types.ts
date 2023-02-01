@@ -103,9 +103,10 @@ export type SkillUpdateType = {
 
 //? ResponseBody Type
 export type ResponseBodyType = {
-	status: Number
-	message: String
-	data: any
+	status?: Number
+	message?: String
+	data?: any
+	error?: String
 }
 
 //? API Key Type
