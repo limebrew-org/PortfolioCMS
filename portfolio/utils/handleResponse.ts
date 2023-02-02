@@ -155,10 +155,11 @@ class ResponseStatusHandler {
 			data: data
 		}
 	}
-	static success_update(schema:String): ResponseBodyType{
+	static success_update(schema:String, data?: any): ResponseBodyType{
 		return {
 			status: 201,
-			message: `Success! ${schema} details updated successfully`
+			message: `Success! ${schema} details updated successfully`,
+			data: data
 		}
 	}
 	static success_delete_one(schema:String): ResponseBodyType{

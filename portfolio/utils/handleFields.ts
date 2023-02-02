@@ -6,7 +6,7 @@ import {
 	PORTFOLIO_PROJECT_FIELDS
 } from "./constants"
 import mongoose from "mongoose"
-import { ProfileSchemaType } from "./types"
+import { EducationSchemaType, EducationUpdateType, ProfileSchemaType } from "./types"
 
 class RequestBodyHandler {
 	cache: Array<String>
@@ -148,7 +148,21 @@ class ProfileField {
 
 
 class EducationField {
-	static setAndUpdate(){}
+	static setAndUpdate(
+		educationEntity: Document,
+		updatedEducationInfo: EducationSchemaType
+		
+	){
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedEducationInfo)
+
+		//? Set the field if key exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const key = reqBodyKeys[i]
+			if (PORTFOLIO_EDUCATION_FIELDS.includes(key))
+				educationEntity[key] = updatedEducationInfo[key]
+		}
+	}
 }
 
 class ProjectField {
