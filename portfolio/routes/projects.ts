@@ -7,15 +7,15 @@ import {
 	deleteProjectById,
 	deleteAllProjects
 } from "../controllers/projects"
-import { middleware } from "../middleware/verifyJWT"
+import { TokenMiddleWare } from "../middleware/verifyToken"
 
 const projectRouter = express.Router()
 
 projectRouter.get("/all", getAllProjects)
 projectRouter.get("/:id", getProjectById)
-projectRouter.post("/add", middleware, addProject)
-projectRouter.put("/update/:id", middleware, updateProjectById)
-projectRouter.delete("/delete/:id", middleware, deleteProjectById)
-projectRouter.delete("/delete", middleware, deleteAllProjects)
+projectRouter.post("/add", TokenMiddleWare, addProject)
+projectRouter.put("/update/:id", TokenMiddleWare, updateProjectById)
+projectRouter.delete("/delete/:id", TokenMiddleWare, deleteProjectById)
+projectRouter.delete("/delete", TokenMiddleWare, deleteAllProjects)
 
 export { projectRouter }

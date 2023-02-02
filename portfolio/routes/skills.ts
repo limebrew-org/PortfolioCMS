@@ -7,16 +7,16 @@ import {
 	updateSkillsById,
 	deleteSkillsById,
 } from "../controllers/skills"
-import { middleware } from "../middleware/verifyJWT"
+import { TokenMiddleWare } from "../middleware/verifyToken"
 
 const skillRouter = express.Router()
 
 skillRouter.get("/all", getAllSkills)
 skillRouter.get("/field", getSkillByField)
 skillRouter.get("/:id", getSkillsById)
-skillRouter.post("/add", middleware,addSkills)
-skillRouter.put("/update/:id", middleware, updateSkillsById)
-skillRouter.delete("/delete/:id", middleware,deleteSkillsById)
+skillRouter.post("/add", TokenMiddleWare,addSkills)
+skillRouter.put("/update/:id", TokenMiddleWare, updateSkillsById)
+skillRouter.delete("/delete/:id", TokenMiddleWare,deleteSkillsById)
 
 
 export { skillRouter }

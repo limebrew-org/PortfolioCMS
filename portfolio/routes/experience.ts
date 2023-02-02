@@ -13,28 +13,28 @@ import {
 	deleteJobById,
 	deleteAllJobs
 } from "../controllers/experience"
-import { middleware } from "../middleware/verifyJWT"
+import { TokenMiddleWare } from "../middleware/verifyToken"
 
 const experienceRouter = express.Router()
 
 //? Internship routes
 experienceRouter.get("/internship/all", getAllInternships)
 experienceRouter.get("/internship/:id", getInternshipById)
-experienceRouter.post("/internship/add", middleware, addInternship)
-experienceRouter.put("/internship/update/:id", middleware, updateInternshipById)
+experienceRouter.post("/internship/add", TokenMiddleWare, addInternship)
+experienceRouter.put("/internship/update/:id", TokenMiddleWare, updateInternshipById)
 experienceRouter.delete(
 	"/internship/delete/:id",
-	middleware,
+	TokenMiddleWare,
 	deleteInternshipById
 )
-experienceRouter.delete("/internship/delete", middleware, deleteAllInternships)
+experienceRouter.delete("/internship/delete", TokenMiddleWare, deleteAllInternships)
 
 //? Job routes
 experienceRouter.get("/job/all", getAllJobs)
 experienceRouter.get("/job/:id", getJobById)
-experienceRouter.post("/job/add", middleware, addJob)
-experienceRouter.put("/job/update/:id", middleware, updateJobById)
-experienceRouter.delete("/job/delete/:id", middleware, deleteJobById)
-experienceRouter.delete("/job/delete", middleware, deleteAllJobs)
+experienceRouter.post("/job/add", TokenMiddleWare, addJob)
+experienceRouter.put("/job/update/:id", TokenMiddleWare, updateJobById)
+experienceRouter.delete("/job/delete/:id", TokenMiddleWare, deleteJobById)
+experienceRouter.delete("/job/delete", TokenMiddleWare, deleteAllJobs)
 
 export { experienceRouter }

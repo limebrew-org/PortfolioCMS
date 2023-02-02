@@ -10,7 +10,7 @@ class ProfileQuery {
 	static schema: String = "Profile"
 
 	//TODO: Get Multiple profiles based on query
-	static async getMany(query: ProfileQuerytype) {
+	static async getMany(query: ProfileQuerytype): Promise<ResponseBodyType> {
 		//? Grab all the profiles by query
 		const profileEntityList = await ProfileModel.find(query)
 
@@ -25,7 +25,7 @@ class ProfileQuery {
 	}
 
 	//TODO: Get single profile based on query
-	static async getOne(query: ProfileQuerytype) {
+	static async getOne(query: ProfileQuerytype): Promise<ResponseBodyType> {
 		//? Grab a single profile by query
 		const profileEntity = await ProfileModel.findOne(query)
 
@@ -40,7 +40,9 @@ class ProfileQuery {
 	}
 
 	//TODO: Add profile
-	static async addOne(profileInfo: ProfileSchemaType) {
+	static async addOne(
+		profileInfo: ProfileSchemaType
+	): Promise<ResponseBodyType> {
 		//? Check if profile exists for email
 		const existingProfileResponse = await ProfileQuery.getOne({
 			email: profileInfo.email
@@ -54,7 +56,7 @@ class ProfileQuery {
 		const newProfileEntity = new ProfileModel(profileInfo)
 
 		//? Save the new profile in the database
-		return await ProfileQuery.save(newProfileEntity,"ADD")
+		return await ProfileQuery.save(newProfileEntity, "ADD")
 	}
 
 	//TODO: Update profile by Id and Email
@@ -62,30 +64,33 @@ class ProfileQuery {
 		id: String,
 		email: String,
 		updatedProfile: ProfileSchemaType
-	) {
+	): Promise<ResponseBodyType> {
 		//? Check if the profile exists for the given id and email
 		const existingProfileResponse: ResponseBodyType =
 			await ProfileQuery.getOne({ _id: id, email: email })
-        
-        //? Check profile response
-        if(existingProfileResponse.status === 404 )
-            return ResponseStatusHandler.error_not_found(ProfileQuery.schema)
-        
-        //? Grab the profile from the response
-        const profileEntity = existingProfileResponse.data
 
-        //? If exists, then update
-        ProfileField.setAndUpdate(profileEntity,updatedProfile)
+		//? Check profile response
+		if (existingProfileResponse.status === 404)
+			return ResponseStatusHandler.error_not_found(ProfileQuery.schema)
 
-        //? Save the profile
-		return await ProfileQuery.save(profileEntity,"UPDATE")
+		//? Grab the profile from the response
+		const profileEntity = existingProfileResponse.data
 
+		//? If exists, then update
+		ProfileField.setAndUpdate(profileEntity, updatedProfile)
+
+		//? Save the profile
+		return await ProfileQuery.save(profileEntity, "UPDATE")
 	}
 
 	//TODO: Delete profile by Id
-	static async deleteOneById(id: String, email:String) {
-        //? Grab Profile by Id and email
-		const existingProfileResponse: ResponseBodyType = await ProfileQuery.getOne({ _id: id, email: email })
+	static async deleteOneById(
+		id: String,
+		email: String
+	): Promise<ResponseBodyType> {
+		//? Grab Profile by Id and email
+		const existingProfileResponse: ResponseBodyType =
+			await ProfileQuery.getOne({ _id: id, email: email })
 
 		//? Check if Profile exists
 		if (existingProfileResponse.status === 404)
@@ -95,24 +100,38 @@ class ProfileQuery {
 		const profileEntity = existingProfileResponse.data
 
 		//? Remove Profile if it exists
-		const response = profileEntity.remove((error, result) => {
-			if (error) return ResponseStatusHandler.error_known(error.message)
-			if (result) return ResponseStatusHandler.success_delete_one(ProfileQuery.schema)
-			else return ResponseStatusHandler.error_unknown()
-		})
+		const response = profileEntity
+			.remove()
+			.then((info) => {
+				return ResponseStatusHandler.success_delete_one(
+					ProfileQuery.schema
+				)
+			})
+			.catch((error) => {
+				return ResponseStatusHandler.error_known(error.message)
+			})
 		return response
-    }
+	}
 
-	static async save(profileEntity,routeType:String){
+	static async save(
+		profileEntity,
+		routeType: String
+	): Promise<ResponseBodyType> {
 		return await profileEntity
-		.save()
-		.then((profileInfo)=>{
-			if(routeType === "ADD") return ResponseStatusHandler.success_add(ProfileQuery.schema)
-            if(routeType === "UPDATE") return ResponseStatusHandler.success_update(ProfileQuery.schema)
-		})
-		.catch((error)=>{
-			return ResponseStatusHandler.error_known(error.message)
-		})
+			.save()
+			.then((profileInfo) => {
+				if (routeType === "ADD")
+					return ResponseStatusHandler.success_add(
+						ProfileQuery.schema
+					)
+				if (routeType === "UPDATE")
+					return ResponseStatusHandler.success_update(
+						ProfileQuery.schema
+					)
+			})
+			.catch((error) => {
+				return ResponseStatusHandler.error_known(error.message)
+			})
 	}
 }
 

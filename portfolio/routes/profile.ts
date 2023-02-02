@@ -1,5 +1,5 @@
 import express from "express"
-import { middleware } from "../middleware/verifyJWT"
+import { TokenMiddleWare } from "../middleware/verifyToken"
 import {
 	getProfile,
 	updateProfile,
@@ -9,7 +9,7 @@ import {
 const profileRouter = express.Router()
 
 profileRouter.get("/", getProfile)
-profileRouter.put("/update", middleware, updateProfile)
-profileRouter.delete("/delete", middleware, deleteProfile)
+profileRouter.put("/update", TokenMiddleWare, updateProfile)
+profileRouter.delete("/delete", TokenMiddleWare, deleteProfile)
 
 export { profileRouter }

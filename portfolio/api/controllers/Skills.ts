@@ -1,0 +1,5 @@
+class SkillController {
+
+}
+
+export {SkillController}

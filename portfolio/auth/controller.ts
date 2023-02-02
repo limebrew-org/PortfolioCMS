@@ -1,18 +1,17 @@
 import { Request, Response } from "express"
-import { PORTFOLIO_PROFILE_REGISTER_FIELDS } from "../utils/constants"
+import { PORTFOLIO_PROFILE_REGISTER_FIELDS, TOKEN } from "../utils/constants"
 import { RequestBodyHandler } from "../utils/handleFields"
 import { ResponseBody } from "../utils/handleResponse"
-import {
-	PayloadSchemaType,
-	ProfileSchemaType
-} from "../utils/types"
+import { PayloadSchemaType, ProfileSchemaType, TokenSchemaType } from "../utils/types"
 import { ProfileQuery } from "../query/Profile"
 import { comparePassword, hashPassword } from "../utils/handlePassword"
-import { generateAccessToken, generateRefreshToken } from "../utils/handleToken"
+import { generateAccessToken, generateRefreshToken, verifyToken } from "../utils/handleToken"
 import { TokenQuery } from "../query/Token"
 import { ResponseBodyType } from "../types/response"
+import { ProfileMiddlewareType } from "../types/middleware"
 
 class AuthController {
+	//TODO: Register profile (public)
 	async register(request: Request, response: Response) {
 		//? Grab the request body
 		const inputProfileDetails: ProfileSchemaType = request.body
@@ -26,18 +25,25 @@ class AuthController {
 		)
 			return ResponseBody.handleBadRequest(response)
 
-		inputProfileDetails.username = inputProfileDetails.username.toString()
-		inputProfileDetails.email = inputProfileDetails.email.toString()
+		//? Handle lowercase
+		inputProfileDetails.username = inputProfileDetails.username
+			.toString()
+			.toLowerCase()
+		inputProfileDetails.email = inputProfileDetails.email
+			.toString()
+			.toLowerCase()
 
 		//? Check user in the database by username
-		const existingProfileResponseByUsername = await ProfileQuery.getOne({
-			username: inputProfileDetails.username
-		})
+		const existingProfileResponseByUsername: ResponseBodyType =
+			await ProfileQuery.getOne({
+				username: inputProfileDetails.username
+			})
 
 		//? Check user in the database by email
-		const existingProfileResponseByEmail = await ProfileQuery.getOne({
-			email: inputProfileDetails.email
-		})
+		const existingProfileResponseByEmail: ResponseBodyType =
+			await ProfileQuery.getOne({
+				email: inputProfileDetails.email
+			})
 
 		//? if profile exists with email
 		if (existingProfileResponseByEmail.status === 200)
@@ -54,13 +60,13 @@ class AuthController {
 			})
 
 		//? Hash the password
-		const hashedPassword = await hashPassword(
+		const hashedPassword: String = await hashPassword(
 			inputProfileDetails.password.toString()
 		)
 
 		//? Update the password with hashed password in request body
-		inputProfileDetails.name = request.body.username.toString()
-		inputProfileDetails.password = hashedPassword.toString()
+		inputProfileDetails.name = inputProfileDetails.username.toString()
+		inputProfileDetails.password = hashedPassword
 		inputProfileDetails.bio = ""
 		inputProfileDetails.socials = {
 			twitter: "",
@@ -68,10 +74,13 @@ class AuthController {
 			github: ""
 		}
 
-		const addProfileResponse = await ProfileQuery.addOne(inputProfileDetails)
-		return ResponseBody.handleStatus(response,addProfileResponse)
+		const addProfileResponse: ResponseBodyType = await ProfileQuery.addOne(
+			inputProfileDetails
+		)
+		return ResponseBody.handleStatus(response, addProfileResponse)
 	}
 
+	//TODO: Login profile (public)
 	async login(request: Request, response: Response) {
 		//? Grab the request body
 		const inputProfileDetails: ProfileSchemaType = request.body
@@ -85,9 +94,10 @@ class AuthController {
 		)
 			return ResponseBody.handleBadRequest(response)
 
-		//? Check user by email or username in the database
+		//? declare a variable to store the response
 		let existingProfileResponse: ResponseBodyType
-
+		
+		//? Check user by email or username in the database
 		if (RequestBodyHandler.isValidKeys(inputProfileDetails, ["email"])) {
 			existingProfileResponse = await ProfileQuery.getOne({
 				email: inputProfileDetails.email.toString().toLowerCase()
@@ -102,7 +112,10 @@ class AuthController {
 
 		//? Check if the profile exists by email or username
 		if (existingProfileResponse.status === 404)
-			return ResponseBody.error_not_found(response, existingProfileResponse)
+			return ResponseBody.error_not_found(
+				response,
+				existingProfileResponse
+			)
 
 		//? If profile found, Grab the profile from the response
 		const profileEntity = existingProfileResponse.data
@@ -126,19 +139,19 @@ class AuthController {
 		}
 
 		//? Create Access Token and Refresh Token
-		const accessToken = generateAccessToken(payload)
-		const refreshToken = generateRefreshToken(payload)
+		const accessToken:String = generateAccessToken(payload)
+		const refreshToken:String = generateRefreshToken(payload)
 
 		//? Update Token (if not found then add)
-		const updateTokenResponse:ResponseBodyType = await TokenQuery.updateById(
-			profileEntity._id,
-			refreshToken
-		)
+		const updateTokenResponse: ResponseBodyType =
+			await TokenQuery.updateById(profileEntity._id, refreshToken)
 
 		//? If update status is 200 or 201 then return jwt
-		if(updateTokenResponse.status === 200 || updateTokenResponse.status === 201)
-			return ResponseBody.success_auth(response,{
-				status:200,
+		if (
+			updateTokenResponse.status === 201
+		)
+			return ResponseBody.success_auth(response, {
+				status: 200,
 				message: `Success! ${profileEntity.username} logged in successfully!`,
 				data: {
 					accessToken: accessToken,
@@ -146,12 +159,81 @@ class AuthController {
 				}
 			})
 		
-		return ResponseBody.error_internal(response,updateTokenResponse)
+		//? Else return internal server error
+		return ResponseBody.error_internal(response, updateTokenResponse)
 	}
 
-	async logout(request: Request, response: Response) {}
+	//TODO: Logout user (authorization required)
+	async logout(request: Request, response: Response) {
+		//? Grab the profile from middleware
+		const profile: ProfileMiddlewareType = request['profile']
 
-	async generateToken(request: Request, response: Response) {}
+		//? Delete the refresh token for the profile
+		const tokenDeleteResponse = await TokenQuery.deleteOneById(profile._id)
+
+		//? If token delete is successful
+		if(tokenDeleteResponse.status === 201)
+			return ResponseBody.success_delete(response,{
+				status: 201,
+				message: `Success! Token deleted, User logged out successfully`
+			})
+		
+		//? Else return internal server error
+		return ResponseBody.error_internal(response,tokenDeleteResponse)
+	}
+
+	//TODO: Generate Access Token
+	async generateToken(request: Request, response: Response) {
+		//? Grab the request body
+		const inputTokenDetails: TokenSchemaType = request.body
+
+		//* Handle Bad Request
+		if(
+			!RequestBodyHandler.isValidKeys(inputTokenDetails,["token"])
+		)
+		return ResponseBody.handleBadRequest(response)
+
+		//? Else grab the refresh token
+		const refreshToken:string = inputTokenDetails.token.toString()
+
+		//? Check if the refresh token is valid
+		let payload: PayloadSchemaType
+		
+		try {
+			const tokenVerifiedPayload = verifyToken(refreshToken,TOKEN.refreshToken)
+			payload = { _id: tokenVerifiedPayload["_id"].toString()}
+
+		} catch (error) {
+			return ResponseBody.error_token_invald(response, {
+				status: 401,
+				error: `Error! Token verification failed`
+			})
+		}
+
+		//? If verified, check if the refresh token exists in the database
+		const existingTokenResponse: ResponseBodyType = await TokenQuery.getOne({
+			token: refreshToken
+		})
+
+		//? if token not found
+		if(existingTokenResponse.status === 404)
+			return ResponseBody.error_unauthorized(response, {
+				status: 401,
+				error: `Error! Refresh Token not found, user not Logged in!`
+			})
+		
+		//? Else generate access token with the payload
+		const newAccessToken = generateAccessToken(payload)
+		
+		//? Send the access token to the client
+		return ResponseBody.success_found(response,{
+			status: 200,
+			message: `Token successfully generated`,
+			data: {
+				access_token: newAccessToken
+			}
+		})
+	}
 }
 
 export { AuthController }

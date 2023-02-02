@@ -103,7 +103,7 @@ export type SkillUpdateType = {
 
 //? ResponseBody Type
 export type ResponseBodyType = {
-	status?: Number
+	status?: number
 	message?: String
 	data?: any
 	error?: String
@@ -117,7 +117,7 @@ export type APIKeySchemaType = {
 
 //? Token Schema Type
 export type TokenSchemaType = {
-	profile_id: String
+	profile_id?: String
 	token: String
 }
 

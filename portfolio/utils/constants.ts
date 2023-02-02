@@ -82,7 +82,7 @@ export const PORTFOLIO_PROJECT_FIELDS: Array<String> = [
 	"link"
 ]
 
-export const TOKEN_TYPE = {
+export const TOKEN = {
 	refreshToken: "refresh_token",
 	accessToken: "access_token"
 }

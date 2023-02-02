@@ -6,7 +6,7 @@ import { profileRouter } from "./portfolio/routes/profile"
 import { projectRouter } from "./portfolio/routes/projects"
 import { experienceRouter } from "./portfolio/routes/experience"
 import { skillRouter } from "./portfolio/routes/skills"
-import { educationRouter } from "./portfolio/routes/education"
+import { EducationRouter } from "./portfolio/api/routes/education"
 import { PORTFOLIO_API_PORT } from "./portfolio/utils/constants"
 
 //! Error in connection
@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use("/api/dashboard", dashboardRouter)
 app.use("/api/profile", profileRouter)
 app.use("/api/skills", skillRouter)
-app.use("/api/education", educationRouter)
+app.use("/api/education", EducationRouter)
 app.use("/api/projects", projectRouter)
 app.use("/api/experience", experienceRouter)
 

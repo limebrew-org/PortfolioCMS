@@ -7,15 +7,15 @@ import {
 	deleteEducationByID,
 	deleteAllEducationInfo
 } from "../controllers/education"
-import { middleware } from "../middleware/verifyJWT"
+import { TokenMiddleWare } from "../middleware/verifyToken"
 
 const educationRouter = express.Router()
 
 educationRouter.get("/all", getAllEducationInfo)
 educationRouter.get("/:id", getEducationById)
-educationRouter.post("/add", middleware, addEducation)
-educationRouter.put("/update/:id", middleware, updateEducationByID)
-educationRouter.delete("/delete/:id", middleware, deleteEducationByID)
-educationRouter.delete("/delete", middleware, deleteAllEducationInfo)
+educationRouter.post("/add", TokenMiddleWare, addEducation)
+educationRouter.put("/update/:id", TokenMiddleWare, updateEducationByID)
+educationRouter.delete("/delete/:id", TokenMiddleWare, deleteEducationByID)
+educationRouter.delete("/delete", TokenMiddleWare, deleteAllEducationInfo)
 
 export { educationRouter }

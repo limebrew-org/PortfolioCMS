@@ -116,11 +116,23 @@ class ResponseBody {
 	static error_not_matched(response: Response, info: ResponseBodyType) {
 		return response.status(401).json(info)
 	}
+
+	static error_unauthorized(response: Response, info: ResponseBodyType) {
+		return response.status(401).json(info)
+	}
 }
 
 
 
 class ResponseStatusHandler {
+	static success_token_valid(profile){
+		return {
+			status: 200,
+			message: `Success! token verification was successful`,
+			data: profile
+		}
+	}
+	
 	static success_get_one(schema:String,entity:Object): ResponseBodyType {
 		return {
 			status: 200,
