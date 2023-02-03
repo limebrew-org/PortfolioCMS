@@ -15,3 +15,10 @@ export type SocialType = {
 	linkedin: String
 	github: String
 }
+
+export enum ExperienceType {
+	job = "Job",
+	internship = "Internship"
+}
+
+export const data = {}

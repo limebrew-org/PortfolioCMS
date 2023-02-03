@@ -1,4 +1,4 @@
-export type ProfileQuerytype = {
+export type ProfileQueryType = {
     _id?: String,
     username?: String
     name?: String
@@ -20,8 +20,24 @@ export type ProjectQueryType = {
     _id?: String,
     profile_id?: String,
     name?: String,
-    technologies?: String,
+    technology?: String,
     description?: String
+}
+
+export type ExperienceQueryType = {
+    _id?: String,
+    profile_id?: String,
+    company?: String,
+    role?: String,
+    technology?: String,
+    summary?: String,
+    tenure?: String
+}
+
+export type SkillQueryType = {
+    _id?: String,
+    profile_id?: String,
+    field_name?: "frontend" | "backend" | "database" | "cloud" | "fundamentals" 
 }
 
 export type TokenQueryType = {

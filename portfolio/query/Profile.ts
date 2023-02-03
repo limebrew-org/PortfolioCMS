@@ -1,5 +1,5 @@
 import { ProfileModel } from "../schema/profile"
-import { ProfileQuerytype } from "../types/query"
+import { ProfileQueryType } from "../types/query"
 import { ProfileSchemaType } from "../utils/types"
 import { ResponseStatusHandler } from "../utils/handleResponse"
 import { ResponseBodyType } from "../utils/types"
@@ -10,7 +10,7 @@ class ProfileQuery {
 	static schema: String = "Profile"
 
 	//TODO: Get Multiple profiles based on query
-	static async getMany(query: ProfileQuerytype): Promise<ResponseBodyType> {
+	static async getMany(query: ProfileQueryType): Promise<ResponseBodyType> {
 		//? Grab all the profiles by query
 		const profileEntityList = await ProfileModel.find(query)
 
@@ -25,7 +25,7 @@ class ProfileQuery {
 	}
 
 	//TODO: Get single profile based on query
-	static async getOne(query: ProfileQuerytype): Promise<ResponseBodyType> {
+	static async getOne(query: ProfileQueryType): Promise<ResponseBodyType> {
 		//? Grab a single profile by query
 		const profileEntity = await ProfileModel.findOne(query)
 
@@ -62,12 +62,11 @@ class ProfileQuery {
 	//TODO: Update profile by Id and Email
 	static async updateById(
 		id: String,
-		email: String,
 		updatedProfile: ProfileSchemaType
 	): Promise<ResponseBodyType> {
 		//? Check if the profile exists for the given id and email
 		const existingProfileResponse: ResponseBodyType =
-			await ProfileQuery.getOne({ _id: id, email: email })
+			await ProfileQuery.getOne({ _id: id })
 
 		//? Check profile response
 		if (existingProfileResponse.status === 404)

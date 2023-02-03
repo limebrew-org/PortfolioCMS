@@ -59,7 +59,7 @@ class EducationController {
 		return false
 	}
     
-    async getAllEducationInfo(request:Request,response:Response){
+    async getAll(request:Request,response:Response){
         const query: EducationQuerytype = request.query
         
         //? Handlle Bad Request
@@ -84,7 +84,7 @@ class EducationController {
 
     }
 
-    async getEducationById(request:Request,response:Response){
+    async getById(request:Request,response:Response){
         const query: EducationQuerytype = request.params
 
         //? Handle Bad Request
@@ -109,7 +109,7 @@ class EducationController {
         return ResponseBody.error_not_found(response,educationEntityResponse)
     }
 
-    async addEducation(request:Request,response:Response){
+    async add(request:Request,response:Response){
         const inputEducationDetails: EducationSchemaType = request.body
 
         //? Grab the profile from the middleware
@@ -133,7 +133,7 @@ class EducationController {
         return ResponseBody.error_internal(response, educationAddResponse)
     }
 
-    async updateEducationById(request:Request,response:Response){
+    async updateById(request:Request,response:Response){
         const query: EducationQuerytype = request.params
 
         //? Grab the request body
@@ -165,11 +165,41 @@ class EducationController {
         return ResponseBody.error_internal(response, educationUpdateResponse)
     }
 
-    async deleteEducationById(request:Request,response:Response){
+    async deleteById(request:Request,response:Response){
+        const query: EducationQuerytype = request.params
 
+        //? Handle bad request
+        if(!EducationController.ObjectId.isValid(query["id"].toString()))
+            return ResponseBody.handleBadRequest(response)
+        
+        //? Grab the profile from middleware
+        const profile: ProfileMiddlewareType = request["profile"]
+
+        //? Delete the education entity
+        const deleteEducationResponse: ResponseBodyType = await EducationQuery.deleteById(query["id"].toString(), profile._id)
+
+        //? If the delete was successful
+        if(deleteEducationResponse.status === 204)
+            return ResponseBody.success_delete(response, deleteEducationResponse)
+
+        //? Else, return error
+        return ResponseBody.error_internal(response, deleteEducationResponse)
+    }   
+
+    async deleteAll(request:Request,response:Response){
+        //? Grab the profile from middleware
+        const profile: ProfileMiddlewareType = request["profile"]
+
+        //? Delete all education details
+        const deleteAllEducationResponse: ResponseBodyType = await EducationQuery.deleteMany(profile._id)
+
+        //? If the delete was successful
+        if(deleteAllEducationResponse.status === 204)
+            return ResponseBody.success_delete(response, deleteAllEducationResponse)
+        
+        //? Else, return error
+        return ResponseBody.error_internal(response, deleteAllEducationResponse)
     }
-
-    async deleteAllEducationDetails(request:Request,response:Response){}
 }
 
 export { EducationController }

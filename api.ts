@@ -2,12 +2,12 @@ import express from "express"
 import cors from "cors"
 import { connection } from "./portfolio/db/portfoliodb"
 import { dashboardRouter } from "./portfolio/routes/dashboard"
-import { profileRouter } from "./portfolio/routes/profile"
-import { projectRouter } from "./portfolio/routes/projects"
-import { experienceRouter } from "./portfolio/routes/experience"
+import { ProfileRouter } from "./portfolio/api/routes/profile"
+import { ExperienceRouter } from "./portfolio/api/routes/experience"
 import { skillRouter } from "./portfolio/routes/skills"
 import { EducationRouter } from "./portfolio/api/routes/education"
 import { PORTFOLIO_API_PORT } from "./portfolio/utils/constants"
+import { ProjectRouter } from "./portfolio/api/routes/projects"
 
 //! Error in connection
 connection.on("error", () => {
@@ -34,11 +34,11 @@ app.use(express.urlencoded({ extended: false }))
 
 //? API routes
 app.use("/api/dashboard", dashboardRouter)
-app.use("/api/profile", profileRouter)
+app.use("/api/profile", ProfileRouter)
 app.use("/api/skills", skillRouter)
 app.use("/api/education", EducationRouter)
-app.use("/api/projects", projectRouter)
-app.use("/api/experience", experienceRouter)
+app.use("/api/projects", ProjectRouter)
+app.use("/api/experience", ExperienceRouter)
 
 //TODO: Listen from API Server port
 app.listen(PORT, () => {

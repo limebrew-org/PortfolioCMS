@@ -6,7 +6,7 @@ import {
 	PORTFOLIO_PROJECT_FIELDS
 } from "./constants"
 import mongoose from "mongoose"
-import { EducationSchemaType, EducationUpdateType, ProfileSchemaType } from "./types"
+import { EducationSchemaType, EducationUpdateType, ExperienceUpdateType, ProfileSchemaType, ProjectUpdateType, SkillUpdateType } from "./types"
 
 class RequestBodyHandler {
 	cache: Array<String>
@@ -166,19 +166,58 @@ class EducationField {
 }
 
 class ProjectField {
-	static setAndUpdate(){}
+	static setAndUpdate(
+		projectEntity: Document,
+		updatedProjectInfo: ProjectUpdateType,
+		
+	){
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedProjectInfo)
+
+		//? Set the field if exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const projectKey = reqBodyKeys[i]
+			if (PORTFOLIO_PROJECT_FIELDS.includes(projectKey))
+				projectEntity[projectKey] = updatedProjectInfo[projectKey]
+		}
+	}
+}
+class ExperienceField {
+	static setAndUpdate(
+		experienceEntity: Document,
+		updatedExperienceInfo: ExperienceUpdateType,
+		
+	){
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedExperienceInfo)
+
+		//? Set the field if exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const experienceKey = reqBodyKeys[i]
+			if (PORTFOLIO_EXPERIENCE_FIELDS.includes(experienceKey))
+				experienceEntity[experienceKey] = updatedExperienceInfo[experienceKey]
+		}
+	}
 }
 
-class InternshipField {
-	static setAndUpdate(){}
-}
 
-class JobField {
-	static setAndUpdate(){}
-}
 
 class SkillField {
-	static setAndUpdate(){}
+	static setAndUpdate(
+		skillEntity: Object,
+		updatedSkillInfo: SkillUpdateType
+	){
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedSkillInfo)
+
+		//? set the field if it exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const skillField = reqBodyKeys[i]
+			if (PORTFOLIO_SKILL_FIELDS.includes(skillField)) {
+				skillEntity[skillField] = updatedSkillInfo[skillField]
+			}
+		}
+	}
 }
 
-export { RequestBodyHandler, ValidateSchema, ProfileField, EducationField, ProjectField, InternshipField , SkillField, JobField }
+export { RequestBodyHandler, ValidateSchema, ProfileField, EducationField, ProjectField, SkillField, ExperienceField }

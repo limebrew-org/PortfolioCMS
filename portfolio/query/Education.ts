@@ -26,7 +26,7 @@ class EducationQuery {
 	}
 
 	//TODO: Get Single education entity by Query
-	static async getOne(query: EducationQuerytype) {
+	static async getOne(query: EducationQuerytype): Promise<ResponseBodyType> {
 		//? Grab the single education entity by query
 		const educationEntity = await EducationModel.findOne(query)
 
@@ -45,7 +45,7 @@ class EducationQuery {
 	static async addOne(
 		educationInfo: EducationSchemaType
 	): Promise<ResponseBodyType> {
-		//? Create the education entity
+		//? Create a new education entity
 		const newEducationEntity = new EducationModel(educationInfo)
 
 		//? Save the education entity
