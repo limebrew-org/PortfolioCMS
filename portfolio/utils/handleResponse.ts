@@ -1,6 +1,7 @@
-import { ResponseBodyType } from "../types/response"
+import { DashboardResponseType, ResponseBodyType } from "../types/response"
 import { Document } from "mongoose"
 import { Response } from "express"
+import { DashboardQueryType } from "../types/query"
 
 class ResponseBody {
 	constructor() {}
@@ -86,6 +87,10 @@ class ResponseBody {
 			status: 400,
 			message: `400 Bad request! Mandatory fields not provided`
 		})
+	}
+
+	static success_dashboard(response: Response,info: DashboardResponseType) {
+		return response.status(200).json(info)
 	}
 
 	static success_auth(response: Response, info: ResponseBodyType) {

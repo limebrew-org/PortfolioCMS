@@ -27,7 +27,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-//? API routes
+//? Admin routes
 app.use("/admin", AdminRouter)
 
 //TODO: Listen from API Server port

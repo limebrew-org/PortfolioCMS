@@ -35,7 +35,7 @@ class AdminController {
 		)
 			return ResponseBody.handleBadRequest(response)
 
-		//? Else Query in the database
+		//? Else Query in the database and mask the profile
 		const queryProfileResponse: ResponseBodyType =
 			await ProfileQuery.getMany(query, true)
 

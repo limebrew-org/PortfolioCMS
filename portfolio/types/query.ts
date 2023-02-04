@@ -5,6 +5,10 @@ export type ProfileQueryType = {
 	email?: String
 }
 
+export type DashboardQueryType = {
+	id?: String
+}
+
 export type EducationQuerytype = {
 	_id?: String
 	profile_id?: String

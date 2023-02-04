@@ -16,7 +16,7 @@ const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
 		//? Verify signature of the access token and grab the payload
 		const payload = verifyToken(token, "access_token")
 
-		//? Get profile by the _id inside the payload
+		//? Get profile by the _id inside the payload and mask the profile
 		const existingProfileResponse: ResponseBodyType =
 			await ProfileQuery.getOne({
 				_id: payload["_id"].toString()
