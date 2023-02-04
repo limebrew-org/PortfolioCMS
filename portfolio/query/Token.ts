@@ -3,17 +3,29 @@ import { TokenQueryType } from "../types/query"
 import { ResponseBodyType } from "../types/response"
 import { ResponseStatusHandler } from "../utils/handleResponse"
 import { TokenSchemaType } from "../utils/types"
-import { ProfileQuery } from "./Profile"
 
 class TokenQuery {
 	//TODO: Schema Name
 	static schema: string = "Token"
 
 	//TODO: Get Multiple Tokens based on query
-	static async getMany(query: TokenQueryType) {}
+	static async getMany(query: TokenQueryType): Promise<ResponseBodyType> {
+		//? Get All Tokens for a profile (ideally 1 for each profile)
+		const tokenEntityList = await TokenModel.find(query)
+
+		//? If empty token list
+		if (tokenEntityList.length === 0)
+			return ResponseStatusHandler.error_not_found(TokenQuery.schema)
+
+		//? Else return filtered token EntityList
+		return ResponseStatusHandler.success_get_many(
+			TokenQuery.schema,
+			tokenEntityList
+		)
+	}
 
 	//TODO: Get A single Token based on Query
-	static async getOne(query: TokenQueryType) {
+	static async getOne(query: TokenQueryType): Promise<ResponseBodyType> {
 		//? Grab a single Token by query
 		const tokenEntity = await TokenModel.findOne(query)
 
@@ -21,6 +33,7 @@ class TokenQuery {
 		if (tokenEntity === null)
 			return ResponseStatusHandler.error_not_found(TokenQuery.schema)
 
+		//? Return token if it was found
 		return ResponseStatusHandler.success_get_one(
 			TokenQuery.schema,
 			tokenEntity
@@ -28,14 +41,17 @@ class TokenQuery {
 	}
 
 	//TODO: Add Token for a profile
-	static async addOne(tokenInfo: TokenSchemaType) {
+	static async addOne(tokenInfo: TokenSchemaType): Promise<ResponseBodyType> {
 		//? Else Create a new refresh token
 		const newRefreshTokenEntity = new TokenModel(tokenInfo)
 		return await TokenQuery.save(newRefreshTokenEntity, "ADD")
 	}
 
 	//TODO: Update Token by ID for a profile
-	static async updateById(profile_id: String, newToken: String) {
+	static async updateById(
+		profile_id: String,
+		newToken: String
+	): Promise<ResponseBodyType> {
 		//? Check if the token exists for a profile
 		const existingTokenResponse = await TokenQuery.getOne({
 			profile_id: profile_id
@@ -56,7 +72,10 @@ class TokenQuery {
 		return await TokenQuery.save(originalTokenEntity, "UPDATE")
 	}
 
-	static async save(tokenEntity, routeType: String) {
+	static async save(
+		tokenEntity,
+		routeType: String
+	): Promise<ResponseBodyType> {
 		return await tokenEntity
 			.save()
 			.then((tokenInfo) => {
@@ -73,7 +92,7 @@ class TokenQuery {
 	}
 
 	//TODO: Delete Token by ID for a profile
-	static async deleteOneById(profile_id: String) {
+	static async deleteOneById(profile_id: String): Promise<ResponseBodyType> {
 		//? Grab the Token for a profile
 		const existingTokenResponse: ResponseBodyType = await TokenQuery.getOne(
 			{
@@ -103,7 +122,9 @@ class TokenQuery {
 	}
 
 	//TODO: Delete all tokens (for admin only)
-	static async deleteMany() {}
+	static async deleteMany(): Promise<ResponseBodyType> {
+		return
+	}
 }
 
 export { TokenQuery }

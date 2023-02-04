@@ -17,7 +17,7 @@ class SkillController {
 	static ObjectId = mongoose.Types.ObjectId
 
 	//TODO: Valid skill Field schema
-	static isValidSkillFieldList(skillField: Array<String>) {
+	static isValidSkillFieldList(skillField: Array<String>): Boolean {
 		//? Check if skillField list is empty
 		if (skillField.length === 0) return false
 
@@ -30,7 +30,10 @@ class SkillController {
 	}
 
 	//TODO: Validate Schema
-	static isValidSchema(requestBody: SkillSchemaType, router: String) {
+	static isValidSchema(
+		requestBody: SkillSchemaType,
+		router: String
+	): Boolean {
 		//? Get keys of request body
 		const reqBodyKeys = Object.keys(requestBody)
 
@@ -71,15 +74,15 @@ class SkillController {
 
 		//? Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(query, [
+			!RequestBodyHandler.isValidMandatoryFields(query, [
 				"field_name",
 				"profile_id"
 			]) ||
-			!PORTFOLIO_SKILL_FIELDS.includes(query.field_name)
+			!PORTFOLIO_SKILL_FIELDS.includes(query?.field_name)
 		)
 			return ResponseBody.handleBadRequest(response)
 
-		//?Grab the profile id and field name from the query
+		//? Grab the profile id and field name from the query
 		const profileId: string = query.profile_id.toString()
 		const fieldName: string = query.field_name.toString()
 
@@ -88,17 +91,8 @@ class SkillController {
 			profile_id: profileId
 		})
 
-		//? Check if skill entity exist
-		if (skillEntityResponse.status === 200)
-			//? Return the skills for the field passed in query
-			return ResponseBody.success_found(response, {
-				status: 200,
-				message: `Skill details for profile ${profileId} found for field ${fieldName}`,
-				data: skillEntityResponse.data[fieldName]
-			})
-
-		//? Else, return error
-		return ResponseBody.error_not_found(response, skillEntityResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, skillEntityResponse)
 	}
 
 	//TODO: Get skill entity by id
@@ -107,7 +101,7 @@ class SkillController {
 
 		//? Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
 			!SkillController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -121,11 +115,7 @@ class SkillController {
 		})
 
 		//? Check if skill entity exists
-		if (skillEntityResponse.status === 200)
-			return ResponseBody.success_found(response, skillEntityResponse)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, skillEntityResponse)
+		return ResponseBody.handleResponse(response, skillEntityResponse)
 	}
 
 	//TODO: Add a skill entity for a profile
@@ -160,11 +150,7 @@ class SkillController {
 		)
 
 		//? Check skill entity response
-		if (skillAddResponse.status === 201)
-			return ResponseBody.success_add(response, skillAddResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, skillAddResponse)
+		return ResponseBody.handleResponse(response, skillAddResponse, true)
 	}
 
 	//TODO: Update a skill entity by Id for a profile
@@ -179,8 +165,9 @@ class SkillController {
 
 		//? Handle Bad Request
 		if (
-			!SkillController.isValidSchema(inputSkillDetails, "UPDATE") ||
-			!SkillController.ObjectId.isValid(query["id"].toString())
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
+			!SkillController.ObjectId.isValid(query["id"].toString()) ||
+			!SkillController.isValidSchema(inputSkillDetails, "UPDATE")
 		)
 			return ResponseBody.handleBadRequest(response)
 
@@ -195,11 +182,7 @@ class SkillController {
 			await SkillQuery.updateById(skillId, inputSkillDetails)
 
 		//? If the update was successful
-		if (skillUpdateResponse.status === 201)
-			return ResponseBody.success_update(response, skillUpdateResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, skillUpdateResponse)
+		return ResponseBody.handleResponse(response, skillUpdateResponse, true)
 	}
 
 	//TODO: Delete a skill entity by Id for a profile
@@ -207,7 +190,10 @@ class SkillController {
 		const query: SkillQueryType = request.params
 
 		//? Handle Bad Request
-		if (!SkillController.ObjectId.isValid(query["id"].toString()))
+		if (
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
+			!SkillController.ObjectId.isValid(query["id"].toString())
+		)
 			return ResponseBody.handleBadRequest(response)
 
 		//? Grab the profile from middleware
@@ -220,12 +206,8 @@ class SkillController {
 		const deleteSkillResponse: ResponseBodyType =
 			await SkillQuery.deleteById(skillId, profile._id)
 
-		//? If the deletion was successful
-		if (deleteSkillResponse.status === 204)
-			return ResponseBody.success_delete(response, deleteSkillResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, deleteSkillResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, deleteSkillResponse)
 	}
 }
 

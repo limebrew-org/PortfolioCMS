@@ -1,5 +1,5 @@
 import { SkillsModel } from "../schema/skills"
-import { ExperienceQueryType, SkillQueryType } from "../types/query"
+import { SkillQueryType } from "../types/query"
 import { ResponseBodyType } from "../types/response"
 import { SkillField } from "../utils/handleFields"
 import { ResponseStatusHandler } from "../utils/handleResponse"
@@ -9,13 +9,29 @@ class SkillQuery {
 	//TODO: Schema Name
 	static schema: String = "Skills"
 
+	//TODO: Get all skill details by Query
+	static async getMany(query: SkillQueryType): Promise<ResponseBodyType> {
+		//? Grab the Many skill entities by query
+		const skillEntityList = await SkillsModel.find(query)
+
+		//? If skill entity is not found
+		if (skillEntityList.length === 0)
+			return ResponseStatusHandler.error_not_found(SkillQuery.schema)
+
+		//? If found, return the skill entity list
+		return ResponseStatusHandler.success_get_many(
+			SkillQuery.schema,
+			skillEntityList
+		)
+	}
+
 	//TODO: Get Single skill details by Query
 	static async getOne(query: SkillQueryType): Promise<ResponseBodyType> {
 		//? Grab the single skill entity by query
 		const skillEntity = await SkillsModel.findOne(query)
 
 		//? If skill entity is not found
-		if (skillEntity == null)
+		if (skillEntity === null)
 			return ResponseStatusHandler.error_not_found(SkillQuery.schema)
 
 		//? If found, return the skill entity

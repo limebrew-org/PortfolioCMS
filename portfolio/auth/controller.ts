@@ -20,13 +20,13 @@ import { ProfileMiddlewareType } from "../types/middleware"
 
 class AuthController {
 	//TODO: Register profile (public)
-	async register(request: Request, response: Response) {
+	async register(request: Request, response: Response): Promise<Response> {
 		//? Grab the request body
 		const inputProfileDetails: ProfileSchemaType = request.body
 
 		//* Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(
+			!RequestBodyHandler.isValidMandatoryFields(
 				inputProfileDetails,
 				PORTFOLIO_PROFILE_REGISTER_FIELDS
 			)
@@ -85,17 +85,17 @@ class AuthController {
 		const addProfileResponse: ResponseBodyType = await ProfileQuery.addOne(
 			inputProfileDetails
 		)
-		return ResponseBody.handleStatus(response, addProfileResponse)
+		return ResponseBody.handleResponse(response, addProfileResponse)
 	}
 
 	//TODO: Login profile (public)
-	async login(request: Request, response: Response) {
+	async login(request: Request, response: Response): Promise<Response> {
 		//? Grab the request body
 		const inputProfileDetails: ProfileSchemaType = request.body
 
 		//* Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(
+			!RequestBodyHandler.isValidMandatoryFields(
 				inputProfileDetails,
 				PORTFOLIO_PROFILE_REGISTER_FIELDS
 			)
@@ -106,12 +106,18 @@ class AuthController {
 		let existingProfileResponse: ResponseBodyType
 
 		//? Check user by email or username in the database
-		if (RequestBodyHandler.isValidKeys(inputProfileDetails, ["email"])) {
+		if (
+			RequestBodyHandler.isValidMandatoryFields(inputProfileDetails, [
+				"email"
+			])
+		) {
 			existingProfileResponse = await ProfileQuery.getOne({
 				email: inputProfileDetails.email.toString().toLowerCase()
 			})
 		} else if (
-			RequestBodyHandler.isValidKeys(inputProfileDetails, ["username"])
+			RequestBodyHandler.isValidMandatoryFields(inputProfileDetails, [
+				"username"
+			])
 		) {
 			existingProfileResponse = await ProfileQuery.getOne({
 				username: inputProfileDetails.username.toString().toLowerCase()
@@ -154,7 +160,7 @@ class AuthController {
 		const updateTokenResponse: ResponseBodyType =
 			await TokenQuery.updateById(profileEntity._id, refreshToken)
 
-		//? If update status is 200 or 201 then return jwt
+		//? If update status is 201 then return jwt
 		if (updateTokenResponse.status === 201)
 			return ResponseBody.success_auth(response, {
 				status: 200,
@@ -165,8 +171,8 @@ class AuthController {
 				}
 			})
 
-		//? Else return internal server error
-		return ResponseBody.error_internal(response, updateTokenResponse)
+		//? Else handle response
+		return ResponseBody.handleResponse(response, updateTokenResponse)
 	}
 
 	//TODO: Logout user (authorization required)
@@ -175,7 +181,8 @@ class AuthController {
 		const profile: ProfileMiddlewareType = request["profile"]
 
 		//? Delete the refresh token for the profile
-		const tokenDeleteResponse = await TokenQuery.deleteOneById(profile._id)
+		const tokenDeleteResponse: ResponseBodyType =
+			await TokenQuery.deleteOneById(profile._id)
 
 		//? If token delete is successful
 		if (tokenDeleteResponse.status === 201)
@@ -184,17 +191,24 @@ class AuthController {
 				message: `Success! Token deleted, User logged out successfully`
 			})
 
-		//? Else return internal server error
-		return ResponseBody.error_internal(response, tokenDeleteResponse)
+		//? else handle response
+		return ResponseBody.handleResponse(response, tokenDeleteResponse)
 	}
 
 	//TODO: Generate Access Token
-	async generateToken(request: Request, response: Response) {
+	async generateToken(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		//? Grab the request body
 		const inputTokenDetails: TokenSchemaType = request.body
 
 		//* Handle Bad Request
-		if (!RequestBodyHandler.isValidKeys(inputTokenDetails, ["token"]))
+		if (
+			!RequestBodyHandler.isValidMandatoryFields(inputTokenDetails, [
+				"token"
+			])
+		)
 			return ResponseBody.handleBadRequest(response)
 
 		//? Else grab the refresh token
@@ -223,6 +237,21 @@ class AuthController {
 			}
 		)
 
+		//? If refresh token was found, create the access token
+		if (existingTokenResponse.status === 200) {
+			//* generate access token with the payload
+			const newAccessToken = generateAccessToken(payload)
+
+			//* return the access token
+			return ResponseBody.success_found(response, {
+				status: 200,
+				message: `Token successfully generated`,
+				data: {
+					access_token: newAccessToken
+				}
+			})
+		}
+
 		//? if token not found
 		if (existingTokenResponse.status === 404)
 			return ResponseBody.error_unauthorized(response, {
@@ -230,17 +259,8 @@ class AuthController {
 				error: `Error! Refresh Token not found, user not Logged in!`
 			})
 
-		//? Else generate access token with the payload
-		const newAccessToken = generateAccessToken(payload)
-
-		//? Send the access token to the client
-		return ResponseBody.success_found(response, {
-			status: 200,
-			message: `Token successfully generated`,
-			data: {
-				access_token: newAccessToken
-			}
-		})
+		//? Else handle response
+		return ResponseBody.handleResponse(response, existingTokenResponse)
 	}
 }
 

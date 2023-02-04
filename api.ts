@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import { connection } from "./portfolio/db/portfoliodb"
-import { dashboardRouter } from "./portfolio/routes/dashboard"
+import { DashboardRouter } from "./portfolio/api/routes/dashboard"
 import { ProfileRouter } from "./portfolio/api/routes/profile"
 import { ExperienceRouter } from "./portfolio/api/routes/experience"
 import { SkillRouter } from "./portfolio/api/routes/skills"
@@ -33,7 +33,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 //? API routes
-app.use("/api/dashboard", dashboardRouter)
+app.use("/api/dashboard", DashboardRouter)
 app.use("/api/profile", ProfileRouter)
 app.use("/api/skills", SkillRouter)
 app.use("/api/education", EducationRouter)

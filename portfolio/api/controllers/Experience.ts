@@ -19,7 +19,7 @@ class ExperienceController {
 	static ObjectId = mongoose.Types.ObjectId
 
 	//TODO: Validate technology schema
-	static isValidTechnologyList(technologies: Array<String>) {
+	static isValidTechnologyList(technologies: Array<String>): Boolean {
 		//? Check if technologies list is empty
 		if (technologies.length === 0) return false
 
@@ -32,7 +32,10 @@ class ExperienceController {
 	}
 
 	//TODO: Validate Schema
-	static isValidSchema(requestBody: ExperienceFieldType, router: String) {
+	static isValidSchema(
+		requestBody: ExperienceFieldType,
+		router: String
+	): Boolean {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(requestBody)
 
@@ -89,13 +92,16 @@ class ExperienceController {
 	}
 
 	//TODO: Get all internship entities for a profile
-	async getAllInternships(request: Request, response: Response) {
+	async getAllInternships(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const query: ExperienceQueryType = request.query
 		const schema = ExperienceType.internship
 
 		//? Handle bad request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["profile_id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["profile_id"]) ||
 			!ExperienceController.ObjectId.isValid(query.profile_id.toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -107,25 +113,18 @@ class ExperienceController {
 		const internshipEntityResponse: ResponseBodyType =
 			await ExperienceQuery.getMany({ profile_id: profileId }, schema)
 
-		//? Check if internship entity list exists
-		if (internshipEntityResponse.status === 200)
-			return ResponseBody.success_found(
-				response,
-				internshipEntityResponse
-			)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, internshipEntityResponse)
+		//? handle response
+		return ResponseBody.handleResponse(response, internshipEntityResponse)
 	}
 
 	//TODO: Get all job entities for a profile
-	async getAllJobs(request: Request, response: Response) {
+	async getAllJobs(request: Request, response: Response): Promise<Response> {
 		const query: ExperienceQueryType = request.query
 		const schema = ExperienceType.job
 
 		//? Handle bad request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["profile_id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["profile_id"]) ||
 			!ExperienceController.ObjectId.isValid(query.profile_id.toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -137,22 +136,21 @@ class ExperienceController {
 		const jobEntityResponse: ResponseBodyType =
 			await ExperienceQuery.getMany({ profile_id: profileId }, schema)
 
-		//? Check if job entity list exists
-		if (jobEntityResponse.status === 200)
-			return ResponseBody.success_found(response, jobEntityResponse)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, jobEntityResponse)
+		//? handle response
+		return ResponseBody.handleResponse(response, jobEntityResponse)
 	}
 
 	//TODO: Get internship entity for a profile by id
-	async getInternshipById(request: Request, response: Response) {
+	async getInternshipById(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const query: ExperienceQueryType = request.params
 		const schema = ExperienceType.internship
 
 		//? Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
 			!ExperienceController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -164,25 +162,18 @@ class ExperienceController {
 		const internshipEntityResponse: ResponseBodyType =
 			await ExperienceQuery.getOne({ _id: internshipId }, schema)
 
-		//? Check if internship entity exists
-		if (internshipEntityResponse.status === 200)
-			return ResponseBody.success_found(
-				response,
-				internshipEntityResponse
-			)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, internshipEntityResponse)
+		//? handle response
+		return ResponseBody.handleResponse(response, internshipEntityResponse)
 	}
 
 	//TODO: Get job entity for a profile by id
-	async getJobById(request: Request, response: Response) {
+	async getJobById(request: Request, response: Response): Promise<Response> {
 		const query: ExperienceQueryType = request.params
 		const schema = ExperienceType.job
 
 		//? Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
 			!ExperienceController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -194,16 +185,15 @@ class ExperienceController {
 		const jobEntityResponse: ResponseBodyType =
 			await ExperienceQuery.getOne({ _id: jobId }, schema)
 
-		//? Check if job entity exists
-		if (jobEntityResponse.status === 200)
-			return ResponseBody.success_found(response, jobEntityResponse)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, jobEntityResponse)
+		//? handle response
+		return ResponseBody.handleResponse(response, jobEntityResponse)
 	}
 
 	//TODO: Add a internship entity for a profile
-	async addInternship(request: Request, response: Response) {
+	async addInternship(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const inputInternshipDetails: InternshipSchemaType = request.body
 		const schema = ExperienceType.internship
 
@@ -221,16 +211,16 @@ class ExperienceController {
 		const internshipAddResponse: ResponseBodyType =
 			await ExperienceQuery.addOne(inputInternshipDetails, schema)
 
-		//? Check internship response
-		if (internshipAddResponse.status === 201)
-			return ResponseBody.success_add(response, internshipAddResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, internshipAddResponse)
+		//? handle response
+		return ResponseBody.handleResponse(
+			response,
+			internshipAddResponse,
+			true
+		)
 	}
 
 	//TODO: Add a job entity for a profile
-	async addJob(request: Request, response: Response) {
+	async addJob(request: Request, response: Response): Promise<Response> {
 		const inputJobDetails: JobSchemaType = request.body
 		const schema = ExperienceType.job
 
@@ -250,16 +240,15 @@ class ExperienceController {
 			schema
 		)
 
-		//? Check job response
-		if (jobAddResponse.status === 201)
-			return ResponseBody.success_add(response, jobAddResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, jobAddResponse)
+		//? handle response
+		return ResponseBody.handleResponse(response, jobAddResponse, true)
 	}
 
 	//TODO: Update internship entity by Id for a profile
-	async updateInternshipById(request: Request, response: Response) {
+	async updateInternshipById(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const query: ExperienceQueryType = request.params
 		const schema = ExperienceType.internship
 
@@ -275,10 +264,12 @@ class ExperienceController {
 				inputInternshipDetails,
 				"UPDATE"
 			) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
 			!ExperienceController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
 
+		//? Grab the intersnhip id from the query
 		const internshipId: string = query["id"].toString()
 
 		//? Add profile id in the request body
@@ -292,19 +283,19 @@ class ExperienceController {
 				schema
 			)
 
-		//? If the update was successful
-		if (internshipUpdateResponse.status === 201)
-			return ResponseBody.success_update(
-				response,
-				internshipUpdateResponse
-			)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, internshipUpdateResponse)
+		//? handle response
+		return ResponseBody.handleResponse(
+			response,
+			internshipUpdateResponse,
+			true
+		)
 	}
 
 	//TODO: Update job entity by Id for a profile
-	async updateJobById(request: Request, response: Response) {
+	async updateJobById(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const query: ExperienceQueryType = request.params
 		const schema = ExperienceType.job
 
@@ -317,6 +308,7 @@ class ExperienceController {
 		//? Handle bad request
 		if (
 			!ExperienceController.isValidSchema(inputJobDetails, "UPDATE") ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
 			!ExperienceController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -330,21 +322,23 @@ class ExperienceController {
 		const jobUpdateResponse: ResponseBodyType =
 			await ExperienceQuery.updateById(jobId, inputJobDetails, schema)
 
-		//? If the update was successful
-		if (jobUpdateResponse.status === 201)
-			return ResponseBody.success_update(response, jobUpdateResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, jobUpdateResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, jobUpdateResponse, true)
 	}
 
 	//TODO: Delete internship entity by Id for a profile
-	async deleteInternshipById(request: Request, response: Response) {
+	async deleteInternshipById(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const query: ExperienceQueryType = request.params
 		const schema = ExperienceType.internship
 
 		//? Handle bad request
-		if (!ExperienceController.ObjectId.isValid(query["id"].toString()))
+		if (
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
+			!ExperienceController.ObjectId.isValid(query["id"].toString())
+		)
 			return ResponseBody.handleBadRequest(response)
 
 		//? Grab the profile from middleware
@@ -357,24 +351,23 @@ class ExperienceController {
 		const deleteInternshipResponse: ResponseBodyType =
 			await ExperienceQuery.deleteById(internshipId, profile._id, schema)
 
-		//? If the delete was successful
-		if (deleteInternshipResponse.status === 204)
-			return ResponseBody.success_delete(
-				response,
-				deleteInternshipResponse
-			)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, deleteInternshipResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, deleteInternshipResponse)
 	}
 
 	//TODO: Delete job entity by Id for a profile
-	async deleteJobById(request: Request, response: Response) {
+	async deleteJobById(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const query: ExperienceQueryType = request.params
 		const schema = ExperienceType.job
 
 		//? Handle bad request
-		if (!ExperienceController.ObjectId.isValid(query["id"].toString()))
+		if (
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
+			!ExperienceController.ObjectId.isValid(query["id"].toString())
+		)
 			return ResponseBody.handleBadRequest(response)
 
 		//? Grab the profile from middleware
@@ -387,16 +380,15 @@ class ExperienceController {
 		const deleteJobResponse: ResponseBodyType =
 			await ExperienceQuery.deleteById(jobId, profile._id, schema)
 
-		//? If the deletion was successful
-		if (deleteJobResponse.status === 204)
-			return ResponseBody.success_delete(response, deleteJobResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, deleteJobResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, deleteJobResponse)
 	}
 
 	//TODO: Delete all internship entities for a profile
-	async deleteAllInternships(request: Request, response: Response) {
+	async deleteAllInternships(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const schema = ExperienceType.internship
 
 		//? Grab the profile from middleware
@@ -406,22 +398,18 @@ class ExperienceController {
 		const deleteAllInternshipResponse: ResponseBodyType =
 			await ExperienceQuery.deleteMany(profile._id, schema)
 
-		//? If the delete was successful
-		if (deleteAllInternshipResponse.status === 204)
-			return ResponseBody.success_delete(
-				response,
-				deleteAllInternshipResponse
-			)
-
-		//? Else, return error
-		return ResponseBody.error_internal(
+		//? Handle response
+		return ResponseBody.handleResponse(
 			response,
 			deleteAllInternshipResponse
 		)
 	}
 
 	//TODO: Delete all job entities for a profile
-	async deleteAllJobs(request: Request, response: Response) {
+	async deleteAllJobs(
+		request: Request,
+		response: Response
+	): Promise<Response> {
 		const schema = ExperienceType.job
 
 		//? Grab the profile from middleware
@@ -431,12 +419,8 @@ class ExperienceController {
 		const deleteAllJobResponse: ResponseBodyType =
 			await ExperienceQuery.deleteMany(profile._id, schema)
 
-		//? If the delete was successful
-		if (deleteAllJobResponse.status === 204)
-			return ResponseBody.success_delete(response, deleteAllJobResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, deleteAllJobResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, deleteAllJobResponse)
 	}
 }
 

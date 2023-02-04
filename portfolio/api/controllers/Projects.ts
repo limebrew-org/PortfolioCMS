@@ -13,7 +13,7 @@ class ProjectController {
 	static ObjectId = mongoose.Types.ObjectId
 
 	//TODO Validate technology schema
-	static isValidTechnologyList(technologies: Array<String>) {
+	static isValidTechnologyList(technologies: Array<String>): Boolean {
 		//? Check if technologies list is empty
 		if (technologies.length === 0) return false
 
@@ -26,7 +26,10 @@ class ProjectController {
 	}
 
 	//TODO: Validate schema
-	static isValidSchema(requestBody: ProjectSchemaType, router: String) {
+	static isValidSchema(
+		requestBody: ProjectSchemaType,
+		router: String
+	): Boolean {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(requestBody)
 
@@ -82,12 +85,12 @@ class ProjectController {
 	}
 
 	//TODO: Get all project entities for a profile
-	async getAll(request: Request, response: Response) {
+	async getAll(request: Request, response: Response): Promise<Response> {
 		const query: ProjectQueryType = request.query
 
 		//? Handlle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["profile_id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["profile_id"]) ||
 			!ProjectController.ObjectId.isValid(query.profile_id.toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -99,21 +102,17 @@ class ProjectController {
 		const projectEntityResponse: ResponseBodyType =
 			await ProjectQuery.getMany({ profile_id: profileId })
 
-		//? Check if project entity list exists
-		if (projectEntityResponse.status === 200)
-			return ResponseBody.success_found(response, projectEntityResponse)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, projectEntityResponse)
+		//? handle response
+		return ResponseBody.handleResponse(response, projectEntityResponse)
 	}
 
 	//TODO: Get project entity for a profile by id
-	async getById(request: Request, response: Response) {
+	async getById(request: Request, response: Response): Promise<Response> {
 		const query: ProjectQueryType = request.params
 
 		//? Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
 			!ProjectController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -125,16 +124,12 @@ class ProjectController {
 		const projectEntityResponse: ResponseBodyType =
 			await ProjectQuery.getOne({ _id: projectId })
 
-		//? Check if project entity exists
-		if (projectEntityResponse.status === 200)
-			return ResponseBody.success_found(response, projectEntityResponse)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, projectEntityResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, projectEntityResponse)
 	}
 
 	//TODO: Add a project entity for a profile
-	async add(request: Request, response: Response) {
+	async add(request: Request, response: Response): Promise<Response> {
 		const inputProjectDetails: ProjectSchemaType = request.body
 
 		//? Grab the profile from the middleware
@@ -152,16 +147,12 @@ class ProjectController {
 			inputProjectDetails
 		)
 
-		//? Check project response
-		if (projectAddResponse.status === 201)
-			return ResponseBody.success_add(response, projectAddResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, projectAddResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, projectAddResponse, true)
 	}
 
 	//TODO: Update project entity by Id for a profile
-	async updateById(request: Request, response: Response) {
+	async updateById(request: Request, response: Response): Promise<Response> {
 		const query: ProjectQueryType = request.params
 
 		//? Grab the request body
@@ -172,8 +163,9 @@ class ProjectController {
 
 		//? Handle bad request
 		if (
-			!ProjectController.isValidSchema(inputProjectDetails, "UPDATE") ||
-			!ProjectController.ObjectId.isValid(query["id"].toString())
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
+			!ProjectController.ObjectId.isValid(query["id"].toString()) ||
+			!ProjectController.isValidSchema(inputProjectDetails, "UPDATE")
 		)
 			return ResponseBody.handleBadRequest(response)
 
@@ -188,11 +180,11 @@ class ProjectController {
 			await ProjectQuery.updateById(projectId, inputProjectDetails)
 
 		//? If the update was successful
-		if (projectUpdateResponse.status === 201)
-			return ResponseBody.success_update(response, projectUpdateResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, projectUpdateResponse)
+		return ResponseBody.handleResponse(
+			response,
+			projectUpdateResponse,
+			true
+		)
 	}
 
 	//TODO: Delete project entity by Id for a profile
@@ -200,7 +192,10 @@ class ProjectController {
 		const query: ProjectQueryType = request.params
 
 		//? Handle bad request
-		if (!ProjectController.ObjectId.isValid(query["id"].toString()))
+		if (
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
+			!ProjectController.ObjectId.isValid(query["id"].toString())
+		)
 			return ResponseBody.handleBadRequest(response)
 
 		//? Grab the profile from middleware
@@ -213,16 +208,12 @@ class ProjectController {
 		const deleteProjectResponse: ResponseBodyType =
 			await ProjectQuery.deleteById(projectId, profile._id)
 
-		//? If the delete was successful
-		if (deleteProjectResponse.status === 204)
-			return ResponseBody.success_delete(response, deleteProjectResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, deleteProjectResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, deleteProjectResponse)
 	}
 
 	//TODO: Delete all project entities for a profile
-	async deleteAll(request: Request, response: Response) {
+	async deleteAll(request: Request, response: Response): Promise<Response> {
 		//? Grab the profile from middleware
 		const profile: ProfileMiddlewareType = request["profile"]
 
@@ -230,15 +221,8 @@ class ProjectController {
 		const deleteAllProjectResponse: ResponseBodyType =
 			await ProjectQuery.deleteMany(profile._id)
 
-		//? If the delete was successful
-		if (deleteAllProjectResponse.status === 204)
-			return ResponseBody.success_delete(
-				response,
-				deleteAllProjectResponse
-			)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, deleteAllProjectResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, deleteAllProjectResponse)
 	}
 }
 

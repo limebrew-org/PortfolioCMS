@@ -22,7 +22,7 @@ services:
 
         #? Ports
         ports:
-            - "8000:8000"
+            - "8001:8001"
 
         #? Environment file
         env_file:
@@ -54,7 +54,7 @@ services:
 
         #? Ports
         ports:
-            - "9000:9000"
+            - "8002:8002"
 
         #? Environment file
         env_file:

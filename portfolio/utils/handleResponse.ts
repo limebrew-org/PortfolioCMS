@@ -5,14 +5,30 @@ import { Response } from "express"
 class ResponseBody {
 	constructor() {}
 
-	static handleStatus(response: Response, info: ResponseBodyType) {
+	static handleResponse(
+		response: Response,
+		info: ResponseBodyType,
+		data?: Boolean
+	) {
 		if (info.status === 200)
 			return ResponseBody.success_found(response, info)
-		if (info.status === 201)
+		if (info.status === 201) {
+			if (data)
+				return ResponseBody.success_update(response, {
+					status: 201,
+					message: info.message,
+					data: info.data
+				})
 			return ResponseBody.success_update(response, {
 				status: 201,
 				message: info.message
 			})
+		}
+		if (info.status === 404)
+			return ResponseBody.error_not_found(response, info)
+		if (info.status === 500)
+			return ResponseBody.error_internal(response, info)
+		else return ResponseBody.error_internal(response, info)
 	}
 
 	static demoResponse(response: Response) {

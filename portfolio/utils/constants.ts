@@ -10,6 +10,9 @@ export const PORTFOLIO_AUTH_PORT = process.env.PORTFOLIO_AUTH_PORT
 //? Portfolio-CMS Api Server PORT
 export const PORTFOLIO_API_PORT = process.env.PORTFOLIO_API_PORT
 
+//? Portfolio-CMS Admin Server PORT
+export const PORTFOLIO_ADMIN_PORT = process.env.PORTFOLIO_ADMIN_PORT
+
 //? Database Connection URL
 export const PORTFOLIO_DB_CONNECTION_URL =
 	process.env.PORTFOLIO_DB_CONNECTION_URL

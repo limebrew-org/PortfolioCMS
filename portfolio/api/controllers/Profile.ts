@@ -14,7 +14,7 @@ class ProfileController {
 	static ObjectId = mongoose.Types.ObjectId
 
 	//TODO Check Valid Socials
-	static isValidSocials(socialField: SocialType) {
+	static isValidSocials(socialField: SocialType): Boolean {
 		if ("twitter" in socialField) {
 			if (
 				typeof socialField.twitter !== "string" ||
@@ -40,7 +40,7 @@ class ProfileController {
 	}
 
 	//TODO Check Valid Schema
-	static isValidSchema(requestBody: ProfileUpdateType) {
+	static isValidSchema(requestBody: ProfileUpdateType): Boolean {
 		if ("name" in requestBody) {
 			if (
 				typeof requestBody?.name !== "string" ||
@@ -69,12 +69,12 @@ class ProfileController {
 	}
 
 	//TODO: Get profile by Id
-	async getById(request: Request, response: Response) {
+	async getById(request: Request, response: Response): Promise<Response> {
 		const query: ProfileQueryType = request.params
 
 		//? Handle Bad Request
 		if (
-			!RequestBodyHandler.isValidKeys(query, ["id"]) ||
+			!RequestBodyHandler.isValidMandatoryFields(query, ["id"]) ||
 			!ProfileController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -84,18 +84,14 @@ class ProfileController {
 
 		//? Query the profile details by id
 		const profileEntityResponse: ResponseBodyType =
-			await ProfileQuery.getOne({ _id: profileId })
+			await ProfileQuery.getOne({ _id: profileId }, true)
 
-		//? Check if profile entity exists
-		if (profileEntityResponse.status === 200)
-			return ResponseBody.success_found(response, profileEntityResponse)
-
-		//? Else, return error not found
-		return ResponseBody.error_not_found(response, profileEntityResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, profileEntityResponse)
 	}
 
 	//TODO: Update profile by Id
-	async update(request: Request, response: Response) {
+	async update(request: Request, response: Response): Promise<Response> {
 		//? Grab the request body
 		const inputProfileDetails: ProfileSchemaType = request.body
 
@@ -106,18 +102,15 @@ class ProfileController {
 		if (!ProfileController.isValidSchema(inputProfileDetails))
 			return ResponseBody.handleBadRequest(response)
 
+		//? Grab the profile id from the middleware
 		const profileId: string = profile._id.toString()
 
 		//? Update profile details
 		const profileUpdateResponse: ResponseBodyType =
 			await ProfileQuery.updateById(profileId, inputProfileDetails)
 
-		//? If the update was successful
-		if (profileUpdateResponse.status === 201)
-			return ResponseBody.success_update(response, profileUpdateResponse)
-
-		//? Else, return error
-		return ResponseBody.error_internal(response, profileUpdateResponse)
+		//? Handle response
+		return ResponseBody.handleResponse(response, profileUpdateResponse)
 	}
 
 	//TODO: Delete profile by Id

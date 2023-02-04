@@ -4,13 +4,50 @@ import { ProfileSchemaType } from "../utils/types"
 import { ResponseStatusHandler } from "../utils/handleResponse"
 import { ResponseBodyType } from "../utils/types"
 import { ProfileField } from "../utils/handleFields"
+import { ProfileMiddlewareType } from "../types/middleware"
 
 class ProfileQuery {
 	//TODO: Schema Name
 	static schema: String = "Profile"
 
+	//TODO: Mask Profile Entity
+	static maskedProfileEntity(profileEntity: any) {
+		const modifiedProfileEntity: ProfileMiddlewareType = {
+			_id: profileEntity._id,
+			username: profileEntity.username,
+			name: profileEntity.name,
+			email: profileEntity.email,
+			bio: profileEntity.bio,
+			socials: profileEntity.socials
+		}
+		return modifiedProfileEntity
+	}
+
+	//TODO: Mask Profile Entity List
+	static maskedProfileEntityList = (profileEntityList: any) => {
+		//? Handle empty list
+		if (profileEntityList.length === 0) return []
+
+		let modifiedEntityList: any = []
+		for (let i = 0; i < profileEntityList.length; i++) {
+			const modifiedProfileEntity: ProfileMiddlewareType = {
+				_id: profileEntityList[i]._id,
+				username: profileEntityList[i].username,
+				name: profileEntityList[i].name,
+				email: profileEntityList[i].email,
+				bio: profileEntityList[i].bio,
+				socials: profileEntityList[i].socials
+			}
+			modifiedEntityList.push(modifiedProfileEntity)
+		}
+		return modifiedEntityList
+	}
+
 	//TODO: Get Multiple profiles based on query
-	static async getMany(query: ProfileQueryType): Promise<ResponseBodyType> {
+	static async getMany(
+		query: ProfileQueryType,
+		mask?: Boolean
+	): Promise<ResponseBodyType> {
 		//? Grab all the profiles by query
 		const profileEntityList = await ProfileModel.find(query)
 
@@ -18,6 +55,20 @@ class ProfileQuery {
 		if (profileEntityList.length === 0)
 			return ResponseStatusHandler.error_not_found(ProfileQuery.schema)
 
+		//? If mask is true
+		if (mask) {
+			//? Mask profile Entity list
+			const maskedProfileEntityList =
+				ProfileQuery.maskedProfileEntityList(profileEntityList)
+
+			//? return response
+			return ResponseStatusHandler.success_get_many(
+				ProfileQuery.schema,
+				maskedProfileEntityList
+			)
+		}
+
+		//? return response
 		return ResponseStatusHandler.success_get_many(
 			ProfileQuery.schema,
 			profileEntityList
@@ -25,7 +76,10 @@ class ProfileQuery {
 	}
 
 	//TODO: Get single profile based on query
-	static async getOne(query: ProfileQueryType): Promise<ResponseBodyType> {
+	static async getOne(
+		query: ProfileQueryType,
+		mask?: Boolean
+	): Promise<ResponseBodyType> {
 		//? Grab a single profile by query
 		const profileEntity = await ProfileModel.findOne(query)
 
@@ -33,6 +87,20 @@ class ProfileQuery {
 		if (profileEntity === null)
 			return ResponseStatusHandler.error_not_found(ProfileQuery.schema)
 
+		//? If mask is true
+		if (mask) {
+			//? Mask profile Entity
+			const maskedProfileEntity =
+				ProfileQuery.maskedProfileEntity(profileEntity)
+
+			//? return response
+			return ResponseStatusHandler.success_get_one(
+				ProfileQuery.schema,
+				maskedProfileEntity
+			)
+		}
+
+		//? return response
 		return ResponseStatusHandler.success_get_one(
 			ProfileQuery.schema,
 			profileEntity
