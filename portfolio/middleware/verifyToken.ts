@@ -6,7 +6,6 @@ import { ResponseBody, ResponseStatusHandler } from "../utils/handleResponse"
 import { verifyToken } from "../utils/handleToken"
 import { AuthorizationResponseType } from "../utils/types"
 import { ProfileQuery } from "../query/Profile"
-import { maskedProfileEntity } from "../utils/maskProfile"
 
 //TODO: Handle JWT Authorization
 const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
@@ -21,7 +20,7 @@ const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
 		const existingProfileResponse: ResponseBodyType =
 			await ProfileQuery.getOne({
 				_id: payload["_id"].toString()
-			})
+			},true)
 
 		//? If profile not found
 		if (existingProfileResponse.status === 404)
@@ -30,14 +29,11 @@ const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
 		//? Grab the profile entity from the response
 		const profileEntity = existingProfileResponse.data
 
-		//? Mask the profile (without password)
-		const modifiedProfileEntity = maskedProfileEntity(profileEntity)
-
 		//? Return the response
-		console.log("Middleware verification successful!")
-		return ResponseStatusHandler.success_token_valid(modifiedProfileEntity)
+		console.log("JWT-Middleware verification successful!")
+		return ResponseStatusHandler.success_token_valid(profileEntity)
 	} catch (error) {
-		console.log("Middleware verification failed!")
+		console.log("JWT-Middleware verification failed!")
 		return ResponseStatusHandler.error_unauthorized()
 	}
 }
@@ -77,7 +73,6 @@ const TokenMiddleWare = async (
 	else if (type === AUTHENTICATION_METHOD.API_KEY)
 		tokenValidationResponse = await handleAPIKeyAuth(value)
 
-	console.log("Token response: ", tokenValidationResponse)
 	if (tokenValidationResponse.status === 200) {
 		request["profile"] = tokenValidationResponse.data
 		next()
