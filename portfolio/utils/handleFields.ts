@@ -6,6 +6,14 @@ import {
 	PORTFOLIO_PROJECT_FIELDS
 } from "./constants"
 import mongoose from "mongoose"
+import {
+	EducationSchemaType,
+	EducationUpdateType,
+	ExperienceUpdateType,
+	ProfileSchemaType,
+	ProjectUpdateType,
+	SkillUpdateType
+} from "./types"
 
 class RequestBodyHandler {
 	cache: Array<String>
@@ -28,6 +36,47 @@ class RequestBodyHandler {
 				typeof field[fieldName] !== "string" ||
 				field[fieldName] === undefined ||
 				field[fieldName]?.length === 0
+			)
+				return false
+		}
+		return true
+	}
+
+	//TODO: Handle Mandatory Fields
+	static isValidMandatoryFields(
+		field: Object,
+		mandatoryFieldList: Array<string>
+	) {
+		for (let i = 0; i < mandatoryFieldList.length; i++) {
+			const mandatoryFieldName: string = mandatoryFieldList[i]
+			if (
+				!field.hasOwnProperty(mandatoryFieldName) ||
+				typeof field[mandatoryFieldName] !== "string" ||
+				field[mandatoryFieldName] === undefined ||
+				field[mandatoryFieldName]?.length === 0
+			)
+				return false
+		}
+		return true
+	}
+
+	//TODO: Handle Optional Fields
+	static isValidOptionalFields(
+		field: Object,
+		optionalFieldList: Array<string>
+	) {
+		const inputfieldList: Array<string> = Object.keys(field)
+
+		//? Else loop over the keys and check if the key is found in the optional key list
+		for (let i = 0; i < inputfieldList.length; i++) {
+			const inputFieldName: string = inputfieldList[i]
+
+			//? Check the validity of the input fields
+			if (
+				!optionalFieldList.includes(inputFieldName) ||
+				typeof field[inputFieldName] !== "string" ||
+				field[inputFieldName] === undefined ||
+				field[inputFieldName]?.length === 0
 			)
 				return false
 		}
@@ -122,4 +171,106 @@ abstract class ValidateSchema {
 	abstract isValidSchema(): Boolean
 }
 
-export { RequestBodyHandler, ValidateSchema}
+class ProfileField {
+	static setAndUpdate(
+		profileEntity: ProfileSchemaType,
+		updatedFields: ProfileSchemaType
+	) {
+		if ("name" in updatedFields) {
+			profileEntity.name = updatedFields.name
+		}
+		if ("bio" in updatedFields) {
+			profileEntity.bio = updatedFields.bio
+		}
+		if ("socials" in updatedFields) {
+			if ("twitter" in updatedFields.socials) {
+				profileEntity.socials.twitter = updatedFields.socials.twitter
+			}
+			if ("linkedin" in updatedFields.socials) {
+				profileEntity.socials.linkedin = updatedFields.socials.linkedin
+			}
+			if ("github" in updatedFields.socials) {
+				profileEntity.socials.github = updatedFields.socials.github
+			}
+		}
+	}
+}
+
+class EducationField {
+	static setAndUpdate(
+		educationEntity: Document,
+		updatedEducationInfo: EducationSchemaType
+	) {
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedEducationInfo)
+
+		//? Set the field if key exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const key = reqBodyKeys[i]
+			if (PORTFOLIO_EDUCATION_FIELDS.includes(key))
+				educationEntity[key] = updatedEducationInfo[key]
+		}
+	}
+}
+
+class ProjectField {
+	static setAndUpdate(
+		projectEntity: Document,
+		updatedProjectInfo: ProjectUpdateType
+	) {
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedProjectInfo)
+
+		//? Set the field if exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const projectKey = reqBodyKeys[i]
+			if (PORTFOLIO_PROJECT_FIELDS.includes(projectKey))
+				projectEntity[projectKey] = updatedProjectInfo[projectKey]
+		}
+	}
+}
+class ExperienceField {
+	static setAndUpdate(
+		experienceEntity: Document,
+		updatedExperienceInfo: ExperienceUpdateType
+	) {
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedExperienceInfo)
+
+		//? Set the field if exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const experienceKey = reqBodyKeys[i]
+			if (PORTFOLIO_EXPERIENCE_FIELDS.includes(experienceKey))
+				experienceEntity[experienceKey] =
+					updatedExperienceInfo[experienceKey]
+		}
+	}
+}
+
+class SkillField {
+	static setAndUpdate(
+		skillEntity: Object,
+		updatedSkillInfo: SkillUpdateType
+	) {
+		//? Get keys of requestBody
+		const reqBodyKeys = Object.keys(updatedSkillInfo)
+
+		//? set the field if it exists
+		for (let i = 0; i < reqBodyKeys.length; i++) {
+			const skillField = reqBodyKeys[i]
+			if (PORTFOLIO_SKILL_FIELDS.includes(skillField)) {
+				skillEntity[skillField] = updatedSkillInfo[skillField]
+			}
+		}
+	}
+}
+
+export {
+	RequestBodyHandler,
+	ValidateSchema,
+	ProfileField,
+	EducationField,
+	ProjectField,
+	SkillField,
+	ExperienceField
+}

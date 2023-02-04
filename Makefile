@@ -14,6 +14,9 @@ run_auth_local:
 run_api_local:
 	npm run start:api[local]
 
+run_admin_local:
+	npm run start:admin[local]
+
 run_auth_dev:
 	npm run start:auth[dev]
 

@@ -10,6 +10,9 @@ export const PORTFOLIO_AUTH_PORT = process.env.PORTFOLIO_AUTH_PORT
 //? Portfolio-CMS Api Server PORT
 export const PORTFOLIO_API_PORT = process.env.PORTFOLIO_API_PORT
 
+//? Portfolio-CMS Admin Server PORT
+export const PORTFOLIO_ADMIN_PORT = process.env.PORTFOLIO_ADMIN_PORT
+
 //? Database Connection URL
 export const PORTFOLIO_DB_CONNECTION_URL =
 	process.env.PORTFOLIO_DB_CONNECTION_URL
@@ -67,7 +70,6 @@ export const PORTFOLIO_SKILL_FIELDS: Array<String> = [
 	"fundamentals"
 ]
 
-
 export const PORTFOLIO_EXPERIENCE_FIELDS: Array<String> = [
 	"company",
 	"role",
@@ -83,7 +85,7 @@ export const PORTFOLIO_PROJECT_FIELDS: Array<String> = [
 	"link"
 ]
 
-export const TOKEN_TYPE = {
+export const TOKEN = {
 	refreshToken: "refresh_token",
 	accessToken: "access_token"
 }

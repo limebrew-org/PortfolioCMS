@@ -1,16 +1,16 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { SkillType } from "../utils/types"
+import { SkillSchemaType } from "../utils/types"
 
 const { Schema } = mongoose
 
-const skillSchema = new Schema<SkillType>({
+const skillSchema = new Schema<SkillSchemaType>({
 	profile_id: { type: String, required: true },
-	frontend: [{ type: Object }],
-	backend: [{ type: Object }],
-	database: [{ type: Object }],
-	cloud: [{ type: Object }],
-	fundamentals: [{ type: Object }]
+	frontend: [{ type: String }],
+	backend: [{ type: String }],
+	database: [{ type: String }],
+	cloud: [{ type: String }],
+	fundamentals: [{ type: String }]
 })
 
 const SkillsModel = portfolioDb.model("skills", skillSchema)

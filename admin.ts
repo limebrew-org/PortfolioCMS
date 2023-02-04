@@ -1,8 +1,8 @@
 import express from "express"
 import cors from "cors"
 import { connection } from "./portfolio/db/portfoliodb"
-import { AuthRouter } from "./portfolio/auth/routes"
-import { PORTFOLIO_AUTH_PORT } from "./portfolio/utils/constants"
+import { AdminRouter } from "./portfolio/admin/routes"
+import { PORTFOLIO_ADMIN_PORT } from "./portfolio/utils/constants"
 
 //! Error in connection
 connection.on("error", () => {
@@ -18,7 +18,7 @@ connection.on("connected", function () {
 const app = express()
 
 // TODO: Set API port
-const PORT = process.env.PORT || PORTFOLIO_AUTH_PORT
+const PORT = process.env.PORT || PORTFOLIO_ADMIN_PORT
 
 //TODO: Configure CORS
 app.use(cors())
@@ -27,12 +27,12 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-//? Auth routes
-app.use("/auth", AuthRouter)
+//? Admin routes
+app.use("/admin", AdminRouter)
 
-//TODO: Listen to Auth Server connections on PORT
+//TODO: Listen from API Server port
 app.listen(PORT, () => {
 	console.log(
-		`Portfolio-CMS: AUTH-Server running successfully on http://localhost:${PORT}`
+		`Portfolio-CMS: Admin-Server running successfully on http://localhost:${PORT}`
 	)
 })

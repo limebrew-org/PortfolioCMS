@@ -22,7 +22,7 @@ services:
 
         #? Ports
         ports:
-            - "8000:8000"
+            - "8001:8001"
 
         #? Environment file
         env_file:
@@ -54,7 +54,7 @@ services:
 
         #? Ports
         ports:
-            - "9000:9000"
+            - "8002:8002"
 
         #? Environment file
         env_file:
@@ -63,6 +63,39 @@ services:
         #? Container dependencies
         depends_on:
             - db
+    
+    admin:
+        #? Interactive shell
+        stdin_open: true
+        tty: true
+
+        #? Set container name
+        container_name: portfolio_admin
+
+        #? Build the api service
+        build:
+            context: .
+            dockerfile: Dockerfile.admin.dev
+
+        #? Restart if down
+        restart: always
+
+        #? Volumes
+        volumes:
+            - "./portfolio:/app/portfolio"
+
+        #? Ports
+        ports:
+            - "8003:8003"
+
+        #? Environment file
+        env_file:
+            - ".env.dev"
+
+        #? Container dependencies
+        depends_on:
+            - db
+
 
     db:
         #? Set container name (will be used to access db by container_name)

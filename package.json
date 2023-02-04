@@ -6,8 +6,10 @@
 	"scripts": {
 		"start:auth[local]": "cross-env NODE_ENV=local nodemon auth.ts",
 		"start:api[local]": "cross-env NODE_ENV=local nodemon api.ts",
+		"start:admin[local]": "cross-env NODE_ENV=local nodemon admin.ts",
 		"start:auth[dev]": "cross-env NODE_ENV=dev nodemon auth.ts",
 		"start:api[dev]": "cross-env NODE_ENV=dev nodemon api.ts",
+		"start:admin[dev]": "cross-env NODE_ENV=dev nodemon admin.ts",
 		"start:auth[prod]": "cross-env NODE_ENV=prod node dist/auth.js",
 		"start:api[prod]": "cross-env NODE_ENV=prod node dist/api.js",
 		"test:inspect": "python tests/main.py",
