@@ -1,5 +1,3 @@
-class DashboardController {
-
-}
+class DashboardController {}
 
 export { DashboardController }

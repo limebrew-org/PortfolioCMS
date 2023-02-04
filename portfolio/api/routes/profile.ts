@@ -2,8 +2,7 @@ import express from "express"
 import { TokenMiddleWare } from "../../middleware/verifyToken"
 import { ProfileController } from "../controllers/Profile"
 
-
-const ProfileRouter =  express.Router()
+const ProfileRouter = express.Router()
 const profileController = new ProfileController()
 
 ProfileRouter.get("/:id", profileController.getById)

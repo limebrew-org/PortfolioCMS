@@ -11,7 +11,6 @@ import { PORTFOLIO_SKILL_FIELDS } from "../utils/constants"
 import mongoose from "mongoose"
 
 class SkillQuery {
-
 	static ObjectId = mongoose.Types.ObjectId
 	//? Valid skill Field schema
 	static isValidSkillFieldList(skillField: Array<String>) {
@@ -109,11 +108,13 @@ class SkillQuery {
 		if (
 			!RequestBodyHandler.isValidKeys(request.params, ["id"]) ||
 			!SkillQuery.ObjectId.isValid(request.params["id"])
-			)
+		)
 			return ResponseBody.handleBadRequest(response)
 
 		//? Get the skill id from the params
-		const skillId = new mongoose.Types.ObjectId(request.params["id"].toString())
+		const skillId = new mongoose.Types.ObjectId(
+			request.params["id"].toString()
+		)
 
 		//? Query the skills details by skill id
 		const skillEntity = await SkillsModel.findOne({
@@ -130,16 +131,15 @@ class SkillQuery {
 
 	//TODO Get skill by field name
 	static async getSkillByField(request: Request, response: Response) {
-		
 		console.log("Query", request.query)
 		//? Handle Bad Request
-		if(
+		if (
 			!RequestBodyHandler.isValidKeys(request.query, ["profile_id"]) ||
 			!RequestBodyHandler.isValidKeys(request.query, ["field"]) ||
 			!SkillQuery.isValidSkillField(request.query?.field.toString())
-			)
-				return ResponseBody.handleBadRequest(response)
-		
+		)
+			return ResponseBody.handleBadRequest(response)
+
 		//* Get the profile_id and field name from the query
 		const profileId: String = request.query["profile_id"].toString()
 		const fieldName: string = request.query["field"].toString()
@@ -150,19 +150,18 @@ class SkillQuery {
 		})
 
 		//? Check if the skill entity is null
-		if(skillEntity === null) 
+		if (skillEntity === null)
 			return ResponseBody.error_not_found(response, {
 				status: 404,
 				message: `Skill details for user ${profileId} not found.`,
 				data: {}
 			})
-		//? Return the skills in the field 
+		//? Return the skills in the field
 		return ResponseBody.success_found(response, {
 			status: 200,
 			message: `Skill details found for user ${profileId}`,
 			data: skillEntity[fieldName]
 		})
-
 	}
 
 	//TODO Add skills details
@@ -176,19 +175,19 @@ class SkillQuery {
 		//? Handle bad request
 		if (!SkillQuery.isValidSchema(inputUserDetails, "ADD"))
 			return ResponseBody.handleBadRequest(response)
-		
+
 		//? Check if skill entity already exists for the user
 		const existingSkillEntity = await SkillsModel.findOne({
 			profile_id: profile._id.toString()
 		})
-		
+
 		//? Handle if skill entity already exists for the user
-		if(existingSkillEntity !== null)
+		if (existingSkillEntity !== null)
 			return ResponseBody.error_exists(response, {
 				status: 403,
 				message: `Skill entity already exists for profile: ${profile.username}`,
 				data: {}
-			}) 
+			})
 
 		//? Set the profile id from middleware
 		inputUserDetails.profile_id = profile._id.toString()
@@ -274,11 +273,13 @@ class SkillQuery {
 		if (
 			!RequestBodyHandler.isValidKeys(request.params, ["id"]) ||
 			!SkillQuery.ObjectId.isValid(request.params["id"])
-			)
+		)
 			return ResponseBody.handleBadRequest(response)
-		
+
 		//? Grab the skill id
-		const skillId = new mongoose.Types.ObjectId(request.params["id"].toString())
+		const skillId = new mongoose.Types.ObjectId(
+			request.params["id"].toString()
+		)
 
 		//? Grab the profile from the middleware
 		const profile: ProfileMiddlewareType = request["profile"]

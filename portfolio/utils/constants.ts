@@ -91,5 +91,3 @@ export const AUTHENTICATION_METHOD = {
 	JWT: "jwt",
 	API_KEY: "api_key"
 }
-
-

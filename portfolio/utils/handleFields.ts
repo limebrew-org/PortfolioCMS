@@ -6,7 +6,14 @@ import {
 	PORTFOLIO_PROJECT_FIELDS
 } from "./constants"
 import mongoose from "mongoose"
-import { EducationSchemaType, EducationUpdateType, ExperienceUpdateType, ProfileSchemaType, ProjectUpdateType, SkillUpdateType } from "./types"
+import {
+	EducationSchemaType,
+	EducationUpdateType,
+	ExperienceUpdateType,
+	ProfileSchemaType,
+	ProjectUpdateType,
+	SkillUpdateType
+} from "./types"
 
 class RequestBodyHandler {
 	cache: Array<String>
@@ -123,9 +130,11 @@ abstract class ValidateSchema {
 	abstract isValidSchema(): Boolean
 }
 
-
 class ProfileField {
-	static setAndUpdate(profileEntity: ProfileSchemaType,updatedFields: ProfileSchemaType){
+	static setAndUpdate(
+		profileEntity: ProfileSchemaType,
+		updatedFields: ProfileSchemaType
+	) {
 		if ("name" in updatedFields) {
 			profileEntity.name = updatedFields.name
 		}
@@ -146,13 +155,11 @@ class ProfileField {
 	}
 }
 
-
 class EducationField {
 	static setAndUpdate(
 		educationEntity: Document,
 		updatedEducationInfo: EducationSchemaType
-		
-	){
+	) {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(updatedEducationInfo)
 
@@ -168,9 +175,8 @@ class EducationField {
 class ProjectField {
 	static setAndUpdate(
 		projectEntity: Document,
-		updatedProjectInfo: ProjectUpdateType,
-		
-	){
+		updatedProjectInfo: ProjectUpdateType
+	) {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(updatedProjectInfo)
 
@@ -185,9 +191,8 @@ class ProjectField {
 class ExperienceField {
 	static setAndUpdate(
 		experienceEntity: Document,
-		updatedExperienceInfo: ExperienceUpdateType,
-		
-	){
+		updatedExperienceInfo: ExperienceUpdateType
+	) {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(updatedExperienceInfo)
 
@@ -195,18 +200,17 @@ class ExperienceField {
 		for (let i = 0; i < reqBodyKeys.length; i++) {
 			const experienceKey = reqBodyKeys[i]
 			if (PORTFOLIO_EXPERIENCE_FIELDS.includes(experienceKey))
-				experienceEntity[experienceKey] = updatedExperienceInfo[experienceKey]
+				experienceEntity[experienceKey] =
+					updatedExperienceInfo[experienceKey]
 		}
 	}
 }
-
-
 
 class SkillField {
 	static setAndUpdate(
 		skillEntity: Object,
 		updatedSkillInfo: SkillUpdateType
-	){
+	) {
 		//? Get keys of requestBody
 		const reqBodyKeys = Object.keys(updatedSkillInfo)
 
@@ -220,4 +224,12 @@ class SkillField {
 	}
 }
 
-export { RequestBodyHandler, ValidateSchema, ProfileField, EducationField, ProjectField, SkillField, ExperienceField }
+export {
+	RequestBodyHandler,
+	ValidateSchema,
+	ProfileField,
+	EducationField,
+	ProjectField,
+	SkillField,
+	ExperienceField
+}

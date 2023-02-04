@@ -63,7 +63,7 @@ class EducationQuery {
 				_id: id,
 				profile_id: updatedEducationInfo.profile_id
 			})
-		console.log("Education get by id response: " ,existingEducationResponse)
+		console.log("Education get by id response: ", existingEducationResponse)
 		//? Check if education entity not found
 		if (existingEducationResponse.status === 404)
 			return ResponseStatusHandler.error_not_found(EducationQuery.schema)
@@ -110,21 +110,21 @@ class EducationQuery {
 
 	//TODO: Delete Multiple education entities
 	static async deleteMany(profile_id: String): Promise<ResponseBodyType> {
-        
-        //? Delete all education entities for a profile
-        const deleteManyResponse = EducationModel.deleteMany({ profile_id: profile_id })
-        .then((info) => {
-            return ResponseStatusHandler.success_delete_many(
-                EducationQuery.schema,
-                info.deletedCount
-            )
-        })
-        .catch((error) => {
-            return ResponseStatusHandler.error_known(error.message)
-        })
-    return deleteManyResponse
-        
-    }
+		//? Delete all education entities for a profile
+		const deleteManyResponse = EducationModel.deleteMany({
+			profile_id: profile_id
+		})
+			.then((info) => {
+				return ResponseStatusHandler.success_delete_many(
+					EducationQuery.schema,
+					info.deletedCount
+				)
+			})
+			.catch((error) => {
+				return ResponseStatusHandler.error_known(error.message)
+			})
+		return deleteManyResponse
+	}
 
 	//TODO: Save the education entity
 	static async save(

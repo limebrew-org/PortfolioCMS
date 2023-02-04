@@ -305,7 +305,7 @@ class ExperienceController {
 
 	//TODO: Update job entity by Id for a profile
 	async updateJobById(request: Request, response: Response) {
-        const query: ExperienceQueryType = request.params
+		const query: ExperienceQueryType = request.params
 		const schema = ExperienceType.job
 
 		//? Grab the request body
@@ -316,10 +316,7 @@ class ExperienceController {
 
 		//? Handle bad request
 		if (
-			!ExperienceController.isValidSchema(
-				inputJobDetails,
-				"UPDATE"
-			) ||
+			!ExperienceController.isValidSchema(inputJobDetails, "UPDATE") ||
 			!ExperienceController.ObjectId.isValid(query["id"].toString())
 		)
 			return ResponseBody.handleBadRequest(response)
@@ -331,110 +328,116 @@ class ExperienceController {
 
 		//? Update job details
 		const jobUpdateResponse: ResponseBodyType =
-			await ExperienceQuery.updateById(
-				jobId,
-				inputJobDetails,
-				schema
-			)
+			await ExperienceQuery.updateById(jobId, inputJobDetails, schema)
 
 		//? If the update was successful
 		if (jobUpdateResponse.status === 201)
-			return ResponseBody.success_update(
-				response,
-				jobUpdateResponse
-			)
+			return ResponseBody.success_update(response, jobUpdateResponse)
 
 		//? Else, return error
 		return ResponseBody.error_internal(response, jobUpdateResponse)
-    }
+	}
 
 	//TODO: Delete internship entity by Id for a profile
 	async deleteInternshipById(request: Request, response: Response) {
-        const query: ExperienceQueryType = request.params
-        const schema = ExperienceType.internship
+		const query: ExperienceQueryType = request.params
+		const schema = ExperienceType.internship
 
-        //? Handle bad request
-        if(!ExperienceController.ObjectId.isValid(query["id"].toString()))
-            return ResponseBody.handleBadRequest(response)
-        
-        //? Grab the profile from middleware
-        const profile: ProfileMiddlewareType = request["profile"]
+		//? Handle bad request
+		if (!ExperienceController.ObjectId.isValid(query["id"].toString()))
+			return ResponseBody.handleBadRequest(response)
 
-        //? Grab the Id from the query
-        const internshipId: string = query["id"].toString()
+		//? Grab the profile from middleware
+		const profile: ProfileMiddlewareType = request["profile"]
 
-        //? Delete the internship entity
-        const deleteInternshipResponse: ResponseBodyType = await ExperienceQuery.deleteById(internshipId, profile._id,schema)
+		//? Grab the Id from the query
+		const internshipId: string = query["id"].toString()
 
-        //? If the delete was successful
-        if(deleteInternshipResponse.status === 204)
-            return ResponseBody.success_delete(response, deleteInternshipResponse)
+		//? Delete the internship entity
+		const deleteInternshipResponse: ResponseBodyType =
+			await ExperienceQuery.deleteById(internshipId, profile._id, schema)
 
-        //? Else, return error
-        return ResponseBody.error_internal(response, deleteInternshipResponse)
-    }
+		//? If the delete was successful
+		if (deleteInternshipResponse.status === 204)
+			return ResponseBody.success_delete(
+				response,
+				deleteInternshipResponse
+			)
+
+		//? Else, return error
+		return ResponseBody.error_internal(response, deleteInternshipResponse)
+	}
 
 	//TODO: Delete job entity by Id for a profile
 	async deleteJobById(request: Request, response: Response) {
-        const query: ExperienceQueryType = request.params
-        const schema = ExperienceType.job
+		const query: ExperienceQueryType = request.params
+		const schema = ExperienceType.job
 
-        //? Handle bad request
-        if(!ExperienceController.ObjectId.isValid(query["id"].toString()))
-            return ResponseBody.handleBadRequest(response)
-        
-        //? Grab the profile from middleware
-        const profile: ProfileMiddlewareType = request["profile"]
+		//? Handle bad request
+		if (!ExperienceController.ObjectId.isValid(query["id"].toString()))
+			return ResponseBody.handleBadRequest(response)
 
-        //? Grab the Id from the query
-        const jobId: string = query["id"].toString()
+		//? Grab the profile from middleware
+		const profile: ProfileMiddlewareType = request["profile"]
 
-        //? Delete the job entity
-        const deleteJobResponse: ResponseBodyType = await ExperienceQuery.deleteById(jobId, profile._id,schema)
+		//? Grab the Id from the query
+		const jobId: string = query["id"].toString()
 
-        //? If the delete was successful
-        if(deleteJobResponse.status === 204)
-            return ResponseBody.success_delete(response, deleteJobResponse)
+		//? Delete the job entity
+		const deleteJobResponse: ResponseBodyType =
+			await ExperienceQuery.deleteById(jobId, profile._id, schema)
 
-        //? Else, return error
-        return ResponseBody.error_internal(response, deleteJobResponse)
-    }
+		//? If the deletion was successful
+		if (deleteJobResponse.status === 204)
+			return ResponseBody.success_delete(response, deleteJobResponse)
+
+		//? Else, return error
+		return ResponseBody.error_internal(response, deleteJobResponse)
+	}
 
 	//TODO: Delete all internship entities for a profile
 	async deleteAllInternships(request: Request, response: Response) {
-        const schema = ExperienceType.internship
-        
-        //? Grab the profile from middleware
-        const profile: ProfileMiddlewareType = request["profile"]
+		const schema = ExperienceType.internship
 
-        //? Delete all education details
-        const deleteAllInternshipResponse: ResponseBodyType = await ExperienceQuery.deleteMany(profile._id, schema)
+		//? Grab the profile from middleware
+		const profile: ProfileMiddlewareType = request["profile"]
 
-        //? If the delete was successful
-        if(deleteAllInternshipResponse.status === 204)
-            return ResponseBody.success_delete(response, deleteAllInternshipResponse)
-        
-        //? Else, return error
-        return ResponseBody.error_internal(response, deleteAllInternshipResponse)
-    }
+		//? Delete all education details
+		const deleteAllInternshipResponse: ResponseBodyType =
+			await ExperienceQuery.deleteMany(profile._id, schema)
+
+		//? If the delete was successful
+		if (deleteAllInternshipResponse.status === 204)
+			return ResponseBody.success_delete(
+				response,
+				deleteAllInternshipResponse
+			)
+
+		//? Else, return error
+		return ResponseBody.error_internal(
+			response,
+			deleteAllInternshipResponse
+		)
+	}
 
 	//TODO: Delete all job entities for a profile
 	async deleteAllJobs(request: Request, response: Response) {
-        const schema = ExperienceType.job
-        
-        //? Grab the profile from middleware
-        const profile: ProfileMiddlewareType = request["profile"]
+		const schema = ExperienceType.job
 
-        //? Delete all education details
-        const deleteAllJobResponse: ResponseBodyType = await ExperienceQuery.deleteMany(profile._id, schema)
+		//? Grab the profile from middleware
+		const profile: ProfileMiddlewareType = request["profile"]
 
-        //? If the delete was successful
-        if(deleteAllJobResponse.status === 204)
-            return ResponseBody.success_delete(response, deleteAllJobResponse)
-        
-        //? Else, return error
-        return ResponseBody.error_internal(response, deleteAllJobResponse)
-    }
+		//? Delete all education details
+		const deleteAllJobResponse: ResponseBodyType =
+			await ExperienceQuery.deleteMany(profile._id, schema)
+
+		//? If the delete was successful
+		if (deleteAllJobResponse.status === 204)
+			return ResponseBody.success_delete(response, deleteAllJobResponse)
+
+		//? Else, return error
+		return ResponseBody.error_internal(response, deleteAllJobResponse)
+	}
 }
 
 export { ExperienceController }

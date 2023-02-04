@@ -4,7 +4,7 @@ import { connection } from "./portfolio/db/portfoliodb"
 import { dashboardRouter } from "./portfolio/routes/dashboard"
 import { ProfileRouter } from "./portfolio/api/routes/profile"
 import { ExperienceRouter } from "./portfolio/api/routes/experience"
-import { skillRouter } from "./portfolio/routes/skills"
+import { SkillRouter } from "./portfolio/api/routes/skills"
 import { EducationRouter } from "./portfolio/api/routes/education"
 import { PORTFOLIO_API_PORT } from "./portfolio/utils/constants"
 import { ProjectRouter } from "./portfolio/api/routes/projects"
@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: false }))
 //? API routes
 app.use("/api/dashboard", dashboardRouter)
 app.use("/api/profile", ProfileRouter)
-app.use("/api/skills", skillRouter)
+app.use("/api/skills", SkillRouter)
 app.use("/api/education", EducationRouter)
 app.use("/api/projects", ProjectRouter)
 app.use("/api/experience", ExperienceRouter)

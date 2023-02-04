@@ -8,7 +8,6 @@ export type ProfileSchemaType = {
 	password: String
 }
 
-
 //? Global Social Field Type
 export type SocialType = {
 	twitter: String

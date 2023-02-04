@@ -2,10 +2,18 @@ import { Request, Response } from "express"
 import { PORTFOLIO_PROFILE_REGISTER_FIELDS, TOKEN } from "../utils/constants"
 import { RequestBodyHandler } from "../utils/handleFields"
 import { ResponseBody } from "../utils/handleResponse"
-import { PayloadSchemaType, ProfileSchemaType, TokenSchemaType } from "../utils/types"
+import {
+	PayloadSchemaType,
+	ProfileSchemaType,
+	TokenSchemaType
+} from "../utils/types"
 import { ProfileQuery } from "../query/Profile"
 import { comparePassword, hashPassword } from "../utils/handlePassword"
-import { generateAccessToken, generateRefreshToken, verifyToken } from "../utils/handleToken"
+import {
+	generateAccessToken,
+	generateRefreshToken,
+	verifyToken
+} from "../utils/handleToken"
 import { TokenQuery } from "../query/Token"
 import { ResponseBodyType } from "../types/response"
 import { ProfileMiddlewareType } from "../types/middleware"
@@ -96,7 +104,7 @@ class AuthController {
 
 		//? declare a variable to store the response
 		let existingProfileResponse: ResponseBodyType
-		
+
 		//? Check user by email or username in the database
 		if (RequestBodyHandler.isValidKeys(inputProfileDetails, ["email"])) {
 			existingProfileResponse = await ProfileQuery.getOne({
@@ -139,17 +147,15 @@ class AuthController {
 		}
 
 		//? Create Access Token and Refresh Token
-		const accessToken:String = generateAccessToken(payload)
-		const refreshToken:String = generateRefreshToken(payload)
+		const accessToken: String = generateAccessToken(payload)
+		const refreshToken: String = generateRefreshToken(payload)
 
 		//? Update Token (if not found then add)
 		const updateTokenResponse: ResponseBodyType =
 			await TokenQuery.updateById(profileEntity._id, refreshToken)
 
 		//? If update status is 200 or 201 then return jwt
-		if (
-			updateTokenResponse.status === 201
-		)
+		if (updateTokenResponse.status === 201)
 			return ResponseBody.success_auth(response, {
 				status: 200,
 				message: `Success! ${profileEntity.username} logged in successfully!`,
@@ -158,7 +164,7 @@ class AuthController {
 					refreshToken: refreshToken
 				}
 			})
-		
+
 		//? Else return internal server error
 		return ResponseBody.error_internal(response, updateTokenResponse)
 	}
@@ -166,20 +172,20 @@ class AuthController {
 	//TODO: Logout user (authorization required)
 	async logout(request: Request, response: Response) {
 		//? Grab the profile from middleware
-		const profile: ProfileMiddlewareType = request['profile']
+		const profile: ProfileMiddlewareType = request["profile"]
 
 		//? Delete the refresh token for the profile
 		const tokenDeleteResponse = await TokenQuery.deleteOneById(profile._id)
 
 		//? If token delete is successful
-		if(tokenDeleteResponse.status === 201)
-			return ResponseBody.success_delete(response,{
+		if (tokenDeleteResponse.status === 201)
+			return ResponseBody.success_delete(response, {
 				status: 201,
 				message: `Success! Token deleted, User logged out successfully`
 			})
-		
+
 		//? Else return internal server error
-		return ResponseBody.error_internal(response,tokenDeleteResponse)
+		return ResponseBody.error_internal(response, tokenDeleteResponse)
 	}
 
 	//TODO: Generate Access Token
@@ -188,21 +194,21 @@ class AuthController {
 		const inputTokenDetails: TokenSchemaType = request.body
 
 		//* Handle Bad Request
-		if(
-			!RequestBodyHandler.isValidKeys(inputTokenDetails,["token"])
-		)
-		return ResponseBody.handleBadRequest(response)
+		if (!RequestBodyHandler.isValidKeys(inputTokenDetails, ["token"]))
+			return ResponseBody.handleBadRequest(response)
 
 		//? Else grab the refresh token
-		const refreshToken:string = inputTokenDetails.token.toString()
+		const refreshToken: string = inputTokenDetails.token.toString()
 
 		//? Check if the refresh token is valid
 		let payload: PayloadSchemaType
-		
-		try {
-			const tokenVerifiedPayload = verifyToken(refreshToken,TOKEN.refreshToken)
-			payload = { _id: tokenVerifiedPayload["_id"].toString()}
 
+		try {
+			const tokenVerifiedPayload = verifyToken(
+				refreshToken,
+				TOKEN.refreshToken
+			)
+			payload = { _id: tokenVerifiedPayload["_id"].toString() }
 		} catch (error) {
 			return ResponseBody.error_token_invald(response, {
 				status: 401,
@@ -211,22 +217,24 @@ class AuthController {
 		}
 
 		//? If verified, check if the refresh token exists in the database
-		const existingTokenResponse: ResponseBodyType = await TokenQuery.getOne({
-			token: refreshToken
-		})
+		const existingTokenResponse: ResponseBodyType = await TokenQuery.getOne(
+			{
+				token: refreshToken
+			}
+		)
 
 		//? if token not found
-		if(existingTokenResponse.status === 404)
+		if (existingTokenResponse.status === 404)
 			return ResponseBody.error_unauthorized(response, {
 				status: 401,
 				error: `Error! Refresh Token not found, user not Logged in!`
 			})
-		
+
 		//? Else generate access token with the payload
 		const newAccessToken = generateAccessToken(payload)
-		
+
 		//? Send the access token to the client
-		return ResponseBody.success_found(response,{
+		return ResponseBody.success_found(response, {
 			status: 200,
 			message: `Token successfully generated`,
 			data: {

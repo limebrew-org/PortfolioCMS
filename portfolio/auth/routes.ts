@@ -7,7 +7,7 @@ const authController = new AuthController()
 
 AuthRouter.post("/register", authController.register)
 AuthRouter.post("/login", authController.login)
-AuthRouter.post("/logout",TokenMiddleWare,authController.logout)
-AuthRouter.post("/token",authController.generateToken)
+AuthRouter.post("/logout", TokenMiddleWare, authController.logout)
+AuthRouter.post("/token", authController.generateToken)
 
 export { AuthRouter }

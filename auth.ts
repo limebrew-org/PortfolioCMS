@@ -28,7 +28,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 //? Auth routes
-app.use("/auth",AuthRouter)
+app.use("/auth", AuthRouter)
 
 //TODO: Listen to Auth Server connections on PORT
 app.listen(PORT, () => {

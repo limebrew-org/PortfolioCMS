@@ -5,11 +5,11 @@ import { Response } from "express"
 class ResponseBody {
 	constructor() {}
 
-	static handleStatus(response: Response, info:ResponseBodyType) {
-		if(info.status === 200)
-			return ResponseBody.success_found(response,info)
-		if(info.status === 201)
-			return ResponseBody.success_update(response,{
+	static handleStatus(response: Response, info: ResponseBodyType) {
+		if (info.status === 200)
+			return ResponseBody.success_found(response, info)
+		if (info.status === 201)
+			return ResponseBody.success_update(response, {
 				status: 201,
 				message: info.message
 			})
@@ -68,12 +68,11 @@ class ResponseBody {
 	static handleBadRequest(response: Response) {
 		return ResponseBody.error_bad_request(response, {
 			status: 400,
-			message: `400 Bad request! Mandatory fields not provided`,
-			data: {}
+			message: `400 Bad request! Mandatory fields not provided`
 		})
 	}
 
-	static success_auth(response:Response, info:ResponseBodyType){
+	static success_auth(response: Response, info: ResponseBodyType) {
 		return response.status(200).json(info)
 	}
 
@@ -122,18 +121,16 @@ class ResponseBody {
 	}
 }
 
-
-
 class ResponseStatusHandler {
-	static success_token_valid(profile){
+	static success_token_valid(profile) {
 		return {
 			status: 200,
 			message: `Success! token verification was successful`,
 			data: profile
 		}
 	}
-	
-	static success_get_one(schema:String,entity:Object): ResponseBodyType {
+
+	static success_get_one(schema: String, entity: Object): ResponseBodyType {
 		return {
 			status: 200,
 			message: `Success! ${schema} details found`,
@@ -141,52 +138,58 @@ class ResponseStatusHandler {
 		}
 	}
 
-	static success_get_many(schema:String,entityList:Array<Document>): ResponseBodyType {
+	static success_get_many(
+		schema: String,
+		entityList: Array<Document>
+	): ResponseBodyType {
 		return {
 			status: 200,
 			message: `Success! ${entityList.length} ${schema} details were found`,
 			data: entityList
 		}
 	}
-	static success_add(schema:String,data?:any): ResponseBodyType{
+	static success_add(schema: String, data?: any): ResponseBodyType {
 		return {
 			status: 201,
 			message: `Success! ${schema} details added successfully`,
 			data: data
 		}
 	}
-	static success_update(schema:String, data?: any): ResponseBodyType{
+	static success_update(schema: String, data?: any): ResponseBodyType {
 		return {
 			status: 201,
 			message: `Success! ${schema} details updated successfully`,
 			data: data
 		}
 	}
-	static success_delete_one(schema:String): ResponseBodyType{
+	static success_delete_one(schema: String): ResponseBodyType {
 		return {
 			status: 201,
 			message: `Success! ${schema} details deleted successfully`
 		}
 	}
-	static success_delete_many(schema:String,delete_count:Number): ResponseBodyType{
+	static success_delete_many(
+		schema: String,
+		delete_count: Number
+	): ResponseBodyType {
 		return {
 			status: 201,
 			message: `Success! ${delete_count} ${schema}'s were deleted successfully`
 		}
 	}
-	static error_known(error:String): ResponseBodyType{
+	static error_known(error: String): ResponseBodyType {
 		return {
 			status: 500,
 			error: `Error! ${error}`
 		}
 	}
-	static error_unknown(): ResponseBodyType{
+	static error_unknown(): ResponseBodyType {
 		return {
 			status: 500,
 			error: `Error! Something went wrong`
 		}
 	}
-	static error_not_found(schema:String): ResponseBodyType{
+	static error_not_found(schema: String): ResponseBodyType {
 		return {
 			status: 404,
 			error: `Error! No ${schema} details were found`
@@ -194,7 +197,7 @@ class ResponseStatusHandler {
 	}
 
 	static error_unauthorized(): ResponseBodyType {
-		return { 
+		return {
 			status: 401,
 			error: `Unauthorized! Token not provided or has been expired`
 		}
@@ -203,7 +206,7 @@ class ResponseStatusHandler {
 	static error_exists(schema: String): ResponseBodyType {
 		return {
 			status: 403,
-			error: `Error! ${schema} already exists` 
+			error: `Error! ${schema} already exists`
 		}
 	}
 }
