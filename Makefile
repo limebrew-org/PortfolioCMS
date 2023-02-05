@@ -51,6 +51,12 @@ compose_dev_up_rest:
 compose_dev_down_rest:
 	docker-compose -f docker-compose.dev.yml down
 
+compose_stage_up_rest:
+	docker-compose -f docker-compose.staging.yml up -d --build
+
+compose_stage_down_rest:
+	docker-compose -f docker-compose.staging.yml down
+
 compose_prod_up_rest:
 	docker-compose -f docker-compose.prod.yml up -d --build
 
@@ -70,6 +76,12 @@ compose_dev_up_linux:
 
 compose_dev_down_linux:
 	docker compose -f docker-compose.dev.yml down
+
+compose_stage_up_linux:
+	docker compose -f docker-compose.staging.yml up -d --build
+
+compose_stage_down_linux:
+	docker compose -f docker-compose.staging.yml down
 
 compose_prod_up_linux:
 	docker compose -f docker-compose.prod.yml up -d --build

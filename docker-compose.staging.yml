@@ -1,0 +1,73 @@
+version: "3.1"
+services:
+    auth:
+        #? Interactive shell
+        stdin_open: true
+        tty: true
+
+        #? Set container name
+        container_name: portfolio_auth
+
+        #? Build the auth service
+        build:
+            context: .
+            dockerfile: Dockerfile.auth.staging
+
+        #? Restart if down
+        restart: always
+
+        #? Ports
+        ports:
+            - "8001:8001"
+
+        #? Environment file
+        env_file:
+            - ".env.staging"
+
+        #? Container dependencies
+        depends_on:
+            - db
+
+    api:
+        #? Interactive shell
+        stdin_open: true
+        tty: true
+
+        #? Set container name
+        container_name: portfolio_api
+
+        #? Build the api service
+        build:
+            context: .
+            dockerfile: Dockerfile.api.staging
+
+        #? Restart if down
+        restart: always
+
+        #? Ports
+        ports:
+            - "8002:8002"
+
+        #? Environment file
+        env_file:
+            - ".env.staging"
+
+        #? Container dependencies
+        depends_on:
+            - db
+    
+    db:
+        #? Set container name (will be used to access db by container_name)
+        container_name: portfolio_db
+        image: mongo:latest
+
+        #? Restart if down
+        restart: always
+
+        #? Environment file
+        environment:
+            - MONGO_INITDB_DATABASE=portfoliodb
+
+        #? Ports
+        ports:
+            - "27017:27017"

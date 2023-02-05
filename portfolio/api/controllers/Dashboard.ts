@@ -1,7 +1,6 @@
 import { Request, Response } from "express-serve-static-core"
 import { RequestBodyHandler } from "../../utils/handleFields"
 import { ResponseBody } from "../../utils/handleResponse"
-import mongoose from "mongoose"
 import { DashboardQueryType } from "../../types/query"
 import { ProfileQuery } from "../../query/Profile"
 import { EducationQuery } from "../../query/Education"
@@ -13,14 +12,11 @@ import { DashboardResponseType } from "../../types/response"
 
 
 class DashboardController {
-	//? Handling Object Id
-	static ObjectId = mongoose.Types.ObjectId
-
 	async getDashboard(
 		request: Request,
 		response: Response
 	): Promise<Response> {
-		const query: DashboardQueryType = request.params
+		const query: DashboardQueryType = request.query
 		const dashboardResponse: DashboardResponseType = {
 			profile: {},
 			education: {},
@@ -34,15 +30,25 @@ class DashboardController {
 
 		//? Handle bad request
 		if(
-			!RequestBodyHandler.isValidMandatoryFields(query,['id']) ||
-			!DashboardController.ObjectId.isValid(query?.id.toString()))
+			!RequestBodyHandler.isValidMandatoryFields(query,['username'])
+		)
 			return ResponseBody.handleBadRequest(response)
 
-		//? Grab the profile Id
-		const profileId = query.id.toString()
+		//? Grab the username from the request query
+		const username = query.username.toString()
 
 		//? Return Profile (masked profile)
-		const maskedProfileEntityResponse = await ProfileQuery.getOne({ _id: profileId },true)
+		const maskedProfileEntityResponse = await ProfileQuery.getOne({ username: username },true)
+
+		//! If profile does not exist
+		if(maskedProfileEntityResponse.status !== 200)
+			return ResponseBody.error_not_found(response,maskedProfileEntityResponse)
+		
+		//? If found, then grab the profile id
+		const profileId = maskedProfileEntityResponse.data._id
+
+		//? Set the profile info
+		dashboardResponse.profile = maskedProfileEntityResponse.data
 
 		//? Return Education Entities 
 		const educationEntitiesResponse = await EducationQuery.getMany({ profile_id: profileId })
@@ -60,13 +66,7 @@ class DashboardController {
 		//* Get Job Entities
 		const jobEntitiesResponse = await ExperienceQuery.getMany( { profile_id: profileId }, ExperienceType.job)
 
-		//! If profile does not exist
-		if(maskedProfileEntityResponse.status !== 200)
-			return ResponseBody.error_not_found(response,maskedProfileEntityResponse)
-		
-		//? Set the profile info
-		dashboardResponse.profile = maskedProfileEntityResponse.data
-		
+			
 		//? Now check response status for the above apis
 		if(educationEntitiesResponse.status === 200)
 			dashboardResponse.education = educationEntitiesResponse.data

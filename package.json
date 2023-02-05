@@ -10,6 +10,8 @@
 		"start:auth[dev]": "cross-env NODE_ENV=dev nodemon auth.ts",
 		"start:api[dev]": "cross-env NODE_ENV=dev nodemon api.ts",
 		"start:admin[dev]": "cross-env NODE_ENV=dev nodemon admin.ts",
+		"start:auth[staging]":"cross-env NODE_ENV=staging node dist/auth.js",
+		"start:api[staging]":"cross-env NODE_ENV=staging node dist/api.js",
 		"start:auth[prod]": "cross-env NODE_ENV=prod node dist/auth.js",
 		"start:api[prod]": "cross-env NODE_ENV=prod node dist/api.js",
 		"test:inspect": "python tests/main.py",

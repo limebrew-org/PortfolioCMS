@@ -4,6 +4,6 @@ import { DashboardController } from "../controllers/Dashboard"
 const DashboardRouter = express.Router()
 const dashboardController = new DashboardController()
 
-DashboardRouter.get("/:id", dashboardController.getDashboard)
+DashboardRouter.get("/", dashboardController.getDashboard)
 
 export { DashboardRouter }
