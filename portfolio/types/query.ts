@@ -6,7 +6,7 @@ export type ProfileQueryType = {
 }
 
 export type DashboardQueryType = {
-	id?: String
+	username?: String
 }
 
 export type EducationQuerytype = {
