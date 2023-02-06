@@ -5,8 +5,10 @@ import { ResponseBodyType } from "../../types/response"
 import { PORTFOLIO_EDUCATION_FIELDS } from "../../utils/constants"
 import { RequestBodyHandler } from "../../utils/handleFields"
 import { ResponseBody } from "../../utils/handleResponse"
-import { EducationSchemaType, ProfileMiddlewareType } from "../../utils/types"
+import { EducationSchemaType } from "../../types/schema"
+import { ProfileMiddlewareType } from "../../types/middleware"
 import mongoose from "mongoose"
+
 
 class EducationController {
 	//? Handling Object Id

@@ -4,7 +4,7 @@ import { AUTHENTICATION_METHOD } from "../utils/constants"
 import { getAuthorizationType } from "../utils/getAuthorization"
 import { ResponseBody, ResponseStatusHandler } from "../utils/handleResponse"
 import { verifyToken } from "../utils/handleToken"
-import { AuthorizationResponseType } from "../utils/types"
+import { AuthorizationResponseType } from "../types/middleware"
 import { ProfileQuery } from "../query/Profile"
 
 //TODO: Handle JWT Authorization

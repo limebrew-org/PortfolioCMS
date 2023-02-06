@@ -3,7 +3,7 @@ import {
 	PORTFOLIO_API_KEY_HEADER,
 	PORTFOLIO_ACCESS_TOKEN_HEADER
 } from "./constants"
-import { AuthorizationResponseType } from "./types"
+import { AuthorizationResponseType } from "../types/middleware"
 import { AUTHENTICATION_METHOD } from "./constants"
 
 const getAuthorizationType = (request: Request) => {

@@ -1,13 +1,14 @@
 import { Request, Response } from "express"
 import { ProfileQueryType } from "../../types/query"
 import { RequestBodyHandler } from "../../utils/handleFields"
-import mongoose from "mongoose"
 import { ResponseBody } from "../../utils/handleResponse"
 import { ResponseBodyType } from "../../types/response"
 import { ProfileQuery } from "../../query/Profile"
 import { ProfileSchemaType, SocialType } from "../../types/schema"
-import { ProfileMiddlewareType, ProfileUpdateType } from "../../utils/types"
 import { PORTFOLIO_SOCIALS_FIELDS } from "../../utils/constants"
+import { ProfileMiddlewareType } from "../../types/middleware"
+import { ProfileUpdateType } from "../../types/request"
+import mongoose from "mongoose"
 
 class ProfileController {
 	//? Handling Object Id

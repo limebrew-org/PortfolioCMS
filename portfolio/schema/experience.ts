@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { InternshipSchemaType } from "../utils/types"
-import { JobSchemaType } from "../utils/types"
+import { InternshipSchemaType } from "../types/schema"
+import { JobSchemaType } from "../types/schema"
 
 const { Schema } = mongoose
 

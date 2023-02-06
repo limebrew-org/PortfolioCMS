@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { APIKeySchemaType } from "../utils/types"
+import { APIKeySchemaType } from "../types/schema"
 
 const { Schema } = mongoose
 

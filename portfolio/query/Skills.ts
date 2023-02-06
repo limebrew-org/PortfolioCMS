@@ -3,7 +3,7 @@ import { SkillQueryType } from "../types/query"
 import { ResponseBodyType } from "../types/response"
 import { SkillField } from "../utils/handleFields"
 import { ResponseStatusHandler } from "../utils/handleResponse"
-import { SkillSchemaType } from "../utils/types"
+import { SkillSchemaType } from "../types/schema"
 
 class SkillQuery {
 	//TODO: Schema Name

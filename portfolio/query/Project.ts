@@ -3,7 +3,7 @@ import { ProjectQueryType } from "../types/query"
 import { ResponseBodyType } from "../types/response"
 import { ProjectField } from "../utils/handleFields"
 import { ResponseStatusHandler } from "../utils/handleResponse"
-import { ProjectSchemaType } from "../utils/types"
+import { ProjectSchemaType } from "../types/schema"
 
 class ProjectQuery {
 	//TODO: Schema Name

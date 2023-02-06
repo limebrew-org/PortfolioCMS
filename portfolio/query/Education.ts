@@ -1,6 +1,6 @@
 import { EducationQuerytype } from "../types/query"
 import { ResponseBodyType } from "../types/response"
-import { EducationSchemaType } from "../utils/types"
+import { EducationSchemaType } from "../types/schema"
 import { EducationModel } from "../schema/education"
 import { ResponseStatusHandler } from "../utils/handleResponse"
 import { EducationField } from "../utils/handleFields"

@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { EducationSchemaType } from "../utils/types"
+import { EducationSchemaType } from "../types/schema"
 
 const { Schema } = mongoose
 
