@@ -11,14 +11,14 @@ services:
         #? Build the auth service
         build:
             context: .
-            dockerfile: Dockerfile.auth.prod
+            dockerfile: ./dockerfiles/prod/Dockerfile.auth
 
         #? Restart if down
         restart: always
 
         #? Ports
         ports:
-            - "8000:8000"
+            - "8001:8001"
 
         #? Environment file
         env_file:
@@ -35,14 +35,14 @@ services:
         #? Build the api service
         build:
             context: .
-            dockerfile: Dockerfile.api.prod
+            dockerfile: ./dockerfiles/prod/Dockerfile.api
 
         #? Restart if down
         restart: always
 
         #? Ports
         ports:
-            - "9000:9000"
+            - "8002:8002"
 
         #? Environment file
         env_file:

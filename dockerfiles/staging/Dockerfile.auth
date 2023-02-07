@@ -17,5 +17,5 @@ COPY . .
 #? Build typescript
 RUN npm run build
 
-#? Run the API Server in Staging mode
-CMD ["npm","run","start:api[staging]"]
+#? Run the AUTH Server in Staging environment
+CMD ["npm","run","start:auth[staging]"]

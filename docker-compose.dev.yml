@@ -11,7 +11,7 @@ services:
         #? Build the auth service
         build:
             context: .
-            dockerfile: Dockerfile.auth.dev
+            dockerfile: ./dockerfiles/dev/Dockerfile.auth
 
         #? Restart if down
         restart: always
@@ -43,7 +43,7 @@ services:
         #? Build the api service
         build:
             context: .
-            dockerfile: Dockerfile.api.dev
+            dockerfile: ./dockerfiles/dev/Dockerfile.api
 
         #? Restart if down
         restart: always
@@ -75,7 +75,7 @@ services:
         #? Build the api service
         build:
             context: .
-            dockerfile: Dockerfile.admin.dev
+            dockerfile: ./dockerfiles/dev/Dockerfile.admin
 
         #? Restart if down
         restart: always

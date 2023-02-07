@@ -11,7 +11,7 @@ services:
         #? Build the auth service
         build:
             context: .
-            dockerfile: Dockerfile.auth.staging
+            dockerfile: ./dockerfiles/staging/Dockerfile.auth
 
         #? Restart if down
         restart: always
@@ -39,7 +39,7 @@ services:
         #? Build the api service
         build:
             context: .
-            dockerfile: Dockerfile.api.staging
+            dockerfile: ./dockerfiles/staging/Dockerfile.api
 
         #? Restart if down
         restart: always
@@ -47,6 +47,38 @@ services:
         #? Ports
         ports:
             - "8002:8002"
+
+        #? Environment file
+        env_file:
+            - ".env.staging"
+
+        #? Container dependencies
+        depends_on:
+            - db
+    
+    admin:
+        #? Interactive shell
+        stdin_open: true
+        tty: true
+
+        #? Set container name
+        container_name: portfolio_admin
+
+        #? Build the api service
+        build:
+            context: .
+            dockerfile: ./dockerfiles/staging/Dockerfile.admin
+
+        #? Restart if down
+        restart: always
+
+        #? Volumes
+        volumes:
+            - "./portfolio:/app/portfolio"
+
+        #? Ports
+        ports:
+            - "8003:8003"
 
         #? Environment file
         env_file:
