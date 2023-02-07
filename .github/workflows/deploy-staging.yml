@@ -1,7 +1,7 @@
 name: "Deploy PortfolioCMS to Staging Environment"
 on:
   push:
-    branches: [staging]
+    branches: [ staging ]
 
 jobs:
   deploy:
