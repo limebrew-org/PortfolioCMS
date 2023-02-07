@@ -1,21 +1,21 @@
-name: Deploy PortfolioCMS to Staging Environment
+name: "Deploy PortfolioCMS to Staging Environment"
 on:
   push:
-    branches: ['staging']
+    branches: [staging]
 
 jobs:
   deploy:
     name: Deploy to Staging
     runs-on: ubuntu-latest
     steps:
-    - name: SSH into Staging server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.PORTFOLIO_CMS_STAGING_HOST_IP }}
-        username: ${{ secrets.PORTFOLIO_CMS_STAGING_HOST_USERNAME }}
-        key: ${{ secrets.PORTFOLIO_CMS_STAGING_HOST_KEY }}
-        port: 22
-        script: |
-         ls -la
-         cd ~/.ssh/
-         ls -la
+      - name: SSH into Staging server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PORTFOLIO_CMS_STAGING_HOST_IP }}
+          username: ${{ secrets.PORTFOLIO_CMS_STAGING_HOST_USERNAME }}
+          key: ${{ secrets.PORTFOLIO_CMS_STAGING_HOST_KEY }}
+          port: 22
+          script:
+            ls -la
+            cd ~/.ssh/
+            ls -la
