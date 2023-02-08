@@ -12,9 +12,9 @@
 		"start:api[dev]": "cross-env NODE_ENV=dev nodemon api.ts",
 		"start:admin[dev]": "cross-env NODE_ENV=dev nodemon admin.ts",
 
-		"start:auth[staging]":"cross-env NODE_ENV=staging node dist/auth.js",
-		"start:api[staging]":"cross-env NODE_ENV=staging node dist/api.js",
-		"start:admin[staging]":"cross-env NODE_ENV=staging node dist/admin.js",
+		"start:auth[stg]":"cross-env NODE_ENV=stg node dist/auth.js",
+		"start:api[stg]":"cross-env NODE_ENV=stg node dist/api.js",
+		"start:admin[stg]":"cross-env NODE_ENV=stg node dist/admin.js",
 
 		"start:auth[prod]": "cross-env NODE_ENV=prod node dist/auth.js",
 		"start:api[prod]": "cross-env NODE_ENV=prod node dist/api.js",

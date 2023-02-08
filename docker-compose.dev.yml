@@ -11,7 +11,18 @@ services:
         #? Build the auth service
         build:
             context: .
-            dockerfile: ./dockerfiles/dev/Dockerfile.auth
+            dockerfile: ./dockerfiles/Dockerfile.dev
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - '.env.dev'
+        
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:auth[dev]'
 
         #? Restart if down
         restart: always
@@ -22,11 +33,7 @@ services:
 
         #? Ports
         ports:
-            - "8001:8001"
-
-        #? Environment file
-        env_file:
-            - ".env.dev"
+            - ${PORTFOLIO_AUTH_PORT}:${PORTFOLIO_AUTH_PORT}
 
         #? Container dependencies
         depends_on:
@@ -40,10 +47,21 @@ services:
         #? Set container name
         container_name: portfolio_api
 
-        #? Build the api service
+        #? Build the auth service
         build:
             context: .
-            dockerfile: ./dockerfiles/dev/Dockerfile.api
+            dockerfile: ./dockerfiles/Dockerfile.dev
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - '.env.dev'
+        
+        #? Use the previously built image
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:api[dev]'
 
         #? Restart if down
         restart: always
@@ -54,11 +72,7 @@ services:
 
         #? Ports
         ports:
-            - "8002:8002"
-
-        #? Environment file
-        env_file:
-            - ".env.dev"
+            - ${PORTFOLIO_API_PORT}:${PORTFOLIO_API_PORT}
 
         #? Container dependencies
         depends_on:
@@ -72,10 +86,21 @@ services:
         #? Set container name
         container_name: portfolio_admin
 
-        #? Build the api service
+        #? Build the auth service
         build:
             context: .
-            dockerfile: ./dockerfiles/dev/Dockerfile.admin
+            dockerfile: ./dockerfiles/Dockerfile.dev
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - ".env.dev"
+
+        #? Use the previously built image
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:admin[dev]'
 
         #? Restart if down
         restart: always
@@ -86,11 +111,7 @@ services:
 
         #? Ports
         ports:
-            - "8003:8003"
-
-        #? Environment file
-        env_file:
-            - ".env.dev"
+            - ${PORTFOLIO_ADMIN_PORT}:${PORTFOLIO_ADMIN_PORT}
 
         #? Container dependencies
         depends_on:

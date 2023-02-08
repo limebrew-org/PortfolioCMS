@@ -11,18 +11,25 @@ services:
         #? Build the auth service
         build:
             context: .
-            dockerfile: ./dockerfiles/staging/Dockerfile.auth
+            dockerfile: ./dockerfiles/Dockerfile.stg
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - '.env.stg'
+        
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-STG
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:auth[stg]'
 
         #? Restart if down
         restart: always
 
         #? Ports
         ports:
-            - "8001:8001"
-
-        #? Environment file
-        env_file:
-            - ".env.staging"
+            - ${PORTFOLIO_AUTH_PORT}:${PORTFOLIO_AUTH_PORT}
 
         #? Container dependencies
         depends_on:
@@ -39,18 +46,25 @@ services:
         #? Build the api service
         build:
             context: .
-            dockerfile: ./dockerfiles/staging/Dockerfile.api
+            dockerfile: ./dockerfiles/Dockerfile.stg
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - '.env.stg'
+        
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-STG
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:api[stg]'
 
         #? Restart if down
         restart: always
 
         #? Ports
         ports:
-            - "8002:8002"
-
-        #? Environment file
-        env_file:
-            - ".env.staging"
+            - ${PORTFOLIO_API_PORT}:${PORTFOLIO_API_PORT}
 
         #? Container dependencies
         depends_on:
@@ -67,22 +81,25 @@ services:
         #? Build the api service
         build:
             context: .
-            dockerfile: ./dockerfiles/staging/Dockerfile.admin
+            dockerfile: ./dockerfiles/Dockerfile.stg
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - '.env.stg'
+
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-STG
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:admin[stg]'
 
         #? Restart if down
         restart: always
 
-        #? Volumes
-        volumes:
-            - "./portfolio:/app/portfolio"
-
         #? Ports
         ports:
-            - "8003:8003"
-
-        #? Environment file
-        env_file:
-            - ".env.staging"
+            - ${PORTFOLIO_ADMIN_PORT}:${PORTFOLIO_ADMIN_PORT}
 
         #? Container dependencies
         depends_on:

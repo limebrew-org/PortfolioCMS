@@ -56,12 +56,12 @@ compose_dev_up:
 compose_dev_down:
 	docker-compose -f docker-compose.dev.yml down
 
-##* Run PortfolioCMS in staging environment
-compose_stage_up:
-	docker-compose -f docker-compose.staging.yml up -d --build
+##* Run PortfolioCMS in stg environment
+compose_stg_up:
+	docker-compose -f docker-compose.stg.yml up -d --build
 
-compose_stage_down:
-	docker-compose -f docker-compose.staging.yml down
+compose_stg_down:
+	docker-compose -f docker-compose.stg.yml down
 
 ##* Run PortfolioCMS in prod environment
 compose_prod_up:
@@ -87,12 +87,12 @@ compose_dev_up_fix:
 compose_dev_down_fix:
 	docker compose -f docker-compose.dev.yml down
 
-##* Run PortfolioCMS in staging environment
-compose_stage_up_fix:
-	docker compose -f docker-compose.staging.yml up -d --build
+##* Run PortfolioCMS in stg environment
+compose_stg_up_fix:
+	docker compose -f docker-compose.stg.yml up -d --build
 
-compose_stage_down_fix:
-	docker compose -f docker-compose.staging.yml down
+compose_stg_down_fix:
+	docker compose -f docker-compose.stg.yml down
 
 ##* Run PortfolioCMS in prod environment
 compose_prod_up_fix:

@@ -56,8 +56,7 @@ const TokenMiddleWare = async (
 	if (authorizationResponse === null) {
 		return ResponseBody.error_token_invald(response, {
 			status: 401,
-			message: "Authorization header not provided!",
-			data: {}
+			error: "Authorization header not provided!"
 		})
 	}
 

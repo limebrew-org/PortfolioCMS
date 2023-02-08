@@ -58,7 +58,7 @@ class ProfileController {
 		}
 		if ("socials" in requestBody) {
 			if (
-				!RequestBodyHandler.isValidFieldCustom(
+				!RequestBodyHandler.isValidOptionalFields(
 					requestBody.socials,
 					PORTFOLIO_SOCIALS_FIELDS
 				) ||
