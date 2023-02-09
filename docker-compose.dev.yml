@@ -21,9 +21,6 @@ services:
         #? Set Image name
         image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
 
-        #? Platform
-        platform: linux/arm64/v8
-
         #? Define entrypoint
         entrypoint: 'npm run start:auth[dev]'
 
@@ -63,9 +60,6 @@ services:
         #? Use the previously built image
         image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
 
-        #? Platform
-        platform: linux/arm64/v8
-
         #? Define entrypoint
         entrypoint: 'npm run start:api[dev]'
 
@@ -104,9 +98,6 @@ services:
 
         #? Use the previously built image
         image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
-
-        #? Platform
-        platform: linux/arm64/v8
 
         #? Define entrypoint
         entrypoint: 'npm run start:admin[dev]'
