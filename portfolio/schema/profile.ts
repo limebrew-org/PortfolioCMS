@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
 import { ProfileSchemaType } from "../types/schema"
+import { PortfolioDBEntity } from "../utils/constants"
 
 const { Schema } = mongoose
 
@@ -17,6 +18,6 @@ const ProfileSchema = new Schema<ProfileSchemaType>({
 	password: { type: String, required: true }
 })
 
-const ProfileModel = portfolioDb.model("profile", ProfileSchema)
+const ProfileModel = portfolioDb.model(PortfolioDBEntity.PROFILES, ProfileSchema)
 
 export { ProfileModel }

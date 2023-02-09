@@ -10,7 +10,7 @@ services:
 
         #? Environment file
         environment:
-            - MONGO_INITDB_DATABASE=portfoliodb
+            - MONGO_INITDB_DATABASE=portfolio_db
 
         #? Ports
         ports:

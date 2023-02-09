@@ -39,7 +39,7 @@ const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
 }
 
 //TODO: Handle API Key Authorization
-const handleAPIKeyAuth = async (tokenRaw): Promise<ResponseBodyType> => {
+const handleAPIKeyAuth = async (tokenRaw:String): Promise<ResponseBodyType> => {
 	return
 }
 

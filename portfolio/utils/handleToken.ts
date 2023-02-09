@@ -2,15 +2,16 @@ import jwt from "jsonwebtoken"
 import { PayloadSchemaType } from "../types/middleware"
 import {
 	PORTFOLIO_ACCESS_TOKEN_SECRET,
-	PORTFOLIO_REFRESH_TOKEN_SECRET,
-	PORTFOLIO_ACCESS_TOKEN_EXPIRATION_TIME
+	PORTFOLIO_REFRESH_TOKEN_SECRET
 } from "./constants"
+
+import { MiddlewareConfiguration } from "./constants"
 import { TOKEN } from "./constants"
 
 //? Generate accessToken
 const generateAccessToken = (payload: PayloadSchemaType) => {
 	return jwt.sign(payload, PORTFOLIO_ACCESS_TOKEN_SECRET, {
-		expiresIn: PORTFOLIO_ACCESS_TOKEN_EXPIRATION_TIME
+		expiresIn: MiddlewareConfiguration.ACCESS_TOKEN_EXPIRATION_TIME
 	})
 }
 

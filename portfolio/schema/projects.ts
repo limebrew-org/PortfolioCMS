@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
 import { ProjectSchemaType } from "../types/schema"
+import { PortfolioDBEntity } from "../utils/constants"
 
 const { Schema } = mongoose
 
@@ -12,6 +13,6 @@ const projectSchema = new Schema<ProjectSchemaType>({
 	link: { type: String, required: true }
 })
 
-const ProjectModel = portfolioDb.model("projects", projectSchema)
+const ProjectModel = portfolioDb.model(PortfolioDBEntity.PROJECTS, projectSchema)
 
 export { ProjectModel }

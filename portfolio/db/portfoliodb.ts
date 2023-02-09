@@ -1,12 +1,13 @@
 import mongoose from "mongoose"
-import { PORTFOLIO_DB_CONNECTION_URL } from "../utils/constants"
+import { PortfolioDBEntity, PORTFOLIO_DB_CONNECTION_URL } from "../utils/constants"
 
-const url = PORTFOLIO_DB_CONNECTION_URL
+const url:string = PORTFOLIO_DB_CONNECTION_URL
+const MAX_POOL_SIZE: number = PortfolioDBEntity.MAX_POOL_SIZE
 
 mongoose.set("strictQuery", true)
-mongoose.connect(url, { maxPoolSize: 100 })
+mongoose.connect(url, { maxPoolSize: MAX_POOL_SIZE })
 
 const connection = mongoose.connection
-const portfolioDb = connection.useDb("portfolio_db")
+const portfolioDb = connection.useDb(PortfolioDBEntity.DB_NAME)
 
 export { connection, portfolioDb }

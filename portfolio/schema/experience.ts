@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
 import { InternshipSchemaType } from "../types/schema"
 import { JobSchemaType } from "../types/schema"
+import { PortfolioDBEntity } from "../utils/constants"
 
 const { Schema } = mongoose
 
@@ -23,7 +24,7 @@ const jobSchema = new Schema<JobSchemaType>({
 	tenure: { type: String, required: true }
 })
 
-const InternshipModel = portfolioDb.model("internship", internshipSchema)
-const JobModel = portfolioDb.model("job", jobSchema)
+const InternshipModel = portfolioDb.model(PortfolioDBEntity.INTERNSHIPS, internshipSchema)
+const JobModel = portfolioDb.model(PortfolioDBEntity.JOBS, jobSchema)
 
 export { internshipSchema, InternshipModel, JobModel, jobSchema }
