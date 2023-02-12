@@ -23,8 +23,6 @@ run_auth_dev:
 run_api_dev:
 	npm run start:api[dev]
 
-run_test:
-	npm run test:inspect
 
 #TODO: Testing Bash scripts
 run_get_scripts:
@@ -36,55 +34,77 @@ run_post_scripts:
 run_put_scripts:
 	bash scripts/put.sh
 
+#TODO: Testing using python scripts
+run_test:
+	npm run test:inspect
 
-#TODO: Docker development
-#? For mac and windows
-compose_db_up_rest:
+
+#TODO: Using Compose v1 (docker-compose)
+##* Run DB seperately
+compose_db_up_v1:
 	docker-compose -f docker-compose.db.yml up -d --build
 	
-compose_db_down_rest:
+compose_db_down_v1:
 	docker-compose -f docker-compose.db.yml down
 
-compose_dev_up_rest:
+##* Run PortfolioCMS in dev environment
+compose_dev_up_v1:
 	docker-compose -f docker-compose.dev.yml up -d --build
 
-compose_dev_down_rest:
+compose_dev_down_v1:
 	docker-compose -f docker-compose.dev.yml down
 
-compose_stage_up_rest:
-	docker-compose -f docker-compose.staging.yml up -d --build
+##* Run PortfolioCMS in stg environment
+compose_stg_up_v1:
+	docker-compose -f docker-compose.stg.yml up -d --build
 
-compose_stage_down_rest:
-	docker-compose -f docker-compose.staging.yml down
+compose_stg_down_v1:
+	docker-compose -f docker-compose.stg.yml down
 
-compose_prod_up_rest:
+##* Run PortfolioCMS in prod environment
+compose_prod_up_v1:
 	docker-compose -f docker-compose.prod.yml up -d --build
 
-compose_prod_down_rest:
+compose_prod_down_v1:
 	docker-compose -f docker-compose.prod.yml down
 
 
-#? For Ubuntu or other Linux versions
-compose_db_up_linux:
+#TODO: Using Compose v2 (docker compose)
+##* Run DB seperately
+compose_db_up_v2:
 	docker compose -f docker-compose.db.yml up -d --build
 	
-compose_db_down_linux:
+compose_db_down_v2:
 	docker compose -f docker-compose.db.yml down
 
-compose_dev_up_linux:
+##* Run PortfolioCMS in dev environment
+compose_dev_up_v2:
 	docker compose -f docker-compose.dev.yml up -d --build
 
-compose_dev_down_linux:
+compose_dev_down_v2:
 	docker compose -f docker-compose.dev.yml down
 
-compose_stage_up_linux:
-	docker compose -f docker-compose.staging.yml up -d --build
+##* Run PortfolioCMS in stg environment
+compose_stg_up_v2:
+	docker compose -f docker-compose.stg.yml up -d --build
 
-compose_stage_down_linux:
-	docker compose -f docker-compose.staging.yml down
+compose_stg_down_v2:
+	docker compose -f docker-compose.stg.yml down
 
-compose_prod_up_linux:
+##* Run PortfolioCMS in prod environment
+compose_prod_up_v2:
 	docker compose -f docker-compose.prod.yml up -d --build
 
-compose_prod_down_linux:
+compose_prod_down_v2:
 	docker compose -f docker-compose.prod.yml down
+
+
+#TODO: Build and push images to docker hub
+build_and_push_dev:
+	bash ./build_scripts/build-dev.sh
+
+build_and_push_stg:
+	bash ./build_scripts/build-stg.sh
+
+build_and_push_prod:
+	bash ./build_scripts/build-prod.sh

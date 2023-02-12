@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { APIKeySchemaType } from "../utils/types"
+import { APIKeySchemaType } from "../types/schema"
+import { PortfolioDBEntity } from "../utils/constants"
 
 const { Schema } = mongoose
 
@@ -9,6 +10,6 @@ const apiKeySchema = new Schema<APIKeySchemaType>({
 	api_key: { type: String, required: true }
 })
 
-const APIKeyModel = portfolioDb.model("api_key", apiKeySchema)
+const APIKeyModel = portfolioDb.model(PortfolioDBEntity.API_KEYS, apiKeySchema)
 
 export { APIKeyModel }

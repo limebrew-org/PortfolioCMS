@@ -2,11 +2,7 @@ import { Request, Response } from "express"
 import { PORTFOLIO_PROFILE_REGISTER_FIELDS, TOKEN } from "../utils/constants"
 import { RequestBodyHandler } from "../utils/handleFields"
 import { ResponseBody } from "../utils/handleResponse"
-import {
-	PayloadSchemaType,
-	ProfileSchemaType,
-	TokenSchemaType
-} from "../utils/types"
+import { ProfileSchemaType,TokenSchemaType } from "../types/schema"
 import { ProfileQuery } from "../query/Profile"
 import { comparePassword, hashPassword } from "../utils/handlePassword"
 import {
@@ -16,7 +12,7 @@ import {
 } from "../utils/handleToken"
 import { TokenQuery } from "../query/Token"
 import { ResponseBodyType } from "../types/response"
-import { ProfileMiddlewareType } from "../types/middleware"
+import { ProfileMiddlewareType,PayloadSchemaType } from "../types/middleware"
 
 class AuthController {
 	//TODO: Register profile (public)

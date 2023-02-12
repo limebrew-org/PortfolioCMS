@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { SkillSchemaType } from "../utils/types"
+import { SkillSchemaType } from "../types/schema"
+import { PortfolioDBEntity } from "../utils/constants"
 
 const { Schema } = mongoose
 
@@ -13,6 +14,6 @@ const skillSchema = new Schema<SkillSchemaType>({
 	fundamentals: [{ type: String }]
 })
 
-const SkillsModel = portfolioDb.model("skills", skillSchema)
+const SkillsModel = portfolioDb.model(PortfolioDBEntity.SKILLS, skillSchema)
 
 export { SkillsModel }

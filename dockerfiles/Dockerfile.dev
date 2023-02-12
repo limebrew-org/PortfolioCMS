@@ -13,9 +13,3 @@ RUN npm install
 
 #? Copy the source files to working directory
 COPY . .
-
-#? Build the project
-RUN npm run build
-
-#? Run the API Server in production mode
-CMD ["npm","run","start:api[prod]"]

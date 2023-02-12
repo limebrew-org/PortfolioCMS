@@ -1,4 +1,4 @@
-import { ProfileMiddlewareType, ProfileSchemaType } from "./types"
+import { ProfileMiddlewareType } from "../types/middleware"
 
 const maskedProfileEntity = (profileEntity: any) => {
 	const modifiedProfileEntity: ProfileMiddlewareType = {

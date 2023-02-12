@@ -1,4 +1,4 @@
-import { EducationSchemaType, InternshipSchemaType, JobSchemaType, ProjectSchemaType, SkillSchemaType } from "../utils/types"
+import { EducationSchemaType, SkillSchemaType, ProjectSchemaType, InternshipSchemaType, JobSchemaType } from "./schema"
 import { ProfileSchemaType } from "./schema"
 
 //? ResponseBody Type

@@ -5,15 +5,12 @@ import {
 	PORTFOLIO_EXPERIENCE_FIELDS,
 	PORTFOLIO_PROJECT_FIELDS
 } from "./constants"
-import mongoose from "mongoose"
+import { EducationSchemaType, ProfileSchemaType } from "../types/schema"
 import {
-	EducationSchemaType,
-	EducationUpdateType,
 	ExperienceUpdateType,
-	ProfileSchemaType,
 	ProjectUpdateType,
 	SkillUpdateType
-} from "./types"
+} from "../types/request"
 
 class RequestBodyHandler {
 	cache: Array<String>

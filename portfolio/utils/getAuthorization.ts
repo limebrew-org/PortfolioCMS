@@ -1,10 +1,6 @@
 import { Request } from "express"
-import {
-	PORTFOLIO_API_KEY_HEADER,
-	PORTFOLIO_ACCESS_TOKEN_HEADER
-} from "./constants"
-import { AuthorizationResponseType } from "./types"
-import { AUTHENTICATION_METHOD } from "./constants"
+import { MiddlewareConfiguration,AUTHENTICATION_METHOD } from "./constants"
+import { AuthorizationResponseType } from "../types/middleware"
 
 const getAuthorizationType = (request: Request) => {
 	//? List request headers
@@ -16,19 +12,24 @@ const getAuthorizationType = (request: Request) => {
 		value: ""
 	}
 
+	//? Grab the Token header configuration
+	const ApiKeyHeader:string = MiddlewareConfiguration.API_KEY_HEADER
+	const AccessTokenHeader:string = MiddlewareConfiguration.ACCESS_TOKEN_HEADER
+
+
 	//? Check if API key passed in header
-	if (PORTFOLIO_API_KEY_HEADER in headers) {
+	if (ApiKeyHeader in headers) {
 		authorizationResponse.type = AUTHENTICATION_METHOD.API_KEY
 		authorizationResponse.value =
-			headers[PORTFOLIO_API_KEY_HEADER].toString()
+			headers[ApiKeyHeader].toString()
 		return authorizationResponse
 	}
 
 	//? Check if access_token passed in authorization header
-	if (PORTFOLIO_ACCESS_TOKEN_HEADER in headers) {
+	if (AccessTokenHeader in headers) {
 		authorizationResponse.type = AUTHENTICATION_METHOD.JWT
 		authorizationResponse.value =
-			headers[PORTFOLIO_ACCESS_TOKEN_HEADER].toString()
+			headers[AccessTokenHeader].toString()
 		return authorizationResponse
 	}
 	return null

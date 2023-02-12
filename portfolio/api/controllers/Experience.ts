@@ -2,17 +2,14 @@ import { Request, Response } from "express"
 import { PORTFOLIO_EXPERIENCE_FIELDS } from "../../utils/constants"
 import { RequestBodyHandler } from "../../utils/handleFields"
 import { ResponseBody } from "../../utils/handleResponse"
-import {
-	ExperienceFieldType,
-	InternshipSchemaType,
-	JobSchemaType,
-	ProfileMiddlewareType
-} from "../../utils/types"
-import mongoose from "mongoose"
+import { InternshipSchemaType, JobSchemaType } from "../../types/schema"
+import { ProfileMiddlewareType } from "../../types/middleware"
+import { ExperienceFieldType } from "../../types/schema"
 import { ExperienceQueryType } from "../../types/query"
 import { ResponseBodyType } from "../../types/response"
 import { ExperienceQuery } from "../../query/Experience"
 import { ExperienceType } from "../../types/schema"
+import mongoose from "mongoose"
 
 class ExperienceController {
 	//? Handling Object Id

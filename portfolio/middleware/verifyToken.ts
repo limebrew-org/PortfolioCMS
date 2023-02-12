@@ -4,7 +4,7 @@ import { AUTHENTICATION_METHOD } from "../utils/constants"
 import { getAuthorizationType } from "../utils/getAuthorization"
 import { ResponseBody, ResponseStatusHandler } from "../utils/handleResponse"
 import { verifyToken } from "../utils/handleToken"
-import { AuthorizationResponseType } from "../utils/types"
+import { AuthorizationResponseType } from "../types/middleware"
 import { ProfileQuery } from "../query/Profile"
 
 //TODO: Handle JWT Authorization
@@ -39,7 +39,7 @@ const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
 }
 
 //TODO: Handle API Key Authorization
-const handleAPIKeyAuth = async (tokenRaw): Promise<ResponseBodyType> => {
+const handleAPIKeyAuth = async (tokenRaw:String): Promise<ResponseBodyType> => {
 	return
 }
 
@@ -56,8 +56,7 @@ const TokenMiddleWare = async (
 	if (authorizationResponse === null) {
 		return ResponseBody.error_token_invald(response, {
 			status: 401,
-			message: "Authorization header not provided!",
-			data: {}
+			error: "Authorization header not provided!"
 		})
 	}
 

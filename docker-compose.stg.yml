@@ -11,25 +11,21 @@ services:
         #? Build the auth service
         build:
             context: .
-            dockerfile: ./dockerfiles/Dockerfile.dev
+            dockerfile: ./dockerfiles/Dockerfile.stg
 
         #? Environment file
         env_file:
             - .env
-            - .env.dev
+            - .env.stg
 
         #? Set Image name
-        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-STG
 
         #? Define entrypoint
-        entrypoint: 'npm run start:auth[dev]'
+        entrypoint: 'npm run start:auth[stg]'
 
         #? Restart if down
         restart: always
-
-        #? Volumes
-        volumes:
-            - ./portfolio:/app/portfolio
 
         #? Ports
         ports:
@@ -51,28 +47,24 @@ services:
         #? Set container name
         container_name: portfolio_api
 
-        #? Build the auth service
+        #? Build the api service
         build:
             context: .
-            dockerfile: ./dockerfiles/Dockerfile.dev
+            dockerfile: ./dockerfiles/Dockerfile.stg
 
         #? Environment file
         env_file:
             - .env
-            - .env.dev
+            - .env.stg
 
-        #? Use the previously built image
-        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-STG
 
         #? Define entrypoint
-        entrypoint: 'npm run start:api[dev]'
+        entrypoint: 'npm run start:api[stg]'
 
         #? Restart if down
         restart: always
-
-        #? Volumes
-        volumes:
-            - ./portfolio:/app/portfolio
 
         #? Ports
         ports:
@@ -94,28 +86,24 @@ services:
         #? Set container name
         container_name: portfolio_admin
 
-        #? Build the auth service
+        #? Build the api service
         build:
             context: .
-            dockerfile: ./dockerfiles/Dockerfile.dev
+            dockerfile: ./dockerfiles/Dockerfile.stg
 
         #? Environment file
         env_file:
             - .env
-            - .env.dev
+            - .env.stg
 
-        #? Use the previously built image
-        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-STG
 
         #? Define entrypoint
-        entrypoint: 'npm run start:admin[dev]'
+        entrypoint: 'npm run start:admin[stg]'
 
         #? Restart if down
         restart: always
-
-        #? Volumes
-        volumes:
-            - ./portfolio:/app/portfolio
 
         #? Ports
         ports:

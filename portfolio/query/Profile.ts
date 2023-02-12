@@ -1,8 +1,8 @@
 import { ProfileModel } from "../schema/profile"
 import { ProfileQueryType } from "../types/query"
-import { ProfileSchemaType } from "../utils/types"
+import { ProfileSchemaType } from "../types/schema"
 import { ResponseStatusHandler } from "../utils/handleResponse"
-import { ResponseBodyType } from "../utils/types"
+import { ResponseBodyType } from "../types/response"
 import { ProfileField } from "../utils/handleFields"
 import { ProfileMiddlewareType } from "../types/middleware"
 

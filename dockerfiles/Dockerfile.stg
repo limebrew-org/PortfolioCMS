@@ -16,6 +16,3 @@ COPY . .
 
 #? Build typescript
 RUN npm run build
-
-#? Run the AUTH Server in Staging mode
-CMD ["npm","run","start:auth[staging]"]

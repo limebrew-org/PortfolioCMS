@@ -1,3 +1,5 @@
+import { SocialType } from "./schema"
+
 //? Profile request Type (Middleware)
 export type ProfileMiddlewareType = {
 	_id: String
@@ -8,9 +10,14 @@ export type ProfileMiddlewareType = {
 	socials: SocialType
 }
 
-//? Global Social Field Type
-export type SocialType = {
-	twitter: String
-	linkedin: String
-	github: String
+//? Payload type
+export type PayloadSchemaType = {
+	_id: string
+}
+
+
+//? Authorization response
+export type AuthorizationResponseType = {
+	type: String
+	value: String
 }

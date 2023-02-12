@@ -1,12 +1,13 @@
 import { Request, Response } from "express"
 import { PORTFOLIO_PROJECT_FIELDS } from "../../utils/constants"
-import { ProfileMiddlewareType, ProjectSchemaType } from "../../utils/types"
-import mongoose from "mongoose"
 import { RequestBodyHandler } from "../../utils/handleFields"
 import { ProjectQueryType } from "../../types/query"
 import { ResponseBody } from "../../utils/handleResponse"
 import { ResponseBodyType } from "../../types/response"
 import { ProjectQuery } from "../../query/Project"
+import { ProfileMiddlewareType } from "../../types/middleware"
+import { ProjectSchemaType } from "../../types/schema"
+import mongoose from "mongoose"
 
 class ProjectController {
 	//? Handling Object Id

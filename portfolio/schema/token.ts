@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { portfolioDb } from "../db/portfoliodb"
-import { TokenSchemaType } from "../utils/types"
+import { TokenSchemaType } from "../types/schema"
+import { PortfolioDBEntity } from "../utils/constants"
 
 const { Schema } = mongoose
 
@@ -10,6 +11,6 @@ const tokenSchema = new Schema<TokenSchemaType>({
 	token: { type: String }
 })
 
-const TokenModel = portfolioDb.model("token", tokenSchema)
+const TokenModel = portfolioDb.model(PortfolioDBEntity.TOKENS, tokenSchema)
 
 export { TokenModel }

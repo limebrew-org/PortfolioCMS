@@ -2,7 +2,7 @@ import { TokenModel } from "../schema/token"
 import { TokenQueryType } from "../types/query"
 import { ResponseBodyType } from "../types/response"
 import { ResponseStatusHandler } from "../utils/handleResponse"
-import { TokenSchemaType } from "../utils/types"
+import { TokenSchemaType } from "../types/schema"
 
 class TokenQuery {
 	//TODO: Schema Name

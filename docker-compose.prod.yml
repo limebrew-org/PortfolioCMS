@@ -11,18 +11,29 @@ services:
         #? Build the auth service
         build:
             context: .
-            dockerfile: Dockerfile.auth.prod
+            dockerfile: ./dockerfiles/Dockerfile.prod
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - '.env.prod'
+        
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:auth[prod]'
 
         #? Restart if down
         restart: always
 
         #? Ports
         ports:
-            - "8000:8000"
-
-        #? Environment file
-        env_file:
-            - ".env.prod"
+            - ${PORTFOLIO_AUTH_PORT}:${PORTFOLIO_AUTH_PORT}
+        
+        #? Set network
+        networks:
+            - portfolio_cms_network
 
     api:
         #? Interactive shell
@@ -35,15 +46,30 @@ services:
         #? Build the api service
         build:
             context: .
-            dockerfile: Dockerfile.api.prod
+            dockerfile: ./dockerfiles/Dockerfile.prod
+        
+        #? Environment file
+        env_file:
+            - '.env'
+            - '.env.prod'
+        
+        #? Set Image name
+        image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}
+
+        #? Define entrypoint
+        entrypoint: 'npm run start:api[prod]'
 
         #? Restart if down
         restart: always
 
         #? Ports
         ports:
-            - "9000:9000"
+            - ${PORTFOLIO_API_PORT}:${PORTFOLIO_API_PORT}
+        
+        #? Set network
+        networks:
+            - portfolio_cms_network
 
-        #? Environment file
-        env_file:
-            - ".env.prod"
+networks:
+    portfolio_cms_network:
+        external: false

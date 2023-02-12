@@ -1,7 +1,6 @@
 import { DashboardResponseType, ResponseBodyType } from "../types/response"
 import { Document } from "mongoose"
 import { Response } from "express"
-import { DashboardQueryType } from "../types/query"
 
 class ResponseBody {
 	constructor() {}

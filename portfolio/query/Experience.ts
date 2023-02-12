@@ -4,7 +4,7 @@ import { ResponseBodyType } from "../types/response"
 import { ExperienceType } from "../types/schema"
 import { ExperienceField } from "../utils/handleFields"
 import { ResponseStatusHandler } from "../utils/handleResponse"
-import { ExperienceFieldType, InternshipSchemaType } from "../utils/types"
+import { ExperienceFieldType } from "../types/schema"
 
 class ExperienceQuery {
 	//TODO: Get all experience details(internship/job) by Query

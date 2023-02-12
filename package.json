@@ -1,35 +1,41 @@
 {
-	"name": "portfolio",
+	"name": "portfolio-cms",
 	"version": "1.0.0",
-	"description": "This is a portfolio management service",
+	"description": "A Headless CMS built with Express,Typescript and MongoDB",
 	"main": "server.ts",
 	"scripts": {
 		"start:auth[local]": "cross-env NODE_ENV=local nodemon auth.ts",
 		"start:api[local]": "cross-env NODE_ENV=local nodemon api.ts",
 		"start:admin[local]": "cross-env NODE_ENV=local nodemon admin.ts",
+
 		"start:auth[dev]": "cross-env NODE_ENV=dev nodemon auth.ts",
 		"start:api[dev]": "cross-env NODE_ENV=dev nodemon api.ts",
 		"start:admin[dev]": "cross-env NODE_ENV=dev nodemon admin.ts",
-		"start:auth[staging]":"cross-env NODE_ENV=staging node dist/auth.js",
-		"start:api[staging]":"cross-env NODE_ENV=staging node dist/api.js",
+
+		"start:auth[stg]":"cross-env NODE_ENV=stg node dist/auth.js",
+		"start:api[stg]":"cross-env NODE_ENV=stg node dist/api.js",
+		"start:admin[stg]":"cross-env NODE_ENV=stg node dist/admin.js",
+
 		"start:auth[prod]": "cross-env NODE_ENV=prod node dist/auth.js",
 		"start:api[prod]": "cross-env NODE_ENV=prod node dist/api.js",
+
 		"test:inspect": "python tests/main.py",
+		
 		"build": "tsc -p .",
 		"prettier": "prettier --write .",
 		"clean": "rm -rf node_modules/"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Saptaktdk/Portfolio.git"
+		"url": "git+https://github.com/limebrew-org/PortfolioCMS"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"keywords": ["Express","Typescript","Content-Management-System","Docker"],
+	"author": "Limebrew",
+	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Saptaktdk/Portfolio/issues"
+		"url": "https://github.com/limebrew-org/PortfolioCMS/issues"
 	},
-	"homepage": "https://github.com/Saptaktdk/Portfolio#readme",
+	"homepage": "https://github.com/limebrew-org/PortfolioCMS#readme",
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.0",
 		"@types/cors": "^2.8.13",

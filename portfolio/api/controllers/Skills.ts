@@ -1,16 +1,13 @@
 import { Request, Response } from "express"
-import mongoose from "mongoose"
 import { SkillQuery } from "../../query/Skills"
 import { SkillQueryType } from "../../types/query"
 import { ResponseBodyType } from "../../types/response"
 import { PORTFOLIO_SKILL_FIELDS } from "../../utils/constants"
 import { RequestBodyHandler } from "../../utils/handleFields"
 import { ResponseBody } from "../../utils/handleResponse"
-import {
-	ProfileMiddlewareType,
-	SkillSchemaType,
-	SkillUpdateType
-} from "../../utils/types"
+import { ProfileMiddlewareType } from "../../types/middleware"
+import { SkillSchemaType } from "../../types/schema"
+import mongoose from "mongoose"
 
 class SkillController {
 	//? Handle object Id

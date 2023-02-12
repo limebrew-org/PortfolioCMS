@@ -17,8 +17,19 @@ export const PORTFOLIO_ADMIN_PORT = process.env.PORTFOLIO_ADMIN_PORT
 export const PORTFOLIO_DB_CONNECTION_URL =
 	process.env.PORTFOLIO_DB_CONNECTION_URL
 
-//? Portfolio Database Name
-export const PORTFOLIO_DB_NAME = "portfolio_db"
+//? Database Entity configuration
+export enum PortfolioDBEntity {
+	DB_NAME = "portfolio_db",
+	MAX_POOL_SIZE = 100,
+	PROFILES = "profiles",
+	PROJECTS = "projects",
+	SKILLS = "skills",
+	INTERNSHIPS = "internships",
+	JOBS = "jobs",
+	EDUCATION = "education",
+	TOKENS = "tokens",
+	API_KEYS = "keys"
+}
 
 //? Acess Token Secret
 export const PORTFOLIO_ACCESS_TOKEN_SECRET =
@@ -28,17 +39,14 @@ export const PORTFOLIO_ACCESS_TOKEN_SECRET =
 export const PORTFOLIO_REFRESH_TOKEN_SECRET =
 	process.env.PORTFOLIO_REFRESH_TOKEN_SECRET
 
-//? Access Token Expiration Time
-export const PORTFOLIO_ACCESS_TOKEN_EXPIRATION_TIME = "45m"
+//? MiddleWare configuration
+export enum MiddlewareConfiguration {
+	ACCESS_TOKEN_EXPIRATION_TIME = "45m",
+	REFRESH_TOKEN_EXPIRATION_TIME = "2d",
+	API_KEY_HEADER = "X-PORTFOLIO-KEY",
+	ACCESS_TOKEN_HEADER = "authorization"
+}
 
-//? Regresh Token Expiration Time
-export const PORTFOLIO_REFRESH_TOKEN_EXPIRATION_TIME = ""
-
-//? API key Header
-export const PORTFOLIO_API_KEY_HEADER: string = "X-PORTFOLIO-KEY"
-
-//? Access Token Header
-export const PORTFOLIO_ACCESS_TOKEN_HEADER: string = "authorization"
 
 //? Schema Fields (editable fields)
 export const PORTFOLIO_PROFILE_FIELDS: Array<string> = [
