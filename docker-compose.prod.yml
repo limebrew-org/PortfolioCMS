@@ -30,6 +30,10 @@ services:
         #? Ports
         ports:
             - ${PORTFOLIO_AUTH_PORT}:${PORTFOLIO_AUTH_PORT}
+        
+        #? Set network
+        networks:
+            - portfolio_cms_network
 
     api:
         #? Interactive shell
@@ -61,3 +65,11 @@ services:
         #? Ports
         ports:
             - ${PORTFOLIO_API_PORT}:${PORTFOLIO_API_PORT}
+        
+        #? Set network
+        networks:
+            - portfolio_cms_network
+
+networks:
+    portfolio_cms_network:
+        external: false

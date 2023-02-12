@@ -9,9 +9,13 @@ services:
         restart: always
 
         #? Environment file
-        environment:
-            - MONGO_INITDB_DATABASE=portfolio_db
+        env_file:
+            - .env
 
         #? Ports
         ports:
-            - "27017:27017"
+            - ${PORTFOLIO_DB_PORT}:${PORTFOLIO_DB_PORT}
+
+networks:
+    portfolio_cms_network:
+        external: false

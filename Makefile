@@ -39,64 +39,72 @@ run_test:
 	npm run test:inspect
 
 
-#TODO: Docker development
-#? Using Docker CE
-
+#TODO: Using Compose v1 (docker-compose)
 ##* Run DB seperately
-compose_db_up:
+compose_db_up_v1:
 	docker-compose -f docker-compose.db.yml up -d --build
 	
-compose_db_down:
+compose_db_down_v1:
 	docker-compose -f docker-compose.db.yml down
 
 ##* Run PortfolioCMS in dev environment
-compose_dev_up:
+compose_dev_up_v1:
 	docker-compose -f docker-compose.dev.yml up -d --build
 
-compose_dev_down:
+compose_dev_down_v1:
 	docker-compose -f docker-compose.dev.yml down
 
 ##* Run PortfolioCMS in stg environment
-compose_stg_up:
+compose_stg_up_v1:
 	docker-compose -f docker-compose.stg.yml up -d --build
 
-compose_stg_down:
+compose_stg_down_v1:
 	docker-compose -f docker-compose.stg.yml down
 
 ##* Run PortfolioCMS in prod environment
-compose_prod_up:
+compose_prod_up_v1:
 	docker-compose -f docker-compose.prod.yml up -d --build
 
-compose_prod_down:
+compose_prod_down_v1:
 	docker-compose -f docker-compose.prod.yml down
 
 
-#? If using docker compose
-
+#TODO: Using Compose v2 (docker compose)
 ##* Run DB seperately
-compose_db_up_fix:
+compose_db_up_v2:
 	docker compose -f docker-compose.db.yml up -d --build
 	
-compose_db_down_fix:
+compose_db_down_v2:
 	docker compose -f docker-compose.db.yml down
 
 ##* Run PortfolioCMS in dev environment
-compose_dev_up_fix:
+compose_dev_up_v2:
 	docker compose -f docker-compose.dev.yml up -d --build
 
-compose_dev_down_fix:
+compose_dev_down_v2:
 	docker compose -f docker-compose.dev.yml down
 
 ##* Run PortfolioCMS in stg environment
-compose_stg_up_fix:
+compose_stg_up_v2:
 	docker compose -f docker-compose.stg.yml up -d --build
 
-compose_stg_down_fix:
+compose_stg_down_v2:
 	docker compose -f docker-compose.stg.yml down
 
 ##* Run PortfolioCMS in prod environment
-compose_prod_up_fix:
+compose_prod_up_v2:
 	docker compose -f docker-compose.prod.yml up -d --build
 
-compose_prod_down_fix:
+compose_prod_down_v2:
 	docker compose -f docker-compose.prod.yml down
+
+
+#TODO: Build and push images to docker hub
+build_and_push_dev:
+	bash ./build_scripts/build-dev.sh
+
+build_and_push_stg:
+	bash ./build_scripts/build-stg.sh
+
+build_and_push_prod:
+	bash ./build_scripts/build-prod.sh

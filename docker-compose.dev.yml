@@ -12,12 +12,12 @@ services:
         build:
             context: .
             dockerfile: ./dockerfiles/Dockerfile.dev
-        
+
         #? Environment file
         env_file:
-            - '.env'
-            - '.env.dev'
-        
+            - .env
+            - .env.dev
+
         #? Set Image name
         image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
 
@@ -29,11 +29,15 @@ services:
 
         #? Volumes
         volumes:
-            - "./portfolio:/app/portfolio"
+            - ./portfolio:/app/portfolio
 
         #? Ports
         ports:
             - ${PORTFOLIO_AUTH_PORT}:${PORTFOLIO_AUTH_PORT}
+
+        #? Set network
+        networks:
+            - portfolio_cms_network
 
         #? Container dependencies
         depends_on:
@@ -51,12 +55,12 @@ services:
         build:
             context: .
             dockerfile: ./dockerfiles/Dockerfile.dev
-        
+
         #? Environment file
         env_file:
-            - '.env'
-            - '.env.dev'
-        
+            - .env
+            - .env.dev
+
         #? Use the previously built image
         image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
 
@@ -68,16 +72,20 @@ services:
 
         #? Volumes
         volumes:
-            - "./portfolio:/app/portfolio"
+            - ./portfolio:/app/portfolio
 
         #? Ports
         ports:
             - ${PORTFOLIO_API_PORT}:${PORTFOLIO_API_PORT}
 
+        #? Set network
+        networks:
+            - portfolio_cms_network
+
         #? Container dependencies
         depends_on:
             - db
-    
+
     admin:
         #? Interactive shell
         stdin_open: true
@@ -90,11 +98,11 @@ services:
         build:
             context: .
             dockerfile: ./dockerfiles/Dockerfile.dev
-        
+
         #? Environment file
         env_file:
-            - '.env'
-            - ".env.dev"
+            - .env
+            - .env.dev
 
         #? Use the previously built image
         image: limebrewofficial/portfolio-cms:${PORTFOLIO_VERSION}-DEV
@@ -107,16 +115,19 @@ services:
 
         #? Volumes
         volumes:
-            - "./portfolio:/app/portfolio"
+            - ./portfolio:/app/portfolio
 
         #? Ports
         ports:
             - ${PORTFOLIO_ADMIN_PORT}:${PORTFOLIO_ADMIN_PORT}
 
+        #? Set network
+        networks:
+            - portfolio_cms_network
+
         #? Container dependencies
         depends_on:
             - db
-
 
     db:
         #? Set container name (will be used to access db by container_name)
@@ -127,9 +138,17 @@ services:
         restart: always
 
         #? Environment file
-        environment:
-            - MONGO_INITDB_DATABASE=portfolio_db
+        env_file:
+            - .env
 
         #? Ports
         ports:
-            - "27017:27017"
+            - ${PORTFOLIO_DB_PORT}:${PORTFOLIO_DB_PORT}
+
+        #? Set network
+        networks:
+            - portfolio_cms_network
+
+networks:
+    portfolio_cms_network:
+        external: false
