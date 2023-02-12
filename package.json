@@ -1,6 +1,6 @@
 {
 	"name": "portfolio-cms",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A Headless CMS built with Express,Typescript and MongoDB",
 	"main": "server.ts",
 	"scripts": {
