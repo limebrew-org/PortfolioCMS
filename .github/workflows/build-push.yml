@@ -28,7 +28,7 @@ jobs:
       - name: Grab Version from .env file
         run: |
           VER=$(grep PORTFOLIO_VERSION .env | cut -f 2 -d "=" | tr "\"" "\n")
-          echo "USERNAME=limebrewofficial" >> $$GITHUB_ENV
+          echo "USERNAME=limebrewofficial" >> $GITHUB_ENV
           echo "VERSION=$VER" >> $GITHUB_ENV
           echo "REPO=portfolio-cms" >> $GITHUB_ENV
 
