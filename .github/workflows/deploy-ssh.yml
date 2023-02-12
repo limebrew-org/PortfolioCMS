@@ -1,0 +1,21 @@
+name: Deploy to production server via SSH
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy_to_prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PORTFOLIO_CMS_HOST_IP }}
+          username: ${{ secrets.PORTFOLIO_CMS_HOST_USERNAME }}
+          key: ${{ secrets.PORTFOLIO_CMS_HOST_KEY }}
+          port: 22
+          script: |
+            ls -la
+            whoami
+            echo "Inside production server"

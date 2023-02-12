@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": [
+            "file:///Users/deeprajbaidya/Workspace/Limebrew/PortfolioCMS/.github/workflows/deploy.yml",
+            "file:///Users/deeprajbaidya/Workspace/Limebrew/PortfolioCMS/.github/workflows/deploy-ssh.yml"
+        ]
+    }
+}
