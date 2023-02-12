@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build_and_push:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -29,7 +29,6 @@ jobs:
       run: |
         VER=$(grep PORTFOLIO_VERSION .env | cut -f 2 -d "=" | tr "\"" "\n")
         echo "VERSION=$VER" >> $GITHUB_ENV
-        echo "USERNAME=limebrewofficial" >> $GITHUB_ENV
         echo "REPO=portfolio-cms" >> $GITHUB_ENV
 
     - name: Build and push
@@ -39,7 +38,5 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: 
-          ${{ env.USERNAME }}/${{ env.REPO }}:latest
-          ${{ env.USERNAME }}/${{ env.REPO }}:${{ env.VERSION }}
-    
-
+          ${{ env.REPO }}:latest
+          ${{ env.REPO }}:${{ env.VERSION }}
