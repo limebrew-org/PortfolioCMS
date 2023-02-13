@@ -7,11 +7,6 @@ services:
 
         #? Set container name
         container_name: portfolio_auth
-
-        #? Build the auth service
-        build:
-            context: .
-            dockerfile: ./dockerfiles/Dockerfile.prod
         
         #? Environment file
         env_file:
@@ -42,11 +37,6 @@ services:
 
         #? Set container name
         container_name: portfolio_api
-
-        #? Build the api service
-        build:
-            context: .
-            dockerfile: ./dockerfiles/Dockerfile.prod
         
         #? Environment file
         env_file:
