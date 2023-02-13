@@ -56,16 +56,16 @@ jobs:
             echo "Successfully SSH into the production server"
             #? Navigate to PortfolioCMS folder
             cd PortfolioCMS/
-            #? Checkout to Deploy branch
-            git checkout deploy
-            echo "Checked into Deploy branch"
+            #? Checkout to main branch
+            git checkout main
+            echo "Checkout to main branch"
             #? Remove existing running container
             echo "Removing the existing containers and images"
             sudo make compose_prod_down_v1
             docker system prune -a --force
             #? Pull latest changes
-            echo "Pulling changes in deploy branch"
-            git pull origin deploy
+            echo "Pulling latest changes in main branch"
+            git pull origin main
             #? Global variables
             VERSION=$(grep PORTFOLIO_VERSION .env | cut -f 2 -d "=" | tr "\"" "\n")
             USERNAME="limebrewofficial"
