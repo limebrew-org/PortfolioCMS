@@ -3,8 +3,6 @@ name: Docker CI/CD to Docker Hub and GCP VM
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   build:
