@@ -1,9 +1,9 @@
 <div align="center">
   
-  [![version](https://img.shields.io/docker/v/limebrewofficial/portfolio-cms?color=&style=flat)](https://hub.docker.com/repository/docker/limebrewofficial/portfolio-cms/general)
+  [![version](https://img.shields.io/docker/v/limebrewofficial/portfolio-cms?color=red&style=flat)](https://hub.docker.com/repository/docker/limebrewofficial/portfolio-cms/general)
   [![build](https://img.shields.io/github/actions/workflow/status/limebrew-org/PortfolioCMS/build-deploy.yml?branch=main&style=flat)](https://github.com/limebrew-org/PortfolioCMS/actions)
-  [![nodejs](https://img.shields.io/badge/node.js-16.13.0-brightgreen)](https://nodejs.org/en/)
   [![top-language](https://img.shields.io/github/languages/top/limebrew-org/PortfolioCMS?color=blue)]()
+  [![nodejs](https://img.shields.io/badge/node.js-16.13.0-brightgreen)](https://nodejs.org/en/)
   [![license](https://img.shields.io/github/license/limebrew-org/PortfolioCMS?color=yellow&style=flat)](https://github.com/limebrew-org/PortfolioCMS/blob/main/LICENSE)
   
 </div>
