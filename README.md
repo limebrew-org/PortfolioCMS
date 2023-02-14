@@ -1,3 +1,11 @@
+<div align="center">
+  <a href="https://hub.docker.com/repository/docker/limebrewofficial/portfolio-cms/general">![version](https://img.shields.io/docker/v/limebrewofficial/portfolio-cms?color=&style=flat)</a>
+  <a href="https://github.com/limebrew-org/PortfolioCMS/actions">![build](https://img.shields.io/github/actions/workflow/status/limebrew-org/PortfolioCMS/build-deploy.yml?branch=main&style=flat)</a>
+  <a href="https://nodejs.org/en/">![nodejs](https://img.shields.io/badge/node.js-16.13.0-brightgreen)</a>
+  <a href="">![language](https://img.shields.io/github/languages/top/limebrew-org/PortfolioCMS?color=blue)</a>
+  <a href="https://github.com/limebrew-org/PortfolioCMS/blob/main/LICENSE">![license](https://img.shields.io/github/license/limebrew-org/PortfolioCMS?color=yellow&style=flat) </a>
+</div>
+
 # Portfolio
 
 A Headless CMS built with Express,Typescript and MongoDB
