@@ -6,6 +6,7 @@ import { ResponseBody, ResponseStatusHandler } from "../utils/handleResponse"
 import { verifyToken } from "../utils/handleToken"
 import { AuthorizationResponseType } from "../types/middleware"
 import { ProfileQuery } from "../query/Profile"
+import { APIKeyQuery } from "../query/APIKey"
 
 //TODO: Handle JWT Authorization
 const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
@@ -40,7 +41,41 @@ const handleJWTAuth = async (tokenRaw: String): Promise<ResponseBodyType> => {
 
 //TODO: Handle API Key Authorization
 const handleAPIKeyAuth = async (tokenRaw:String): Promise<ResponseBodyType> => {
-	return
+	try {
+		//? Grab the token from the header (Bearer ...)
+		const apiKey = tokenRaw
+
+		//? Check if API key exists in the database for a profile id
+		const getAPIKeyResponse: ResponseBodyType = await APIKeyQuery.getOne({
+			api_key: apiKey.toString()
+		})
+
+		//? If key not found
+		if(getAPIKeyResponse.status === 404)
+			return ResponseStatusHandler.error_not_found("APIKey")
+
+		//? If key found, grab the profile id
+		const profileId: string = getAPIKeyResponse.data.profile_id
+
+		//? Get profile from API key inside the payload and mask the profile
+		const existingProfileResponse: ResponseBodyType =
+			await ProfileQuery.getOne({_id: profileId},true)
+		
+		//? If profile found for the given id, set profile in the request
+		if(existingProfileResponse.status === 404)
+			return ResponseStatusHandler.error_not_found("Profile")
+
+		//? Grab the profile entity from the resp
+		const profileEntity = existingProfileResponse.data
+
+		//? Return the response
+		console.log("API-Key-Middleware verification successful!")
+		return ResponseStatusHandler.success_token_valid(profileEntity)
+
+	} catch (error) {
+		console.log("API-Key-Middleware verification failed!")
+		return ResponseStatusHandler.error_unauthorized()
+	}
 }
 
 const TokenMiddleWare = async (

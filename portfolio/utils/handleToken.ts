@@ -20,6 +20,13 @@ const generateRefreshToken = (payload: PayloadSchemaType) => {
 	return jwt.sign(payload, PORTFOLIO_REFRESH_TOKEN_SECRET)
 }
 
+//? Generate API key
+const generateAPIKey = () => {
+	return [...Array(30)]
+    .map((e) => ((Math.random() * 36) | 0).toString(36))
+    .join('');
+}
+
 //? Verify token signature
 const verifyToken = (token: string, tokenType: string) => {
 	if (tokenType === TOKEN.refreshToken)
@@ -28,4 +35,4 @@ const verifyToken = (token: string, tokenType: string) => {
 		return jwt.verify(token, PORTFOLIO_ACCESS_TOKEN_SECRET)
 }
 
-export { generateAccessToken, generateRefreshToken, verifyToken }
+export { generateAccessToken, generateRefreshToken, generateAPIKey, verifyToken }

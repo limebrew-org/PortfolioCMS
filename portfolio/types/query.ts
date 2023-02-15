@@ -47,3 +47,8 @@ export type TokenQueryType = {
 	profile_id?: String
 	token?: String
 }
+
+export type APIKeyQueryType = {
+	profile_id?: String
+	api_key?: String
+}

@@ -43,7 +43,7 @@ export const PORTFOLIO_REFRESH_TOKEN_SECRET =
 export enum MiddlewareConfiguration {
 	ACCESS_TOKEN_EXPIRATION_TIME = "45m",
 	REFRESH_TOKEN_EXPIRATION_TIME = "2d",
-	API_KEY_HEADER = "X-PORTFOLIO-KEY",
+	API_KEY_HEADER = "x-portfolio-key",
 	ACCESS_TOKEN_HEADER = "authorization"
 }
 
