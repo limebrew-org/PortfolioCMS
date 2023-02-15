@@ -2,17 +2,19 @@ import { Request, Response } from "express"
 import { PORTFOLIO_PROFILE_REGISTER_FIELDS, TOKEN } from "../utils/constants"
 import { RequestBodyHandler } from "../utils/handleFields"
 import { ResponseBody } from "../utils/handleResponse"
-import { ProfileSchemaType,TokenSchemaType } from "../types/schema"
+import { ProfileSchemaType, TokenSchemaType } from "../types/schema"
 import { ProfileQuery } from "../query/Profile"
 import { comparePassword, hashPassword } from "../utils/handlePassword"
 import {
 	generateAccessToken,
 	generateRefreshToken,
+	generateAPIKey,
 	verifyToken
 } from "../utils/handleToken"
 import { TokenQuery } from "../query/Token"
 import { ResponseBodyType } from "../types/response"
-import { ProfileMiddlewareType,PayloadSchemaType } from "../types/middleware"
+import { ProfileMiddlewareType, PayloadSchemaType } from "../types/middleware"
+import { APIKeyQuery } from "../query/APIKey"
 
 class AuthController {
 	//TODO: Register profile (public)
@@ -257,6 +259,47 @@ class AuthController {
 
 		//? Else handle response
 		return ResponseBody.handleResponse(response, existingTokenResponse)
+	}
+
+	//TODO: Generate API key
+	async generateKey(request: Request, response: Response): Promise<Response> {
+		//? Grab the profile from middleware
+		const profile: ProfileMiddlewareType = request["profile"]
+
+		//? Grab the profile id
+		const profileId: string = profile._id.toString()
+
+		//? Check for already existing key
+		const getAPIKeyResponseByProfileId: ResponseBodyType =
+			await APIKeyQuery.getOne({ profile_id: profileId })
+
+		//? If key found, return error
+		if (getAPIKeyResponseByProfileId.status === 200)
+			return ResponseBody.success_found(response, {
+				status: 200,
+				message: `API key already exists for username: ${profile.username}`,
+				data: { apiKey: getAPIKeyResponseByProfileId.data.api_key }
+			})
+
+		//? If no existing key found, generate API key
+		const apiKey = generateAPIKey()
+
+		//? Add key into the database
+		const addKeyResponse: ResponseBodyType = await APIKeyQuery.addOne({
+			profile_id: profileId,
+			api_key: apiKey
+		})
+
+		if (addKeyResponse.status === 201)
+			return ResponseBody.success_add(response, {
+				status: 201,
+				message: `API Key generated successfully for profile Id: ${profileId}`,
+				data: {
+					apikey: apiKey
+				}
+			})
+
+		return ResponseBody.handleResponse(response, addKeyResponse)
 	}
 }
 

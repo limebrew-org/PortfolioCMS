@@ -17,6 +17,14 @@ const getAuthorizationType = (request: Request) => {
 	const AccessTokenHeader:string = MiddlewareConfiguration.ACCESS_TOKEN_HEADER
 
 
+	//? Check if access_token passed in authorization header
+	if (AccessTokenHeader in headers) {
+		authorizationResponse.type = AUTHENTICATION_METHOD.JWT
+		authorizationResponse.value =
+			headers[AccessTokenHeader].toString()
+		return authorizationResponse
+	}
+	
 	//? Check if API key passed in header
 	if (ApiKeyHeader in headers) {
 		authorizationResponse.type = AUTHENTICATION_METHOD.API_KEY
@@ -25,13 +33,6 @@ const getAuthorizationType = (request: Request) => {
 		return authorizationResponse
 	}
 
-	//? Check if access_token passed in authorization header
-	if (AccessTokenHeader in headers) {
-		authorizationResponse.type = AUTHENTICATION_METHOD.JWT
-		authorizationResponse.value =
-			headers[AccessTokenHeader].toString()
-		return authorizationResponse
-	}
 	return null
 }
 
