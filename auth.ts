@@ -3,6 +3,7 @@ import cors from "cors"
 import { connection } from "./portfolio/db/portfoliodb"
 import { AuthRouter } from "./portfolio/auth/routes"
 import { PORTFOLIO_AUTH_PORT } from "./portfolio/utils/constants"
+import cookieParser from "cookie-parser"
 
 //! Error in connection
 connection.on("error", () => {
@@ -26,6 +27,9 @@ app.use(cors())
 //TODO: Configure body parser
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
+//TODO: Configure cookie parser
+app.use(cookieParser())
 
 //? Auth routes
 app.use("/auth", AuthRouter)
