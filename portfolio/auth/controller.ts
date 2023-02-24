@@ -159,15 +159,17 @@ class AuthController {
 			await TokenQuery.updateById(profileEntity._id, refreshToken)
 
 		//? If update status is 201 then return jwt
-		if (updateTokenResponse.status === 201)
+		if (updateTokenResponse.status === 201) {
 			return ResponseBody.success_auth(response, {
 				status: 200,
 				message: `Success! ${profileEntity.username} logged in successfully!`,
 				data: {
-					accessToken: accessToken,
-					refreshToken: refreshToken
+					access_token: accessToken,
+					refresh_token: refreshToken
 				}
 			})
+		}
+			
 
 		//? Else handle response
 		return ResponseBody.handleResponse(response, updateTokenResponse)

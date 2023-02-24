@@ -8,7 +8,25 @@ import { SkillRouter } from "./portfolio/api/routes/skills"
 import { EducationRouter } from "./portfolio/api/routes/education"
 import { PORTFOLIO_API_PORT } from "./portfolio/utils/constants"
 import { ProjectRouter } from "./portfolio/api/routes/projects"
+import { redisClient } from "./portfolio/cache/redis"
 
+//TODO: Setup Redis Connection ----------------------
+//? Connect to redis
+;(async () => {
+	await redisClient.connect()
+})()
+
+//! Event Listener for error state
+redisClient.on("error", (err) => {
+	console.log("Error in connecting to Redis! Error: ", err)
+})
+
+//? Event Listener for ready state
+redisClient.on("ready", () => {
+	console.log("Redis Connected Successfully!")
+})
+
+//TODO: Setup MongoDB Connection ----------------------
 //! Error in connection
 connection.on("error", () => {
 	console.log("MongoDB connection error")
@@ -19,7 +37,8 @@ connection.on("connected", function () {
 	console.log("MongoDB connected successfully")
 })
 
-//? Initialize Express app
+
+//TODO: Initialize Express app
 const app = express()
 
 // TODO: Set API port

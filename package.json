@@ -1,26 +1,21 @@
 {
 	"name": "portfolio-cms",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"description": "A Headless CMS built with Express,Typescript and MongoDB",
 	"main": "server.ts",
 	"scripts": {
 		"start:auth[local]": "cross-env NODE_ENV=local nodemon auth.ts",
 		"start:api[local]": "cross-env NODE_ENV=local nodemon api.ts",
 		"start:admin[local]": "cross-env NODE_ENV=local nodemon admin.ts",
-
 		"start:auth[dev]": "cross-env NODE_ENV=dev nodemon auth.ts",
 		"start:api[dev]": "cross-env NODE_ENV=dev nodemon api.ts",
 		"start:admin[dev]": "cross-env NODE_ENV=dev nodemon admin.ts",
-
-		"start:auth[stg]":"cross-env NODE_ENV=stg node dist/auth.js",
-		"start:api[stg]":"cross-env NODE_ENV=stg node dist/api.js",
-		"start:admin[stg]":"cross-env NODE_ENV=stg node dist/admin.js",
-
+		"start:auth[stg]": "cross-env NODE_ENV=stg node dist/auth.js",
+		"start:api[stg]": "cross-env NODE_ENV=stg node dist/api.js",
+		"start:admin[stg]": "cross-env NODE_ENV=stg node dist/admin.js",
 		"start:auth[prod]": "cross-env NODE_ENV=prod node dist/auth.js",
 		"start:api[prod]": "cross-env NODE_ENV=prod node dist/api.js",
-
 		"test:inspect": "python tests/main.py",
-		
 		"build": "tsc -p .",
 		"prettier": "prettier --write .",
 		"clean": "rm -rf node_modules/"
@@ -29,7 +24,12 @@
 		"type": "git",
 		"url": "git+https://github.com/limebrew-org/PortfolioCMS"
 	},
-	"keywords": ["Express","Typescript","Content-Management-System","Docker"],
+	"keywords": [
+		"Express",
+		"Typescript",
+		"Content-Management-System",
+		"Docker"
+	],
 	"author": "Limebrew",
 	"license": "MIT",
 	"bugs": {
@@ -41,6 +41,7 @@
 		"@types/cors": "^2.8.13",
 		"@types/express": "^4.17.15",
 		"@types/jsonwebtoken": "^9.0.1",
+		"@types/redis": "^4.0.11",
 		"nodemon": "^2.0.20",
 		"prettier": "^2.8.1",
 		"ts-node": "^10.9.1",
@@ -48,11 +49,14 @@
 	},
 	"dependencies": {
 		"bcrypt": "^5.0.0",
+		"cookie": "^0.5.0",
+		"cookie-parser": "^1.4.6",
 		"cors": "^2.8.5",
 		"cross-env": "^7.0.3",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
 		"jsonwebtoken": "^9.0.0",
-		"mongoose": "^6.8.1"
+		"mongoose": "^6.8.1",
+		"redis": "^4.6.4"
 	}
 }

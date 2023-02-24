@@ -116,6 +116,36 @@ services:
         #? Container dependencies
         depends_on:
             - db
+    
+    redis:
+        #? Set container name
+        container_name: portfolio_redis
+
+        #? Environment file
+        env_file:
+            - .env
+
+        #? Official redis Image
+        image: redis:7-alpine
+
+        #? restart container
+        restart: always
+
+        #? Set network
+        networks:
+            - portfolio_cms_network
+
+        #? Ports
+        ports:
+            - ${PORTFOLIO_REDIS_PORT}:${PORTFOLIO_REDIS_PORT}
+
+        #? Entrypoint/Command
+        command: redis-server --loglevel warning
+
+        #? Container dependencies
+        depends_on:
+            - db
+
 
     db:
         #? Set container name (will be used to access db by container_name)

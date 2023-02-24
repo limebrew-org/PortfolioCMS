@@ -13,9 +13,17 @@ export const PORTFOLIO_API_PORT = process.env.PORTFOLIO_API_PORT
 //? Portfolio-CMS Admin Server PORT
 export const PORTFOLIO_ADMIN_PORT = process.env.PORTFOLIO_ADMIN_PORT
 
+//? Set Dashboard Expiration Time
+export const PORTFOLIO_DASHBOARD_CACHE_EXPIRATION_TIME =
+	process.env.PORTFOLIO_DASHBOARD_CACHE_EXPIRATION_TIME
+
 //? Database Connection URL
 export const PORTFOLIO_DB_CONNECTION_URL =
 	process.env.PORTFOLIO_DB_CONNECTION_URL
+
+//? Get Redis Connection String
+export const PORTFOLIO_REDIS_CONNECTION_URL =
+	process.env.PORTFOLIO_REDIS_CONNECTION_URL
 
 //? Database Entity configuration
 export enum PortfolioDBEntity {
