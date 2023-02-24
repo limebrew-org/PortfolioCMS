@@ -160,20 +160,13 @@ class AuthController {
 
 		//? If update status is 201 then return jwt
 		if (updateTokenResponse.status === 201) {
-			//? Set access token and refresh token as HTTP Only Cookies
-			response.cookie("access_token",accessToken, {
-				httpOnly: true,
-				maxAge: 2700000,
-				secure: true
-			})
-
-			response.cookie("refresh_token",refreshToken, {
-				httpOnly: true
-			})
-
 			return ResponseBody.success_auth(response, {
 				status: 200,
-				message: `Success! ${profileEntity.username} logged in successfully!`
+				message: `Success! ${profileEntity.username} logged in successfully!`,
+				data: {
+					access_token: accessToken,
+					refresh_token: refreshToken
+				}
 			})
 		}
 			
