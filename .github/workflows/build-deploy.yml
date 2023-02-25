@@ -57,7 +57,7 @@ jobs:
             #? Remove existing running container
             echo "Removing the existing containers and images"
             sudo make compose_prod_down_v1
-            docker system prune -a --force
+            sudo docker system prune -a --force
             #? Pull latest changes
             echo "Pulling latest changes in main branch"
             git pull origin main
