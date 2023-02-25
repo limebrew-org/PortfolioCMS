@@ -16,7 +16,7 @@ A Headless CMS built with Express,Typescript and MongoDB
 The infra for PortfolioCMS is built with `Terraform` and `GCP` alongside `Docker` containers for each service
 Here is a brief overview of it:
 
-![hld](architecture/portfolio_cms_HLD.png)
+![hld](architecture/portolio_cms_HLD.png)
 
 ## Install and Run:
 Docker is the most convenient way to build and run `PortfolioCMS`
