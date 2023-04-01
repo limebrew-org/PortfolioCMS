@@ -9,7 +9,7 @@ public interface JobService {
 
     List<Job> getAllJobs(String profileId) throws InterruptedException, ExecutionException;
 
-    Job getJobById(String profileId, String id) throws InterruptedException, ExecutionException;
+    Job getJobById(String id) throws InterruptedException, ExecutionException;
 
     String createJob(Job job) throws InterruptedException, ExecutionException;
 

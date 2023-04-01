@@ -39,7 +39,7 @@ public class EducationController {
             String token = authHeader.substring(7);
 
             //? Verify the JWT
-            FirebaseToken decodedToken = firebaseAuthService.verifyToken(token);
+            firebaseAuthService.verifyToken(token);
 
             //? Get education by id
             Education education = educationService.getEducationById(id);

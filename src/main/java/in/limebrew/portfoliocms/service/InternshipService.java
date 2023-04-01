@@ -9,7 +9,7 @@ public interface InternshipService {
 
     List<Internship> getAllInternships(String profileId) throws InterruptedException, ExecutionException;
 
-    Internship getInternshipById(String profileId, String id) throws InterruptedException, ExecutionException;
+    Internship getInternshipById(String id) throws InterruptedException, ExecutionException;
 
     String createInternship(Internship internship) throws InterruptedException, ExecutionException;
 
