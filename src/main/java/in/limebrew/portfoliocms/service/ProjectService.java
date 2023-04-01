@@ -9,7 +9,7 @@ public interface ProjectService {
 
     List<Project> getAllProjects(String profileId) throws InterruptedException, ExecutionException;
 
-    Project getProjectById(String profileId, String id) throws InterruptedException, ExecutionException;
+    Project getProjectById(String id) throws InterruptedException, ExecutionException;
 
     String createProject(Project project) throws InterruptedException, ExecutionException;
 

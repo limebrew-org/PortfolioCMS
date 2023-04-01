@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 public interface EducationService {
     List<Education> getAllEducation(String profileId) throws ExecutionException, InterruptedException;
 
-    Education getEducationById(String profileId, String id) throws ExecutionException, InterruptedException;
+    Education getEducationById(String id) throws ExecutionException, InterruptedException;
 
     String createEducation(Education education) throws ExecutionException, InterruptedException;
 
