@@ -9,7 +9,7 @@ public interface SkillService {
 
     Skill getAllSkills(String profileId) throws InterruptedException, ExecutionException;
 
-    Skill getSkillById(String profileId, String id) throws InterruptedException, ExecutionException;
+    Skill getSkillById(String id) throws InterruptedException, ExecutionException;
 
     String createSkill(Skill skill) throws InterruptedException, ExecutionException;
 
